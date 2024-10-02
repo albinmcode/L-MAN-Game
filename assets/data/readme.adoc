@@ -1,0 +1,44 @@
+= L-MAN data
+:experimental:
+:nofooter:
+:source-highlighter: pygments
+:sectnums:
+:stem: latexmath
+:toc:
+:xrefstyle: short
+
+En este apartado se encuentran archivos de datos logicos que deben ser precargados por el juego al comenzar.
+
+== Mapa
+El mapa de juego consta de un laberinto en el cual se representa con valores numéricos su estructura, cargado de: link:mapa.dat[mapa.dat].
+
+=== Representación de elementos
+Cada elemento dentro de la matriz lógica del juego se representa con un valor específico:
+
+- `Vacio` = 0
+
+Espacio libre para moverse por el laberinto y colocar otros elementos.
+
+- `Pared` = 1
+
+Define los limites del laberinto, detiene el movimiento de los personajes.
+
+- `Salida enemigos` = 2
+
+Referido a la única zona por la cual los enemigos pueden salir de la capsula central.
+
+- `Jugador` = 3
+
+Indica la posición del jugador sobre cierta celda, con sus coordenadas específicas.
+
+- `Enemigos` = 4
+
+Indica la posición de un enemigo sobre cierta celda.
+
+- `Diccionario` = 5
+
+Indica la posición de un item de diccionario sobre cierta celda.
+
+- `Letra` = [valor ascii]
+
+Letra recolectable, obtenida del conjunto de caracteres que forman la traducción de una palabra o generada aleatoriamente para rellenar celdas.
