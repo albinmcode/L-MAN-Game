@@ -1,5 +1,12 @@
+#general:
 bin/
 build/
 doc/
 export/
+Debug/
+External/
 .vscode
+
+#libraries
+.dll
+lib/
