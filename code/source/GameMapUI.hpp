@@ -11,7 +11,7 @@ public:
     GameMap();
     // Game events
     void start(RenderWindow& window);
-    void handleEvent(RenderWindow& window, Event& event);
+    void handleEvent(RenderWindow& window, Event& event,bool& isPlaying);
     // update the window
     void draw(RenderWindow& window);
 
