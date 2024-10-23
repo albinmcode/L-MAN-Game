@@ -18,7 +18,8 @@ class PlayerUI {
 	/// Two 1 byte numbers that indicate the increment factor for width and height.
 	/// Negatives indicate decrement
 	/// </param>
-	void draw(RenderWindow& window, const int (&movementFactor)[2]);
+	void move(RenderWindow& window, const int (&movementFactor)[2]);
+	void draw(RenderWindow& window);
  private:
 	Texture rightTexture;
 	Texture leftTexture;

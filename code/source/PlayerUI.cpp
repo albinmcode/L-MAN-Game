@@ -17,7 +17,7 @@ PlayerUI::PlayerUI() {
     this->playerSprite.setPosition(origin);
 }
 
-void PlayerUI::draw(RenderWindow& window, const int (&movementFactor)[2]) {
+void PlayerUI::move(RenderWindow& window, const int (&movementFactor)[2]) {
     // increment or decrement the coordinates according to the parameters
     this->playerSprite.move(movementFactor[0] * 32, movementFactor[1] * 32);
     // sprite orientation
@@ -28,5 +28,9 @@ void PlayerUI::draw(RenderWindow& window, const int (&movementFactor)[2]) {
         this->playerSprite.setTexture(rightTexture);
     }
     
+    window.draw(playerSprite);
+}
+
+void PlayerUI::draw(RenderWindow& window) {
     window.draw(playerSprite);
 }

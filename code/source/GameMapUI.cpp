@@ -14,8 +14,7 @@ GameMap::GameMap(){
 }
 
 void GameMap::run(RenderWindow& window) {
-    int movementFactor[2] = { 1, 1 };
-
+    int movementFactor[] = { 0, 0 };
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -25,14 +24,15 @@ void GameMap::run(RenderWindow& window) {
         }
         window.clear();
         this->draw(window);
-
+        this->lman.draw(window);
+        window.display();
         // TODO(any): process keyboard input
         if (std::cin >> movementFactor[0] >> movementFactor[1]) {
-            this->lman.draw(window, movementFactor);
+            this->lman.move(window, movementFactor);
             std::cout << movementFactor[0] << " - " << movementFactor[1] << std::endl;
+            window.display();
         }
         
-        window.display();
     }
 }
 
