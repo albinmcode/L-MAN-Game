@@ -12,7 +12,7 @@ PlayerUI::PlayerUI() {
     // Right texture as default
     this->playerSprite.setTexture(rightTexture);
     // origin position
-    Vector2f origin(48+2, 128);
+    Vector2f origin(64+2, 128);
     this->playerSprite.setScale(2,2);
     this->playerSprite.setPosition(origin);
 }
