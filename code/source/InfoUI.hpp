@@ -1,21 +1,23 @@
-#ifndef INFOUI
-#define INFOUI
+#ifndef INFOUI_HPP
+#define INFOUI_HPP
 
 #include <SFML/Graphics.hpp>
+#include "ButtonUI.hpp"
 
 using namespace sf;
 
 class InfoPage {
 public:
-    // default constructor
-    InfoPage();
-    void handleEvent(RenderWindow& window, Event& event);
-    // update the window
-    void draw(RenderWindow& window);
+    InfoPage();  // Constructor
+
+    void handleEvent(RenderWindow& window, Event& event, bool& backToMenu);  // Maneja los eventos
+    void draw(RenderWindow& window);  // Dibuja los elementos
+    void reset();  // Recarga las texturas
 
 private:
     Texture backgroundTexture;
     Sprite backgroundSprite;
+    Button backButton;  // Botón para regresar al menú principal
 };
 
-#endif // !INFOUI
+#endif // INFOUI_HPP
