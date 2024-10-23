@@ -3,7 +3,7 @@
 
 GameMap::GameMap(){
     // Load background
-    if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
+    if (!backgroundTexture.loadFromFile("assets/background.png")) {
         std::cerr << "Error al cargar la textura del fondo." << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);
@@ -12,7 +12,9 @@ GameMap::GameMap(){
 
 }
 
-void GameMap::start(RenderWindow& window) {
+void GameMap::run(RenderWindow& window) {
+    int movementFactor[2] = { 1, 1 };
+
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -20,14 +22,20 @@ void GameMap::start(RenderWindow& window) {
                 window.close();
             }
         }
-
         window.clear();
         this->draw(window);
+
+        // TODO(any): process keyboard input
+        if (std::cin >> movementFactor[0] >> movementFactor[1]) {
+            this->lman.draw(window, movementFactor);
+            std::cout << movementFactor[0] << " - " << movementFactor[1] << std::endl;
+        }
+        
         window.display();
     }
 }
 
-void GameMap::handleEvent(RenderWindow& window, Event& event, bool& isPlaying) {
+void GameMap::handleEvent(RenderWindow& window, Event& event) {
     // game events
 }
 
