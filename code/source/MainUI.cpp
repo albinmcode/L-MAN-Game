@@ -1,22 +1,18 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
-
 #include "MenuUI.hpp"
 #include "GameMapUI.hpp"
 
-int main() {
-    RenderWindow window(VideoMode(455, 256), "L-MAN Menu");
-    // window icon
-    sf::Image icon;
-    if (!icon.loadFromFile("assets/lman_right.png"))
-        return -1;
-    window.setIcon(16, 16, icon.getPixelsPtr());
+using namespace sf;
 
-    // Create menu
+int main() {
+    // Crear la ventana con resolución 455x256 y sin opción de redimensionar
+    RenderWindow window(VideoMode(455, 256), "Juego SFML", Style::Titlebar | Style::Close);
+    window.setFramerateLimit(60);
+
     Menu menu;
-    bool isPlaying = false;
-    // Create map
     GameMap gameMap;
+    bool isPlaying = false;
+    bool backToMenu = false;
 
     while (window.isOpen()) {
         Event event;
@@ -24,14 +20,15 @@ int main() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            menu.handleEvent(window, event, isPlaying);
-            if (isPlaying) {
-               gameMap.start(window);
-            }
+            menu.handleEvent(window, event, isPlaying, backToMenu);
         }
 
         window.clear();
-        menu.draw(window);
+        if (isPlaying) {
+            gameMap.start(window);
+        } else {
+            menu.draw(window);
+        }
         window.display();
     }
 
