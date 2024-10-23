@@ -3,7 +3,7 @@
 
 GameMap::GameMap(){
     // Load background
-    if (!backgroundTexture.loadFromFile("assets/background.png")) {
+    if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
         std::cerr << "Error al cargar la textura del fondo." << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);
