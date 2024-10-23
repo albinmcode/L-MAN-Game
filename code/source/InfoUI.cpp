@@ -2,7 +2,7 @@
 #include <iostream>
 
 InfoPage::InfoPage() :
-    backButton(Vector2f(10, 5), "assets/img/menu_salir.png", Vector2f(65, 40))  // Tamaño reducido
+    backButton(Vector2f(20, 10), "assets/img/menu_salir.png", Vector2f(130, 80))  // Tamaño reducido
 {
     reset();
 }
@@ -14,8 +14,8 @@ void InfoPage::reset() {
     backgroundSprite.setTexture(backgroundTexture);
 
     // Escalar el fondo a 455x256
-    float scaleX = 455.0f / backgroundTexture.getSize().x;
-    float scaleY = 256.0f / backgroundTexture.getSize().y;
+    float scaleX = 910.0f / backgroundTexture.getSize().x;
+    float scaleY = 512.0f / backgroundTexture.getSize().y;
     backgroundSprite.setScale(scaleX, scaleY);
 }
 

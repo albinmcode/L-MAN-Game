@@ -2,16 +2,17 @@
 #include <iostream>
 
 Menu::Menu() :
-    playButton(Vector2f(128, 80), "assets/img/menu_inicio.png",Vector2f(192, 64)),
-    infoButton(Vector2f(128, 120), "assets/img/menu_info.png",Vector2f(192, 64)),
-    exitButton(Vector2f(128, 160), "assets/img/menu_salir.png",Vector2f(192, 64)),
+    playButton(Vector2f(256, 160), "assets/img/menu_inicio.png",Vector2f(384, 128)),
+    infoButton(Vector2f(256, 240), "assets/img/menu_info.png",Vector2f(384, 128)),
+    exitButton(Vector2f(256, 320), "assets/img/menu_salir.png",Vector2f(384, 128)),
     inInfoPage(false)
 {
     if (!backgroundTexture.loadFromFile("assets/img/menu_titulo.png")) {
         std::cerr << "Error al cargar la textura del fondo del menú." << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);
-    backgroundSprite.setPosition(Vector2f(128, 15));
+    backgroundSprite.setScale(2,2);
+    backgroundSprite.setPosition(Vector2f(256, 30));
 }
 
 void Menu::handleEvent(RenderWindow& window, Event& event, bool& isPlaying, bool& backToMenu) {

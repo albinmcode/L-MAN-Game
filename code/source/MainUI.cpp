@@ -5,8 +5,12 @@
 using namespace sf;
 
 int main() {
+
+    sf::Image icon;
+    if(!icon.loadFromFile("assets/img/lman_right.png")) return -1;
+
     // Crear la ventana con resolución 455x256 y sin opción de redimensionar
-    RenderWindow window(VideoMode(455, 256), "Juego SFML", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(910, 512), "Juego SFML", Style::Titlebar | Style::Close);
     window.setFramerateLimit(60);
 
     Menu menu;
@@ -25,7 +29,7 @@ int main() {
 
         window.clear();
         if (isPlaying) {
-            gameMap.start(window);
+            gameMap.run(window);
         } else {
             menu.draw(window);
         }
