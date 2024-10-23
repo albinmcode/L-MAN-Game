@@ -10,7 +10,7 @@ using namespace sf;
 class Menu {
 public:
     Menu();
-    void handleEvent(RenderWindow& window, Event& event, bool& isPlaying);
+    void handleEvent(RenderWindow& window, Event& event, bool& isPlaying, bool& backToMenu);
     void draw(RenderWindow& window);
 
 private:
@@ -20,6 +20,7 @@ private:
     InfoPage info;
     Texture backgroundTexture;
     Sprite backgroundSprite;
+    bool inInfoPage;  // Bandera para saber si estamos en la página de info
 };
 
 #endif
