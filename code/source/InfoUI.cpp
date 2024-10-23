@@ -1,29 +1,33 @@
 #include "InfoUI.hpp"
 #include <iostream>
 
-InfoPage::InfoPage() {
-    // Load background
-    if (!backgroundTexture.loadFromFile("assets/info.png")) {
-        std::cerr << "Error al cargar la textura del fondo." << std::endl;
-    }
-    backgroundSprite.setTexture(backgroundTexture);
-    backgroundSprite.setScale(0.5, 0.5);
+InfoPage::InfoPage() :
+    backButton(Vector2f(10, 5), "assets/img/menu_salir.png", Vector2f(65, 40))  // Tamaño reducido
+{
+    reset();
 }
 
-void InfoPage::handleEvent(RenderWindow& window, Event& event) {
-    // men� button
+void InfoPage::reset() {
+    if (!backgroundTexture.loadFromFile("assets/img/info.png")) {
+        std::cerr << "Error al cargar la textura del fondo de información." << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+
+    // Escalar el fondo a 455x256
+    float scaleX = 455.0f / backgroundTexture.getSize().x;
+    float scaleY = 256.0f / backgroundTexture.getSize().y;
+    backgroundSprite.setScale(scaleX, scaleY);
+}
+
+void InfoPage::handleEvent(RenderWindow& window, Event& event, bool& backToMenu) {
+    if (event.type == Event::MouseButtonPressed) {
+        if (backButton.isMouseOver(window)) {
+            backToMenu = true;  // Volver al menú principal
+        }
+    }
 }
 
 void InfoPage::draw(RenderWindow& window) {
-    while (window.isOpen()) {
-        Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == Event::Closed) {
-                window.close();
-            }
-        }
-        window.clear();
-        window.draw(this->backgroundSprite);
-        window.display();
-    }
+    window.draw(backgroundSprite);
+    backButton.draw(window);
 }
