@@ -24,7 +24,7 @@ void Menu::handleEvent(RenderWindow& window, Event& event, bool& isPlaying) {
         }
         // Instrucctions and credits
         if (infoButton.isMouseOver(window)) {
-            cout << "Instrucciones de juego: ";
+            this->info.draw(window);
         }
         // End program
         else if (exitButton.isMouseOver(window)) {

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ButtonUI.hpp"
+#include "InfoUI.hpp"
 
 using namespace sf;
 
@@ -16,6 +17,7 @@ private:
     Button playButton;
     Button infoButton;
     Button exitButton;
+    InfoPage info;
     Texture backgroundTexture;
     Sprite backgroundSprite;
 };

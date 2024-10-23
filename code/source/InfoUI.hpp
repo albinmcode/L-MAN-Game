@@ -1,16 +1,14 @@
-#ifndef GAMEMAPUI
-#define GAMEMAPUI
+#ifndef INFOUI
+#define INFOUI
 
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 
-class GameMap {
+class InfoPage {
 public:
     // default constructor
-    GameMap();
-    // Game events
-    void start(RenderWindow& window);
+    InfoPage();
     void handleEvent(RenderWindow& window, Event& event);
     // update the window
     void draw(RenderWindow& window);
@@ -20,4 +18,4 @@ private:
     Sprite backgroundSprite;
 };
 
-#endif // !GAMEMAPUI
+#endif // !INFOUI
