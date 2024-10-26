@@ -9,8 +9,6 @@ GameMap::GameMap(){
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
-    backgroundSprite.setScale(2,2);
-
 }
 
 void GameMap::run(RenderWindow& window) {

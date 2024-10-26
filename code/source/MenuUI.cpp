@@ -11,7 +11,6 @@ Menu::Menu() :
         std::cerr << "Error al cargar la textura del fondo del menú." << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);
-    backgroundSprite.setScale(2,2);
     backgroundSprite.setPosition(Vector2f(256, 30));
 }
 

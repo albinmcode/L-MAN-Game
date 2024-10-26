@@ -13,7 +13,6 @@ PlayerUI::PlayerUI() {
     this->playerSprite.setTexture(rightTexture);
     // origin position
     Vector2f origin(64+2, 128);
-    this->playerSprite.setScale(2,2);
     this->playerSprite.setPosition(origin);
 }
 
@@ -27,7 +26,6 @@ void PlayerUI::move(RenderWindow& window, const int (&movementFactor)[2]) {
     else {
         this->playerSprite.setTexture(rightTexture);
     }
-    
     window.draw(playerSprite);
 }
 
