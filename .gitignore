@@ -5,6 +5,8 @@ doc/
 export/
 Debug/
 External/
+.EXE
+.OBJ
 .vscode
 
 #libraries

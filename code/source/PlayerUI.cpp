@@ -16,9 +16,7 @@ PlayerUI::PlayerUI() {
     this->playerSprite.setPosition(origin);
 }
 
-void PlayerUI::move(RenderWindow& window, const int (&movementFactor)[2]) {
-    // increment or decrement the coordinates according to the parameters
-    this->playerSprite.move(movementFactor[0] * 32, movementFactor[1] * 32);
+void PlayerUI::move(RenderWindow& window, const std::int32_t (&movementFactor)[2]) {
     // sprite orientation
     if (movementFactor[0] == -1) {
         this->playerSprite.setTexture(leftTexture);
@@ -26,9 +24,19 @@ void PlayerUI::move(RenderWindow& window, const int (&movementFactor)[2]) {
     else {
         this->playerSprite.setTexture(rightTexture);
     }
-    window.draw(playerSprite);
+    // increment or decrement the coordinates according to the parameters
+    this->playerSprite.move(movementFactor[0], movementFactor[1]);
+    this->draw(window);
+    window.display();
 }
 
 void PlayerUI::draw(RenderWindow& window) {
     window.draw(playerSprite);
+}
+
+const sf::Vector2i PlayerUI::getPosition() {
+    sf::Vector2i position;
+    position.x = round(this->playerSprite.getPosition().x);
+    position.y = round(this->playerSprite.getPosition().y);
+    return position;
 }

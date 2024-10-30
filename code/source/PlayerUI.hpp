@@ -18,8 +18,10 @@ class PlayerUI {
 	/// Two 1 byte numbers that indicate the increment factor for width and height.
 	/// Negatives indicate decrement
 	/// </param>
-	void move(RenderWindow& window, const int (&movementFactor)[2]);
+	void move(RenderWindow& window, const std::int32_t (&movementFactor)[2]);
 	void draw(RenderWindow& window);
+	// No modifiable reference to the actual entity position
+	const Vector2i getPosition();
  private:
 	Texture rightTexture;
 	Texture leftTexture;
