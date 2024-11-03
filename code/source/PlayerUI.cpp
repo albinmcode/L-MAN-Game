@@ -1,7 +1,8 @@
 #include "PlayerUI.hpp"
 #include <iostream>
 
-PlayerUI::PlayerUI() {
+PlayerUI::PlayerUI(Vector2f spawnPoint)
+: EntityUI(spawnPoint) {
     // Load textures
     if (!rightTexture.loadFromFile("assets/img/lman_right.png")) {
         std::cerr << "Error al cargar la textura del personaje." << std::endl;
@@ -10,33 +11,24 @@ PlayerUI::PlayerUI() {
         std::cerr << "Error al cargar la textura del personaje." << std::endl;
     }
     // Right texture as default
-    this->playerSprite.setTexture(rightTexture);
-    // origin position
-    Vector2f origin(64+2, 128);
-    this->playerSprite.setPosition(origin);
+    this->sprite.setTexture(rightTexture);
 }
 
-void PlayerUI::move(RenderWindow& window, const std::int32_t (&movementFactor)[2]) {
-    // sprite orientation
-    if (movementFactor[0] == -1) {
-        this->playerSprite.setTexture(leftTexture);
+void PlayerUI::action(RenderWindow& window, std::int8_t key) {
+    // Player Input
+    std::int32_t input = 0;
+    input = movInput(movementFactor, key);
+    // Check borders
+    if ((this->getPosition().x >= 64 + 2 && this->getPosition().x < 910 - 166)
+        && (this->getPosition().y >= 128 && this->getPosition().y < 512 - 64)) {
+        // Space pressed
+        if (input == 2) {
+            // TODO(any): manage character collection
+            // std::cout << "space" << std::endl;
+        }
+        // move player
+        else {
+            this->move(window, movementFactor);
+        }
     }
-    else {
-        this->playerSprite.setTexture(rightTexture);
-    }
-    // increment or decrement the coordinates according to the parameters
-    this->playerSprite.move(movementFactor[0], movementFactor[1]);
-    this->draw(window);
-    window.display();
-}
-
-void PlayerUI::draw(RenderWindow& window) {
-    window.draw(playerSprite);
-}
-
-const sf::Vector2i PlayerUI::getPosition() {
-    sf::Vector2i position;
-    position.x = round(this->playerSprite.getPosition().x);
-    position.y = round(this->playerSprite.getPosition().y);
-    return position;
 }

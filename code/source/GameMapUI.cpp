@@ -1,7 +1,11 @@
 #include "GameMapUI.hpp"
 #include <iostream>
 
-GameMap::GameMap(){
+GameMap::GameMap()
+: lman(Vector2f(64+2, 128))
+, kanji(Vector2f(384 + 2, 288), "assets/img/kanji.png")
+, question(Vector2f(384 + 2, 320 + 2), "assets/img/pregunta.png")
+{
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
         std::cerr << "Error al cargar la textura del fondo." << std::endl;
@@ -23,22 +27,10 @@ void GameMap::run(RenderWindow& window) {
         window.clear();
         this->draw(window);
         this->lman.draw(window);
-
-        // Player Input
-        input = movInput(movementFactor, key);
-        // Check borders
-        if ((this->lman.getPosition().x > 0+2 && this->lman.getPosition().x < 910-164)
-            && (this->lman.getPosition().y > 0+2 && this->lman.getPosition().y < 512-64)) {
-            // Space pressed
-            if (input == 2) {
-                // TODO(any): manage character collection
-                // std::cout << "space" << std::endl;
-            }
-            // move player
-            else {
-                this->lman.move(window, movementFactor);
-            }
-        }
+        this->kanji.draw(window);
+        this->question.draw(window);
+        // player movement
+        this->lman.action(window, key);
     }
 }
 
@@ -50,7 +42,6 @@ void GameMap::handleEvent(RenderWindow& window, Event& event, std::int8_t& key) 
         // Convert from SFML key.code to ASCII
         if (event.key.code >= sf::Keyboard::A && event.key.code <= sf::Keyboard::Z) {
             key = static_cast<std::int8_t>(event.key.code - sf::Keyboard::A + 'A');
-            // key = static_cast<std::int8_t>(character);
         }
         else if (event.key.code == sf::Keyboard::Space) {
             key = 32;

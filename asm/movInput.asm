@@ -22,17 +22,14 @@ ENDM
 
 .code
 movInput PROC
-    ; Parameters in the stack declared as: extern "C" std::int32_t movInput(std::int32_t*, std::int8_t*)
-    mov EBX, ESP
-    add EBX, 4 ;  Access the first parameter pointer (int32_t*)
-    mov EDX, [EBX] ; Obtain the real direction of the array
+    ;First parameter
+    mov EDX, [ESP+4] ; Obtain the real direction of the array
     ; Set movement factor to no movement
     mov ECX, 0
     mov [EDX], ECX
     mov [EDX+4], ECX
-    ; Access the second parameter that contains the ASCII code of the pressed key
-    add EBX, 4
-    mov al, [EBX]
+    ; Access the second parameter that contains the ASCII value of the pressed key
+    mov al, [ESP+8]
     
     input:
     ; Capture the keyboard

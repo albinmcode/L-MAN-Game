@@ -4,10 +4,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "PlayerUI.hpp"
+#include "EnemyUI.hpp"
 
 using namespace sf;
-
-extern "C" std::int32_t movInput(std::int32_t*, std::int8_t);
 
 class GameMap {
 public:
@@ -23,6 +22,8 @@ private:
     Texture backgroundTexture;
     Sprite backgroundSprite;
     PlayerUI lman;
+    EnemyUI kanji;
+    EnemyUI question;
 };
 
 #endif // !GAMEMAPUI
