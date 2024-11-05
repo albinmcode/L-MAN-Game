@@ -15,20 +15,22 @@ PlayerUI::PlayerUI(Vector2f spawnPoint)
 }
 
 void PlayerUI::action(RenderWindow& window, std::int8_t key) {
+    std::int32_t xcords = this->getPosition().x;
+    std::int32_t ycords = this->getPosition().y;
+    std::cout << "(" << xcords << ',' << ycords << ")\n";
     // Player Input
     std::int32_t input = 0;
     input = movInput(movementFactor, key);
-    // Check borders
-    if ((this->getPosition().x >= 64 + 2 && this->getPosition().x < 910 - 166)
-        && (this->getPosition().y >= 128 && this->getPosition().y < 512 - 64)) {
-        // Space pressed
-        if (input == 2) {
-            // TODO(any): manage character collection
-            // std::cout << "space" << std::endl;
-        }
-        // move player
-        else {
+    // Space pressed
+    if (input == 2) {
+        // TODO(any): manage character collection
+        // std::cout << "space" << std::endl;
+    }
+    // move player
+    else {
+        if (checkColision(movementFactor, xcords, ycords) == 0) {
             this->move(window, movementFactor);
+            this->updatePosition();
         }
     }
 }

@@ -6,6 +6,8 @@
 #include "PlayerUI.hpp"
 #include "EnemyUI.hpp"
 
+extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
+
 using namespace sf;
 
 class GameMap {
@@ -21,6 +23,8 @@ public:
 private:
     Texture backgroundTexture;
     Sprite backgroundSprite;
+    std::int32_t mapSize;
+    std::int8_t map[13][24];
     PlayerUI lman;
     EnemyUI kanji;
     EnemyUI question;

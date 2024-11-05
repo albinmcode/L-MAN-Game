@@ -2,7 +2,9 @@
 #include <iostream>
 
 GameMap::GameMap()
-: lman(Vector2f(64+2, 128))
+: mapSize(13*24)
+, map()
+, lman(Vector2f(64+2, 128))
 , kanji(Vector2f(384 + 2, 288), "assets/img/kanji.png")
 , question(Vector2f(384 + 2, 320 + 2), "assets/img/pregunta.png")
 {
@@ -13,6 +15,20 @@ GameMap::GameMap()
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
+
+    // load map representation
+    std::int8_t tempVector[312] = { 0 };
+    if (loadMap(tempVector, this->mapSize) == 0) {
+        int count = 0;
+        for (int i = 0; i < 13; ++i) {
+            for (int j = 0; j < 24; ++j) {      
+                this->map[i][j] = tempVector[i*24 + j];
+                std::cout << static_cast <int>(this->map[i][j]);
+                ++count;
+            }
+            std::cout << std::endl;
+        }
+    }
 }
 
 void GameMap::run(RenderWindow& window) {
@@ -31,6 +47,7 @@ void GameMap::run(RenderWindow& window) {
         this->question.draw(window);
         // player movement
         this->lman.action(window, key);
+        window.display();
     }
 }
 
