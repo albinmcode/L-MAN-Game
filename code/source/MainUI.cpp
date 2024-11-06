@@ -32,7 +32,8 @@ int main() {
         window.clear();
         if (isPlaying) {
             gameMap->run(window);
-        } else {
+        }
+        else {
             menu.draw(window);
         }
         window.display();

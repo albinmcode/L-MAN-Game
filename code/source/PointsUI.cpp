@@ -32,6 +32,7 @@ void PointsUI::draw(sf::RenderWindow& window) {
 }
 
 void PointsUI::loadDigit(sf::Sprite& digitSprite, const int place) {
+    if (this->pointCount > 999) return;
     std::string digit;
     // Obtain the specific digit
     char digitChr = '0'; // start in the ascii 0

@@ -38,10 +38,9 @@ private:
     // hearts and points
     HeartsUI hearts;
     PointsUI points;
-
     //Words
     WordUI word;
-    WordSUI words;
+    WordSUI spanish;
 };
 
 #endif // !GAMEMAPUI
