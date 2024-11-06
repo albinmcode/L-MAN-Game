@@ -5,6 +5,8 @@
 
 #include "PlayerUI.hpp"
 #include "EnemyUI.hpp"
+#include "HeartsUI.hpp"
+#include "PointsUI.hpp"
 
 extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
 
@@ -21,13 +23,19 @@ public:
     void draw(RenderWindow& window);
 
 private:
+    // background
     Texture backgroundTexture;
     Sprite backgroundSprite;
+    // map representations
     std::int32_t mapSize;
     std::int8_t map[13][24];
+    // Entities
     PlayerUI lman;
     EnemyUI kanji;
     EnemyUI question;
+    // hearts and points
+    HeartsUI hearts;
+    PointsUI points;
 };
 
 #endif // !GAMEMAPUI
