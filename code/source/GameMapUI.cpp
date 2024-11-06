@@ -9,6 +9,9 @@ GameMap::GameMap()
 , question(Vector2f(384 + 2, 320 + 2), "assets/img/pregunta.png")
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(640 + 2, 32))
+,word(Vector2f(100, 128))
+,words(Vector2f(64, 32),"hola")
+  
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -19,16 +22,16 @@ GameMap::GameMap()
     backgroundSprite.setPosition(Vector2f(35, 0));
     
     // load map representation
-    std::int8_t tempVector[312] = { 0 };
-    if (loadMap(tempVector, this->mapSize) == 0) {
-        for (int i = 0; i < 13; ++i) {
-            for (int j = 0; j < 24; ++j) {      
-                this->map[i][j] = tempVector[i*24 + j];
-                std::cout << static_cast <int>(this->map[i][j]);
-            }
-            std::cout << std::endl;
-        }
-    }
+    // std::int8_t tempVector[312] = { 0 };
+    // if (loadMap(tempVector, this->mapSize) == 0) {
+    //     for (int i = 0; i < 13; ++i) {
+    //         for (int j = 0; j < 24; ++j) {      
+    //             this->map[i][j] = tempVector[i*24 + j];
+    //             std::cout << static_cast <int>(this->map[i][j]);
+    //         }
+    //         std::cout << std::endl;
+    //     }
+    // }
 }
 
 void GameMap::run(RenderWindow& window) {
@@ -42,13 +45,17 @@ void GameMap::run(RenderWindow& window) {
         window.clear();
         // Sprites draw
         this->draw(window);
+        this->words.draw(window);
+        this->word.draw(window);
         this->lman.draw(window);
         this->kanji.draw(window);
         this->question.draw(window);
         this->hearts.draw(window);
         this->points.draw(window);
+        
+
         // player movement
-        this->lman.action(window, key);
+        //this->lman.action(window, key);
         window.display();
     }
 }
