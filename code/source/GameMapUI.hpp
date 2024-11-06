@@ -7,6 +7,8 @@
 #include "EnemyUI.hpp"
 #include "HeartsUI.hpp"
 #include "PointsUI.hpp"
+#include "WordUI.hpp"
+#include "SpanishWordUI.hpp"
 
 extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
 
@@ -36,6 +38,10 @@ private:
     // hearts and points
     HeartsUI hearts;
     PointsUI points;
+
+    //Words
+    WordUI word;
+    WordSUI words;
 };
 
 #endif // !GAMEMAPUI
