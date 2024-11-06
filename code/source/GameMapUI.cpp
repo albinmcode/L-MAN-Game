@@ -4,7 +4,7 @@
 GameMap::GameMap()
 : mapSize(13*24)
 , map()
-, lman(Vector2f(64+2, 128))
+, lman(Vector2f(64, 128))
 , kanji(Vector2f(384 + 2, 288), "assets/img/kanji.png")
 , question(Vector2f(384 + 2, 320 + 2), "assets/img/pregunta.png")
 {
@@ -15,7 +15,7 @@ GameMap::GameMap()
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
-
+    
     // load map representation
     std::int8_t tempVector[312] = { 0 };
     if (loadMap(tempVector, this->mapSize) == 0) {
@@ -41,6 +41,7 @@ void GameMap::run(RenderWindow& window) {
             this->handleEvent(window, event, key);
         }
         window.clear();
+        // Sprites draw
         this->draw(window);
         this->lman.draw(window);
         this->kanji.draw(window);
