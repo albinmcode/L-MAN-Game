@@ -1,45 +1,44 @@
-.model small
-.stack 100h
+.386                     ; Habilitar instrucciones de 32 bits
+.MODEL flat, C           ; Usar modelo plano y convención de llamada C
+.STACK 512               ; Tamaño de la pila
 
-.data
-    palabra1 db 'HolaMundo', 0    ; Primera cadena con terminador null
-    palabra2 db 'HolaTierra', 0   ; Segunda cadena con terminador null
-    n dw 5                      ; N?mero de caracteres a comparar (declarado como palabra)
-    mensaje_iguales db 'Las palabras son iguales.$', 0
-    mensaje_diferentes db 'Las palabras son diferentes.$', 0
+PUBLIC compareWords      ; Exponer el procedimiento al linker
 
-.code
-main:
-    mov ax, @data        ; Inicializar segmento de datos
-    mov ds, ax
-    mov es, ax
+.CODE
 
-    lea si, palabra1     ; Cargar direcci?n de palabra1 en SI
-    lea di, palabra2     ; Cargar direcci?n de palabra2 en DI
-    mov cx, [n]          ; Cargar n en CX (n?mero de comparaciones)
+compareWords PROC
+    ; Parámetros:
+    ;   esi -> dirección de la primera palabra
+    ;   edi -> dirección de la segunda palabra
+    ;   ecx -> número de caracteres a comparar
+
+    push ebp
+    mov ebp, esp          ; Establecer el marco de pila
+
+    ; Inicializar punteros y contador
+    mov esi, [ebp + 8]    ; Cargar dirección de la primera palabra en esi
+    mov edi, [ebp + 12]   ; Cargar dirección de la segunda palabra en edi
+    mov ecx, [ebp + 16]   ; Cargar número de caracteres a comparar en ecx
 
 comparar:
-    mov al, [si]         ; Cargar car?cter actual de palabra1 en AL
-    mov bl, [di]         ; Cargar car?cter actual de palabra2 en BL
-    cmp al, bl           ; Comparar los caracteres
-    jne diferente        ; Saltar a 'diferente' si no coinciden
-    inc si               ; Avanzar al siguiente car?cter en palabra1
-    inc di               ; Avanzar al siguiente car?cter en palabra2
-    loop comparar        ; Repetir hasta que CX sea 0
+    mov al, [esi]         ; Cargar el carácter actual de palabra1 en al
+    mov bl, [edi]         ; Cargar el carácter actual de palabra2 en bl
+    cmp al, bl            
+    jne diferente         
+    inc esi               
+    inc edi               
+    loop comparar         
 
 iguales:
-    lea dx, mensaje_iguales  ; Cargar mensaje de igualdad
-    jmp imprimir             ; Saltar a imprimir
+    mov eax, 1            
+    jmp finalizar
 
 diferente:
-    lea dx, mensaje_diferentes ; Cargar mensaje de diferencia
+    mov eax, 0            
 
-imprimir:
-    mov ah, 09h              ; Funci?n DOS para imprimir cadena
-    int 21h
+finalizar:
+    pop ebp
+    ret
+compareWords ENDP
 
-    ; Salir del programa
-    mov ax, 4C00h
-    int 21h
-
-end main
+END
