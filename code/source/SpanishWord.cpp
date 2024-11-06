@@ -4,17 +4,17 @@
 WordSUI::WordSUI(sf::Vector2f spawnPoint,std::string spanishWord):
 spanishWord{spanishWord}
 {
+    wordS.setPosition(spawnPoint);
     wordS.setScale(2.0f, 2.0f);
     // Initialize vector of textures
     sf::Texture* letter = nullptr;
     for (int i = 0; i < spanishWord.length(); i++) {
-        // obtain a sprite of a character
+        // obtain texture of a character
         letter = loadWordS(i);
         if (letter == nullptr) {
             std::cerr << "Error al cargar sprite" << std::endl;
         }
-        // letter->setPosition(spawnPoint.x + 32*i, spawnPoint.y);
-        // save the character sprite in the vector
+        // save in the textures vector
         letters.push_back(letter);
     }
     
@@ -23,11 +23,16 @@ spanishWord{spanishWord}
 
 void WordSUI::draw(sf::RenderWindow& window) {
     float mov = 0;
+    // draw all textures from the vector
     for (const sf::Texture* texture : this->letters) {
+        // sprite texture
         this->wordS.setTexture(*texture);
+        // position + space betwen letters
         this->wordS.setPosition(64 + mov, 32);
-        window.draw(wordS);
         mov += 32;
+        // draw sprite
+        window.draw(wordS);
+        
     }
 }
 
