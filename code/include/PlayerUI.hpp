@@ -12,4 +12,10 @@ class PlayerUI : public EntityUI {
 	// Default constructor
 	PlayerUI(Vector2f spawnPoint);
 	void action(RenderWindow& window, std::int8_t key);
+	// flag value for collection elements on the map
+	const bool collectChr();
+
+ private:
+	 // flag that indicates if the player pressed the specified button to collect a letter
+	 bool collectFlag;
 };
