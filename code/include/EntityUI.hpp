@@ -26,8 +26,10 @@ public:
 	/// </param>
 	void move(RenderWindow& window, const std::int32_t(&movementFactor)[2]);
 	void draw(RenderWindow& window);
-	// No modifiable reference to the scaled entity position
+	// No modifiable reference to the scaled entity position 
 	const Vector2<std::int32_t>& getScale();
+	// No modifiable reference to the entity position 
+	const Vector2<std::int32_t>& getPosition();
 	// Method to increment the position vector according to the movement factor
 	void updatePosition();
 protected:

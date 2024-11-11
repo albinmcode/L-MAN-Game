@@ -3,7 +3,7 @@
 
 EntityUI::EntityUI(Vector2f spawnPoint) 
 : movementFactor()
-, position(1,1)
+, position(0,0)
 , scaledPosition(1, 1)
 {
     this->sprite.setPosition(spawnPoint);
@@ -34,15 +34,19 @@ const sf::Vector2<std::int32_t>& EntityUI::getScale() {
     return this->scaledPosition;
 }
 
+const sf::Vector2<std::int32_t>& EntityUI::getPosition() {
+    return this->position;
+}
+
 void EntityUI::updatePosition() {
     // increment according to the movement factor
     this->position.x += this->movementFactor[0];
     this->position.y += this->movementFactor[1];
     // every 32 pixels update the logical scaled position
     if (this->position.x % 32 == 0) {
-        this->scaledPosition.x = (this->position.x / 32) + 1;
+        this->scaledPosition.x = (this->position.x / 32) +1;
     }
     if (this->position.y % 32 == 0) {
-        this->scaledPosition.y = (this->position.y / 32) + 1;
+        this->scaledPosition.y = (this->position.y / 32) +1;
     }
 }

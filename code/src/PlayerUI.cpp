@@ -17,10 +17,15 @@ PlayerUI::PlayerUI(Vector2f spawnPoint)
 void PlayerUI::action(RenderWindow& window, std::int8_t key) {
     std::int32_t xcords = this->getScale().x;
     std::int32_t ycords = this->getScale().y;
-    
-    // Player Input
     std::int32_t input = 0;
-    input = movInput(movementFactor, key);
+    std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
+    // Process input only if the player has moved an entire 32x32 cell
+    if (((this->getPosition().x+32) % 32 == 0)
+        && ((this->getPosition().y+32) % 32 == 0)) {
+        // Player Input
+        input = movInput(movementFactor, key);
+    }
+    
     // Space pressed
     if (input == 2) {
         // TODO(any): manage character collection
@@ -28,6 +33,7 @@ void PlayerUI::action(RenderWindow& window, std::int8_t key) {
     }
     // move player
     else {
+        // update logical position
         // checkColision == 0 -> valid move
         if (checkColision(movementFactor, xcords, ycords) == 0) {
             this->move(window, movementFactor);

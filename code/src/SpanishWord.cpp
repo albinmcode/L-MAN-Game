@@ -7,13 +7,10 @@ spanishWord{spanishWord}
     wordS.setPosition(spawnPoint);
     wordS.setScale(2.0f, 2.0f);
     // Initialize vector of textures
-    sf::Texture* letter = nullptr;
+    sf::Texture letter;
     for (int i = 0; i < spanishWord.length(); i++) {
         // obtain texture of a character
         letter = loadWordS(i);
-        if (letter == nullptr) {
-            std::cerr << "Error al cargar sprite" << std::endl;
-        }
         // save in the textures vector
         letters.push_back(letter);
     }
@@ -22,27 +19,27 @@ spanishWord{spanishWord}
 }
 
 void WordSUI::draw(sf::RenderWindow& window) {
-    float mov = 0;
+    float spaceBetwen = 0;
     // draw all textures from the vector
-    for (const sf::Texture* texture : this->letters) {
+    for (const sf::Texture texture : this->letters) {
         // sprite texture
-        this->wordS.setTexture(*texture);
+        this->wordS.setTexture(texture);
         // position + space betwen letters
-        this->wordS.setPosition(64 + mov, 32);
-        mov += 32;
+        this->wordS.setPosition(64 + spaceBetwen, 32);
+        spaceBetwen += 32;
         // draw sprite
         window.draw(wordS);
         
     }
 }
 
-sf::Texture* WordSUI::loadWordS(int index) {
-    char letter = spanishWord[index];
+sf::Texture WordSUI::loadWordS(int index) {
+    char letter = this->spanishWord[index];
     sf::Texture word;
     std::string str = std::string(1, letter);
     if (!word.loadFromFile("assets/img/fuente/" + str + ".png")) {
         std::cerr << "Error al cargar la textura de palabra." << std::endl;
     }
-    return new sf::Texture(word);
+    return sf::Texture(word);
 }
 

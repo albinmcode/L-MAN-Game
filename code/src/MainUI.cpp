@@ -39,6 +39,5 @@ int main() {
         window.display();
     }
 
-    // No es necesario liberar manualmente gameMap, ya que std::unique_ptr se encargará al salir del scope.
     return 0;
 }
