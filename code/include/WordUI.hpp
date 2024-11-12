@@ -1,16 +1,26 @@
-#pragma once
+#ifndef WORDUI_HPP
+#define WORDUI_HPP
+
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
+#include <random>
 
 class WordUI {
 public:
-	// Default constructor
-	WordUI(sf::Vector2f spawnPoint);
-	// Draw points
-	void draw(sf::RenderWindow& window);
-	// Load an specified digit according to the pointsCount
-	void loadWord(sf::Sprite& wordSprite);
-protected:
-	sf::Texture wordTexture;
-	sf::Sprite word;
-	// amount of points obtained
+    WordUI(sf::Vector2f spawnPoint, const std::vector<std::string>& texturePaths, const std::vector<int>& controlValues);
+    void draw(sf::RenderWindow& window);
+    std::vector<std::string> createLetterTextures();
+    int getRandomIndex();
+    std::string getLetter(int index);
+    void removeLetter(size_t index);
+    std::vector<int> controlValues;
+    std::vector<int> index();
+
+
+private:
+    sf::Vector2f spawnPoint;
+    std::vector<sf::Texture> textures; // Vector para almacenar las texturas de las letras
 };
+
+#endif
