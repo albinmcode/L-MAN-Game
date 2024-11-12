@@ -77,6 +77,8 @@ checkColision PROC
         mov AL, map[EDI] ; obtain element in the map
         cmp AL, 0 ; empty cell
         je noColision
+        cmp Al, 2
+        je enemyExit
         jmp colision
         
     vertical:
@@ -89,12 +91,17 @@ checkColision PROC
         mov AL, map[EDI] ; obtain element in the map
         cmp AL, 0 ; empty cell
         je noColision
+        cmp AL, 2
+        je enemyExit
         jmp colision
     
     noColision: mov EAX, 0
     jmp return
     
     colision: mov EAX, 1
+    jmp return
+
+    enemyExit: mov EAX, 2
     jmp return
     
     return: ret
