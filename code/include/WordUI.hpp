@@ -8,7 +8,7 @@
 
 class WordUI {
 public:
-    WordUI(sf::Vector2f spawnPoint, const std::vector<std::string>& texturePaths, const std::vector<int>& controlValues);
+    WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues);
     // draw letters in every empty space of the map
     void draw(sf::RenderWindow& window);
     // Vector that contains the path for every letter texture file
@@ -21,6 +21,7 @@ public:
     // Matrix with the map, empty, wall and dictionary conditions
     std::vector<int> controlValues;
     std::vector<int> index();
+    std::vector<int> values;
 
 
 private:

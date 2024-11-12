@@ -1,11 +1,11 @@
 #include "WordUI.hpp"
 #include <iostream>
 
-WordUI::WordUI(sf::Vector2f spawnPoint, const std::vector<std::string>& texturePaths, const std::vector<int>& controlValues)
+WordUI::WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues)
     : spawnPoint(spawnPoint), controlValues(controlValues) {
-
+    std::vector<std::string> texturesPath = this->createLetterTextures();
     // Cargar cada textura desde los archivos proporcionados en texturePaths
-    for (const auto& path : texturePaths) {
+    for (const std::string path : texturesPath) {
         sf::Texture texture;
         if (!texture.loadFromFile(path)) {
             std::cerr << "Error al cargar la textura: " << path << std::endl;
@@ -46,26 +46,32 @@ int WordUI::getRandomIndex() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 25);
-    return dis(gen);
+    int n = dis(gen);
+    
+    return n;
 }
 
 std::string WordUI::getLetter(int index){
-    const std::string letterSpanish[26] = {
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    const std::string letterSpanish[27] = {
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "3"
     };
     return letterSpanish[index];
 }
 
 std::vector<std::string> WordUI::createLetterTextures() {
     std::vector<std::string> letters;
+    int n = 0;
     for(int i = 1; i < 243; i++) {
+        n = getRandomIndex();
         // set diccionario texture
         if (this->index()[i-1] == 3) {
+            values.push_back(26);
             letters.push_back("assets/img/diccionario.png");
         }
         // set random letter texture
         else {
-            letters.push_back("assets/img/fuente/" + getLetter(getRandomIndex()) + ".png");
+            values.push_back(n);
+            letters.push_back("assets/img/fuente/" + getLetter(n) + ".png");
         }
         
     }

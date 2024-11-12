@@ -3,9 +3,9 @@
 
 /**
 / Validates the movement factor according to the player coordinates and the map
-/ checkColision(movementFactor, xcords, ycords)
 */
-extern "C" std::int32_t checkColision(std::int32_t*, std::int32_t, std::int32_t);
+extern "C"	std::int32_t checkColision(std::int32_t * movementFactor,
+	std::int32_t xCords, std::int32_t yCords);
 
 using namespace sf;
 

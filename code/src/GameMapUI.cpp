@@ -9,8 +9,8 @@ GameMap::GameMap()
 , question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7 )
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
-, word(Vector2f(74, 136), word.createLetterTextures(), word.index())
-, wordSpanish(Vector2f(64, 32), "hola")
+, word(Vector2f(74, 136), word.index())
+, wordSpanish(Vector2f(64, 32))
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -22,8 +22,11 @@ GameMap::GameMap()
 }
 
 void GameMap::run(RenderWindow& window) {
-    std::int32_t movementFactor[] = { 0, 0 };
     std::int8_t key = 0;
+    // Round word
+    std::int32_t wordIndex = this->word.values[1];
+    this->wordSpanish.changeWord(wordIndex + 100);
+
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -72,6 +75,7 @@ void GameMap::collectEvent() {
         std::int32_t column = this->lman.getScale().x - 1;
         // position = (row * total columns) + column
         this->word.removeLetter(row*22 + column);
+        std::cout << this->word.getLetter(this->word.values[row * 22 + column]);
     }
 }
 
