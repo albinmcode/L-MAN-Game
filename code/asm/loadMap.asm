@@ -77,7 +77,7 @@ checkColision PROC
         mov AL, map[EDI] ; obtain element in the map
         cmp AL, 0 ; empty cell
         je noColision
-        cmp Al, 2
+        cmp Al, 2   ;Leaves the enemy's room and the player cannot enter
         je enemyExit
         jmp colision
         
@@ -91,7 +91,7 @@ checkColision PROC
         mov AL, map[EDI] ; obtain element in the map
         cmp AL, 0 ; empty cell
         je noColision
-        cmp AL, 2
+        cmp AL, 2  ;Leaves the enemy's room and the player cannot enter
         je enemyExit
         jmp colision
     
@@ -101,7 +101,7 @@ checkColision PROC
     colision: mov EAX, 1
     jmp return
 
-    enemyExit: mov EAX, 2
+    enemyExit: mov EAX, 2 ;Leaves the enemy's room and the player cannot enter
     jmp return
     
     return: ret
