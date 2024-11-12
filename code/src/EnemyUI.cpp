@@ -62,9 +62,9 @@ If no collision is detected, it moves the enemy sprite within the game window ac
 void EnemyUI::actionEnemy(RenderWindow& window) {
     std::int32_t xcords = this->getScale().x;
     std::int32_t ycords = this->getScale().y;
-    std::cout << xcords << '\n';
+    /*std::cout << xcords << '\n';
     std::cout << ycords << '\n';
-    std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
+    std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';*/
     std::int32_t input = 0;
     if (((this->getPosition().x + 32) % 32 == 0)
         && ((this->getPosition().y + 32) % 32 == 0)) {

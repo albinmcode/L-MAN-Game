@@ -9,8 +9,8 @@ GameMap::GameMap()
 , question(Vector2f(384, 320), "assets/img/pregunta.png", 11 , 7 )
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
-, word(Vector2f(100, 128))
-, spanish(Vector2f(64, 32), "hola")
+, word(Vector2f(68, 128), word.createLetterTextures(), word.index())
+, wordSpanish(Vector2f(64, 32), "hola")
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -44,7 +44,7 @@ void GameMap::run(RenderWindow& window) {
         window.clear();
         // Sprites draw
         this->draw(window);
-        this->spanish.draw(window);
+        this->wordSpanish.draw(window);
         this->word.draw(window);
         this->lman.draw(window);
         this->kanji.draw(window);

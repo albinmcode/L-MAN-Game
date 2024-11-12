@@ -20,7 +20,7 @@ void WordUI::draw(sf::RenderWindow& window) {
     float yOffset = 32.0f;  
     int lettersPerLine = 22; 
 
-    for (size_t i = 0; i < textures.size(); ++i) {
+    for (size_t i = 0; i < textures.size()-1; ++i) {
         // Dibujar solo si el valor de control en la posición actual es 0
         if (controlValues[i] == 0) {
             sf::Sprite letterSprite;

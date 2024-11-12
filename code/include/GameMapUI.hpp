@@ -40,7 +40,7 @@ private:
     PointsUI points;
     //Words
     WordUI word;
-    WordSUI spanish;
+    WordSUI wordSpanish;
 };
 
 #endif // !GAMEMAPUI
