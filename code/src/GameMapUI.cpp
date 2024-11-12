@@ -5,8 +5,8 @@ GameMap::GameMap()
 : mapSize(13*24)
 , map()
 , lman(Vector2f(64, 128))
-, kanji(Vector2f(384 + 2, 288), "assets/img/kanji.png")
-, question(Vector2f(384 + 2, 320 + 2), "assets/img/pregunta.png")
+, kanji(Vector2f(384, 288), "assets/img/kanji.png", 11 ,6)
+, question(Vector2f(384, 320), "assets/img/pregunta.png", 11 , 7 )
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , word(Vector2f(100, 128))
@@ -53,6 +53,9 @@ void GameMap::run(RenderWindow& window) {
         this->points.draw(window);
         // player movement
         this->lman.action(window, key);
+        this->kanji.actionEnemy(window);
+        this->question.actionEnemy(window);
+
         window.display();
     }
 }
