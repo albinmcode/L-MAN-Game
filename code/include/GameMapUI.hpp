@@ -21,6 +21,8 @@ public:
     // Game events
     void run(RenderWindow& window);
     void handleEvent(RenderWindow& window, Event& event, std::int8_t& key);
+    // Collecting objects on the map
+    void collectEvent();
     // update the window
     void draw(RenderWindow& window);
 

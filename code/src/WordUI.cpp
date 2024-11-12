@@ -21,17 +21,23 @@ void WordUI::draw(sf::RenderWindow& window) {
     int lettersPerLine = 22; 
 
     for (size_t i = 0; i < textures.size()-1; ++i) {
-        // Dibujar solo si el valor de control en la posición actual es 0
-        if (controlValues[i] == 0) {
+        // Dibujar solo si el valor de control en la posición actual es:
+        // 0 (caracter)
+        // 3 (diccionario)
+        if (controlValues[i] == 0 || controlValues[i] == 3) {
             sf::Sprite letterSprite;
             letterSprite.setTexture(textures[i]); // Asignar la textura correspondiente
 
             // Calcular la posición en función de la línea y la columna actual
             float xPosition = spawnPoint.x + (i % lettersPerLine) * xOffset;
             float yPosition = spawnPoint.y + (i / lettersPerLine) * yOffset;
-
             letterSprite.setPosition(xPosition, yPosition);
-            letterSprite.setScale(1.5f, 1.5f);
+
+            // Diccionario
+            if (controlValues[i] == 3) {
+                letterSprite.setScale(2, 2);
+                letterSprite.move(-8, -8);
+            }
             window.draw(letterSprite);
         }
     }
@@ -52,8 +58,16 @@ std::string WordUI::getLetter(int index){
 
 std::vector<std::string> WordUI::createLetterTextures() {
     std::vector<std::string> letters;
-    for(int i = 0; i < 243; i++) {
-        letters.push_back("assets/img/fuente/" + getLetter(getRandomIndex()) + ".png");
+    for(int i = 1; i < 243; i++) {
+        // set diccionario texture
+        if (this->index()[i-1] == 3) {
+            letters.push_back("assets/img/diccionario.png");
+        }
+        // set random letter texture
+        else {
+            letters.push_back("assets/img/fuente/" + getLetter(getRandomIndex()) + ".png");
+        }
+        
     }
     return letters;
 }
@@ -66,15 +80,16 @@ void WordUI::removeLetter(size_t index) {
 
 
 std::vector<int> WordUI::index() {
-    return {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+    // 1 = wall, 0 = empty, 3 = diccionario
+    return {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3,
             0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,
             0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,
             0,1,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,
             0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0,
             0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,0,
             0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,0,0,0,1,0,1,0,
-            0,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,
+            0,1,1,1,3,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,
             0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
             0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,
-            0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+            3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
 }

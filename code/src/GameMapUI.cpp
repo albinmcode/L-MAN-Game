@@ -5,11 +5,11 @@ GameMap::GameMap()
 : mapSize(13*24)
 , map()
 , lman(Vector2f(64, 128))
-, kanji(Vector2f(384, 288), "assets/img/kanji.png", 11 ,6)
-, question(Vector2f(384, 320), "assets/img/pregunta.png", 11 , 7 )
+, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6)
+, question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7 )
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
-, word(Vector2f(68, 128), word.createLetterTextures(), word.index())
+, word(Vector2f(74, 136), word.createLetterTextures(), word.index())
 , wordSpanish(Vector2f(64, 32), "hola")
 {
     // Load background
@@ -19,18 +19,6 @@ GameMap::GameMap()
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
-    
-    // load map representation
-    // std::int8_t tempVector[312] = { 0 };
-    // if (loadMap(tempVector, this->mapSize) == 0) {
-    //     for (int i = 0; i < 13; ++i) {
-    //         for (int j = 0; j < 24; ++j) {      
-    //             this->map[i][j] = tempVector[i*24 + j];
-    //             std::cout << static_cast <int>(this->map[i][j]);
-    //         }
-    //         std::cout << std::endl;
-    //     }
-    // }
 }
 
 void GameMap::run(RenderWindow& window) {
@@ -55,7 +43,8 @@ void GameMap::run(RenderWindow& window) {
         this->lman.action(window, key);
         this->kanji.actionEnemy(window); // Perform the movement of the enemies
         this->question.actionEnemy(window); //Perform the movement of the enemies
-
+        // Process collect event
+        this->collectEvent();
         window.display();
     }
 }
@@ -72,6 +61,17 @@ void GameMap::handleEvent(RenderWindow& window, Event& event, std::int8_t& key) 
         else if (event.key.code == sf::Keyboard::Space) {
             key = 32;
         }
+    }
+}
+
+void GameMap::collectEvent() {
+    // space pressed
+    if (this->lman.collectChr() == true) {
+        // row and column to index the letters matrix and remove one
+        std::int32_t row = this->lman.getScale().y - 1;
+        std::int32_t column = this->lman.getScale().x - 1;
+        // position = (row * total columns) + column
+        this->word.removeLetter(row*22 + column);
     }
 }
 
