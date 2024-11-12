@@ -53,8 +53,8 @@ void GameMap::run(RenderWindow& window) {
         this->points.draw(window);
         // player movement
         this->lman.action(window, key);
-        this->kanji.actionEnemy(window);
-        this->question.actionEnemy(window);
+        this->kanji.actionEnemy(window); // Perform the movement of the enemies
+        this->question.actionEnemy(window); //Perform the movement of the enemies
 
         window.display();
     }
