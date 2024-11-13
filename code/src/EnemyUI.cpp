@@ -11,7 +11,7 @@ and loads textures for the enemy. Sets the right texture as default for the spri
 EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory)
     : EntityUI(spawnPoint) {
     this->scaledPosition = Vector2<int32_t>(corx, cory);
-    this->position = Vector2<int32_t>((corx - 1) * 32, (cory - 1) * 32);
+    this->position = Vector2<int32_t>((corx-1) * 32, (cory - 1) * 32);
     this->movementFactor[0] = 0;
     this->movementFactor[1] = 1;
     if (!rightTexture.loadFromFile(textureFile)) {
@@ -42,14 +42,11 @@ void EnemyUI::changeDirection() {
     std::int32_t numrandom = this->getRandom(1, 4);
     if (numrandom == 1) {
         key = 'A'; // Move left
-    }
-    else if (numrandom == 2) {
+    } else if (numrandom == 2) {
         key = 'W'; // Move up
-    }
-    else if (numrandom == 3) {
+    } else if (numrandom == 3) {
         key = 'D'; // Move right
-    }
-    else if (numrandom == 4) {
+    } else if (numrandom == 4) {
         key = 'S'; // Move down
     }
 }
@@ -62,20 +59,19 @@ If no collision is detected, it moves the enemy sprite within the game window ac
 void EnemyUI::actionEnemy(RenderWindow& window) {
     std::int32_t xcords = this->getScale().x;
     std::int32_t ycords = this->getScale().y;
-    /*std::cout << xcords << '\n';
-    std::cout << ycords << '\n';
-    std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';*/
+    //std::cout << xcords << '\n';
+    //std::cout << ycords << '\n';
+    //std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
     std::int32_t input = 0;
-    if (((this->getPosition().x + 32) % 32 == 0)
-        && ((this->getPosition().y + 32) % 32 == 0)) {
+    int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
+    if (collisionStatus == 1) {
+        // Si hay una colisión, cambia de dirección
         this->changeDirection();
-        input = movInput(movementFactor, key);
+        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
     }
-    if (input != 2) {
-        if (checkColision(movementFactor, xcords, ycords) == 0
-            || checkColision(movementFactor, xcords, ycords) == 2) {
-            this->move(window, movementFactor);
-        }
+    else {
+        // Si no hay colisión o es una salida (2), permite el movimiento sin cambiar de dirección
+        this->move(window, movementFactor);
     }
 }
 
