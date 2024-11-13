@@ -134,7 +134,6 @@ void GameMap::collectEvent() {
                 this->wordEnglish.palabra = aux;
                 this->wordEnglish.loadWordFromString(wordEnglish.palabra);
                 wordEnglish.length++;
-                this->points.winPoint();
             }
             else {
                 this->hearts.loseHeart();
@@ -150,6 +149,7 @@ void GameMap::entityColisionEvent() {
 
 const bool GameMap::checkEndCondition() {
     if (compareWords(this->wordEnglish.palabra.c_str(), wordEnglish.word, wordEnglish.length) == 1) {
+        this->points.winPoint();
         this->roundWon = true;
         std::cout << "Ganaste\n";
         return true;

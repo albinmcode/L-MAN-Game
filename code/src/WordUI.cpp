@@ -73,13 +73,15 @@ std::vector<std::string> WordUI::createLetterTextures() {
             values.push_back(mod);
             letters.push_back("assets/img/fuente/" + chr + ".png");
             mod++;
-            std::cout <<"-"<< i;
+            // std::cout <<"-"<< i;
         }
         else if ((i % 5 == 3) && (inv >0 ) && (controlValues[i] == 0)) {
+            saveElement(static_cast<std::int8_t>((this->getLetter(inv)[0])), i);
+            chr = getElement(i);
             values.push_back(inv);
-            letters.push_back("assets/img/fuente/" + getLetter(inv) + ".png");
+            letters.push_back("assets/img/fuente/" + chr + ".png");
             inv--;
-            std::cout << "-" << i;
+            // std::cout << "-" << i;
         }
         else {
             saveElement(static_cast<std::int8_t>((this->getLetter(n)[0])), i);
