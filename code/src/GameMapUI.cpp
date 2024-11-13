@@ -10,7 +10,8 @@ GameMap::GameMap()
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , word(Vector2f(74, 136), word.index())
-, wordSpanish(Vector2f(64, 32))
+, wordSpanish(0)
+,wordEnglish(40)
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -24,7 +25,7 @@ GameMap::GameMap()
 void GameMap::run(RenderWindow& window) {
     std::int8_t key = 0;
     // Round word
-    std::int32_t wordIndex = this->word.values[1];
+    std::int32_t wordIndex = this->word.values[0];
     this->wordSpanish.changeWord(wordIndex + 100);
 
     while (window.isOpen()) {
@@ -36,6 +37,7 @@ void GameMap::run(RenderWindow& window) {
         // Sprites draw
         this->draw(window);
         this->wordSpanish.draw(window);
+        this->wordEnglish.draw(window);
         this->word.draw(window);
         this->lman.draw(window);
         this->kanji.draw(window);
@@ -76,6 +78,14 @@ void GameMap::collectEvent() {
         // position = (row * total columns) + column
         this->word.removeLetter(row*22 + column);
         std::cout << this->word.getLetter(this->word.values[row * 22 + column]);
+        
+        if (word.values[this->word.values[row * 22 + column]] != 28) {
+            wordEnglish.palabra += this->word.getLetter(this->word.values[row * 22 + column]);
+            wordEnglish.loadWordFromString(wordEnglish.palabra);
+            word.values[this->word.values[row * 22 + column]] = 28;
+        }
+        
+
     }
 }
 
