@@ -27,10 +27,17 @@ public:
     void handleEvent(RenderWindow& window, Event& event, std::int8_t& key);
     // Collecting objects on the map
     void collectEvent();
+    // round end control
+    const bool checkEndCondition();
+    // Flag that specifies if the player won
+    const bool getWinFlag();
     // update the window
     void draw(RenderWindow& window);
 
 private:
+    // Game flow control
+    bool roundWon;
+
     // background
     Texture backgroundTexture;
     Sprite backgroundSprite;

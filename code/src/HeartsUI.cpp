@@ -41,3 +41,25 @@ void HeartsUI::loseHeart() {
         --this->heartsCount;
     }
 }
+
+const bool HeartsUI::playerDead() {
+    if (this->heartsCount < 1) {
+        return true;
+    }
+    return false;
+}
+
+void HeartsUI::restartHearts(int startValue) {
+    if (startValue >= 0) {
+        this->heartsCount = startValue;
+    }
+    if (this->heartsCount == 3) {
+        this->heart3.setTexture(filledTexture);
+    }
+    if (this->heartsCount >= 2) {
+        this->heart2.setTexture(filledTexture);
+    }
+    if (this->heartsCount >= 1) {
+        this->heart1.setTexture(filledTexture);
+    }
+}

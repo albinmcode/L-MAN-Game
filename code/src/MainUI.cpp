@@ -32,6 +32,7 @@ int main() {
         window.clear();
         if (isPlaying) {
             gameMap->run(window);
+            gameMap = std::make_unique<GameMap>();
         }
         else {
             menu.draw(window);

@@ -49,7 +49,11 @@ void PointsUI::loadDigit(sf::Sprite& digitSprite, const int place) {
 
 void PointsUI::winPoint() {
     // 999 as the maximum obtainable points
-    if (this->pointCount <= 999) {
-        ++pointCount;
+    if (this->pointCount < 999) {
+        ++this->pointCount;
     }
+}
+
+void PointsUI::restart() {
+    this->pointCount = 0;
 }

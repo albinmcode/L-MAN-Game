@@ -9,8 +9,10 @@ public:
 	void draw(sf::RenderWindow& window);
 	// Load an specified digit according to the pointsCount
 	void loadDigit(sf::Sprite& digitSprite,const int place);
-	// Method to decrease the number of available hearts when the player dies
+	// Method to increment by one the obtained points counter
 	void winPoint();
+	// Restart to zero the pointsCounter
+	void restart();
 protected:
 	sf::Texture digitTexture;
 	sf::Sprite hundred;

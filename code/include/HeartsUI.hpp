@@ -8,6 +8,11 @@ public:
 	void draw(sf::RenderWindow& window);
 	// Method to decrease the number of available hearts when the player dies
 	void loseHeart();
+	// Flag that indicates that the player lost all hearts
+	const bool playerDead();
+	// Restart hearts count to 3
+	void restartHearts(int startValue);
+
 protected:
 	sf::Texture emptyTexture;
 	sf::Texture filledTexture;

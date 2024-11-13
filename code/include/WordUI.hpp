@@ -18,6 +18,8 @@ public:
     std::string getLetter(int index);
     // Remove an especified letter texture
     void removeLetter(size_t index);
+    // Restar letters with a new random set
+    void restartLetters();
     // Matrix with the map, empty, wall and dictionary conditions
     std::vector<int> controlValues;
     std::vector<int> index();

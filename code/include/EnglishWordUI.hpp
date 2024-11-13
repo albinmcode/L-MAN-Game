@@ -8,7 +8,9 @@ public:
 	EnglishWordUI(int x);
 
 public:
-	std::string palabra="";
+	// Restart collected word buffer
+	void restartBuffers();
+	std::string palabra = "";
 	const char* word = "";
 	int length=1;
 };
