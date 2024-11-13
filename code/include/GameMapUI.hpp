@@ -12,6 +12,9 @@
 #include "EnglishWordUI.hpp"
 
 extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
+extern "C" int compareWords(const char* palabra1, const char* palabra2, unsigned int n);
+extern "C" const char* getWordByIndex(std::int32_t index);
+extern "C" int stringLength(const char* str);
 
 using namespace sf;
 
