@@ -9,6 +9,7 @@
 #include "PointsUI.hpp"
 #include "WordUI.hpp"
 #include "SpanishWordUI.hpp"
+#include "EnglishWordUI.hpp"
 
 extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
 
@@ -43,6 +44,7 @@ private:
     //Words
     WordUI word;
     WordSUI wordSpanish;
+    EnglishWordUI wordEnglish;
 };
 
 #endif // !GAMEMAPUI
