@@ -9,4 +9,6 @@ public:
 
 public:
 	std::string palabra="";
+	const char* word = "";
+	int length=1;
 };
