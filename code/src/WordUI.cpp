@@ -3,28 +3,20 @@
 
 WordUI::WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues)
     : spawnPoint(spawnPoint), controlValues(controlValues) {
-    std::vector<std::string> texturesPath = this->createLetterTextures();
-    // Cargar cada textura desde los archivos proporcionados en texturePaths
-    for (const std::string path : texturesPath) {
-        sf::Texture texture;
-        if (!texture.loadFromFile(path)) {
-            std::cerr << "Error al cargar la textura: " << path << std::endl;
-        } else {
-            textures.push_back(texture); // Agregar la textura cargada al vector
-        }
-    }
+    // Load first set of letters
+    this->restartLetters();
 }
 
 void WordUI::draw(sf::RenderWindow& window) {
-    float xOffset = 32.0f;  
-    float yOffset = 32.0f;  
-    int lettersPerLine = 22; 
+    float xOffset = 32.0f;
+    float yOffset = 32.0f;
+    int lettersPerLine = 22;
 
-    for (size_t i = 0; i < textures.size()-1; ++i) {
+    for (size_t i = 0; i < textures.size() - 1; ++i) {
         // Dibujar solo si el valor de control en la posición actual es:
         // 0 (caracter)
         // 3 (diccionario)
-        if (controlValues[i] == 0 || controlValues[i] == 3) {
+        if (index()[i] == 0 || index()[i] == 3) {
             sf::Sprite letterSprite;
             letterSprite.setTexture(textures[i]); // Asignar la textura correspondiente
 
@@ -34,7 +26,7 @@ void WordUI::draw(sf::RenderWindow& window) {
             letterSprite.setPosition(xPosition, yPosition);
 
             // Diccionario
-            if (controlValues[i] == 3) {
+            if (getElement(i) == 3) {
                 letterSprite.setScale(2, 2);
                 letterSprite.move(-8, -8);
             }
@@ -46,7 +38,7 @@ int WordUI::getRandomIndex() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 25);
-    
+
     return dis(gen);
 }
 
@@ -65,18 +57,21 @@ std::vector<std::string> WordUI::createLetterTextures() {
     std::vector<std::string> letters;
     int n = 0;
     int mod = 0;
+    std::string chr = "";
     int inv = 25;
-    for(int i = 1; i < 243; i++) {
+    for (int i = 0; i < 242; i++) {
         n = getRandomIndex();
         // set diccionario texture
-        if (this->index()[i-1] == 3) {
+        if (getElement(i) == 3) {
             values.push_back(26);
             letters.push_back("assets/img/diccionario.png");
         }
         // set random letter texture
-        else if((i%5==0) && (mod<25) && (controlValues[i]==0)) {
+        else if ((i % 5 == 0) && (mod < 25) && (getElement(i) == 0)) {
+            saveElement(static_cast<std::int8_t>((this->getLetter(mod)[0])), i);
+            chr = getElement(i);
             values.push_back(mod);
-            letters.push_back("assets/img/fuente/" + getLetter(mod) + ".png");
+            letters.push_back("assets/img/fuente/" + chr + ".png");
             mod++;
             std::cout <<"-"<< i;
         }
@@ -87,10 +82,12 @@ std::vector<std::string> WordUI::createLetterTextures() {
             std::cout << "-" << i;
         }
         else {
+            saveElement(static_cast<std::int8_t>((this->getLetter(n)[0])), i);
+            chr = getElement(i);
             values.push_back(n);
-            letters.push_back("assets/img/fuente/" + getLetter(n) + ".png");
+            letters.push_back("assets/img/fuente/" + chr + ".png");
         }
-        
+
     }
     return letters;
 }
@@ -101,10 +98,30 @@ void WordUI::removeLetter(size_t index) {
     }
 }
 
+void WordUI::restartLetters() {
+    // Restore vectors data
+    this->values.clear();
+    this->values.shrink_to_fit();
+    this->controlValues = this->index();
+    this->textures.clear();
+    this->textures.shrink_to_fit();
+    std::vector<std::string> texturesPath = this->createLetterTextures();
+    // Cargar cada textura desde los archivos proporcionados en texturePaths
+    for (const std::string path : texturesPath) {
+        sf::Texture texture;
+        if (!texture.loadFromFile(path)) {
+            std::cerr << "Error al cargar la textura: " << path << std::endl;
+        }
+        else {
+            textures.push_back(texture); // Agregar la textura cargada al vector
+        }
+    }
+}
+
 
 std::vector<int> WordUI::index() {
     // 1 = wall, 0 = empty, 3 = diccionario
-    return {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3,
+    return { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3,
             0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,
             0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,
             0,1,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,
@@ -114,5 +131,5 @@ std::vector<int> WordUI::index() {
             0,1,1,1,3,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,
             0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
             0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,
-            3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+            3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 };
 }

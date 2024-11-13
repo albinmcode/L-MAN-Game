@@ -6,6 +6,14 @@
 #include <string>
 #include <random>
 
+extern "C" {
+    std::int32_t resetElementsMap();
+    std::int32_t getElement(std::int32_t index);
+    std::int32_t getElementXY(std::int32_t row, std::int32_t column);
+    std::int32_t saveElement(std::int8_t value, std::int32_t index);
+    std::int32_t saveElementXY(std::int8_t value, std::int32_t row, std::int32_t column);
+}
+
 class WordUI {
 public:
     WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues);

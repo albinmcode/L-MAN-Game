@@ -4,6 +4,8 @@
 .MODEL flat, c ; Flat memory model and C calling convention
 .STACK 512
 
+PUBLIC resetElementsMap     ; Exponer el procedimiento al linker
+
 .data
     mapElements db 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3
                 db 0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0
@@ -16,9 +18,37 @@
                 db 0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0
                 db 0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0
                 db 3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0
-    ; mapSize EQ $ - map
+    
+    mapElementsBackup db 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3
+                      db 0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0
+                      db 0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0
+                      db 0,1,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0
+                      db 0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0
+                      db 0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,0
+                      db 0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,0,0,0,1,0,1,0
+                      db 0,1,1,1,3,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0
+                      db 0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+                      db 0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0
+                      db 3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0
 
 .code
+
+; Load default elementsMap
+resetElementsMap PROC
+    mov EDI, 0
+    mov ESI, 0
+    resetElement:
+        ; set element position value to its original
+        mov DL, mapElementsBackUp[ESI]
+        mov mapElements[EDI], DL
+        inc ESI
+        inc EDI
+        cmp ESI, 241
+        jl resetElement
+
+    ;mov EAX, 0 ; exit success
+    ret
+resetElementsMap ENDP
 
 ; Obtain the value of a element on the map according to the specified coordinates
 ; getElement(row, column)

@@ -29,12 +29,21 @@ public:
     void handleEvent(RenderWindow& window, Event& event, std::int8_t& key);
     // Collecting objects on the map
     void collectEvent();
+    // Collecting objects on the map
+    void entityColisionEvent();
+    // round end control
+    const bool checkEndCondition();
+    // Flag that specifies if the player won
+    const bool getWinFlag();
     // update the window
     void draw(RenderWindow& window);
 
     float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
 
 private:
+    // Game flow control
+    bool roundWon;
+
     // background
     Texture backgroundTexture;
     Sprite backgroundSprite;
