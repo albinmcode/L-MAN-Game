@@ -1,124 +1,138 @@
-#include "WordUI.hpp"
+#include "GameMapUI.hpp"
 #include <iostream>
 
-WordUI::WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues)
-    : spawnPoint(spawnPoint), controlValues(controlValues) {
-    // Load first set of letters
-    this->restartLetters();
+GameMap::GameMap()
+: mapSize(13*24)
+, map()
+, lman(Vector2f(64, 128))
+, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6)
+, question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7 )
+, hearts(Vector2f(672+2, 64))
+, points(Vector2f(672 + 2, 32))
+, word(Vector2f(74, 136), word.index())
+, wordSpanish(0)
+,wordEnglish(40)
+{
+    // Load background
+    if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
+        std::cerr << "Error al cargar la textura del fondo." << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+    // Center background
+    backgroundSprite.setPosition(Vector2f(35, 0));
+
+
+    if (!backgroundMusic.openFromFile("assets/music/background.ogg")) {
+        std::cerr << "Error al cargar la música de fondo." << std::endl;
+    }
+    else {
+        backgroundMusic.setLoop(true); // Reproducir en bucle
+        backgroundMusic.play();
+    }
 }
 
-void WordUI::draw(sf::RenderWindow& window) {
-    float xOffset = 32.0f;
-    float yOffset = 32.0f;
-    int lettersPerLine = 22;
+void GameMap::run(RenderWindow& window) {
+    std::int8_t key = 0;
+    // Round word
+    std::int32_t wordIndex = this->word.values[0];
+    this->wordSpanish.changeWord(wordIndex + 100);
+    this->wordEnglish.word = getWordByIndex(wordIndex);
+    
 
-    for (size_t i = 0; i < textures.size() - 1; ++i) {
-        // Dibujar solo si el valor de control en la posición actual es:
-        // 0 (caracter)
-        // 3 (diccionario)
-        if (controlValues[i] == 0 || controlValues[i] == 3) {
-            sf::Sprite letterSprite;
-            letterSprite.setTexture(textures[i]); // Asignar la textura correspondiente
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            this->handleEvent(window, event, key);
+        }
+        window.clear();
+        // Sprites draw
+        this->draw(window);
+        this->wordSpanish.draw(window);
+        this->wordEnglish.draw(window);
+        this->word.draw(window);
+        this->lman.draw(window);
+        this->kanji.draw(window);
+        this->question.draw(window);
+        this->hearts.draw(window);
+        this->points.draw(window);
+        // player movement
+        this->lman.action(window, key);
+        this->kanji.actionEnemy(window); // Perform the movement of the enemies
+        this->question.actionEnemy(window); //Perform the movement of the enemies
+        // Process collect event
+        this->collectEvent();
+        window.display();
 
-            // Calcular la posición en función de la línea y la columna actual
-            float xPosition = spawnPoint.x + (i % lettersPerLine) * xOffset;
-            float yPosition = spawnPoint.y + (i / lettersPerLine) * yOffset;
-            letterSprite.setPosition(xPosition, yPosition);
+ 
+        if (canLoseLife &&((calculateDistance(this->lman.getPosition(), this->kanji.getPosition()) <= collisionDistance) ||
+            (calculateDistance(this->lman.getPosition(), this->question.getPosition()) <= collisionDistance))) {
+                this->hearts.loseHeart();
+                canLoseLife = false;
+                clock.restart();
+        }
+        if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
+            canLoseLife = true;  // Permitir perder vida de nuevo
+        }
+    }
+}
 
-            // Diccionario
-            if (controlValues[i] == 3) {
-                letterSprite.setScale(2, 2);
-                letterSprite.move(-8, -8);
+void GameMap::handleEvent(RenderWindow& window, Event& event, std::int8_t& key) {
+    if (event.type == Event::Closed) {
+        window.close();
+    }
+    if (event.type == Event::KeyPressed) {
+        // Convert from SFML key.code to ASCII
+        if (event.key.code >= sf::Keyboard::A && event.key.code <= sf::Keyboard::Z) {
+            key = static_cast<std::int8_t>(event.key.code - sf::Keyboard::A + 'A');
+        }
+        else if (event.key.code == sf::Keyboard::Space) {
+            key = 32;
+        }
+    }
+}
+
+void GameMap::collectEvent() {
+    // space pressed
+    if (this->lman.collectChr() == true) {
+        // row and column to index the letters matrix and remove one
+        std::int32_t row = this->lman.getScale().y - 1;
+        std::int32_t column = this->lman.getScale().x - 1;
+        // position = (row * total columns) + column
+        this->word.removeLetter(row*22 + column);
+        
+        if (this->word.values[row * 22 + column] != 28) {
+            std::string aux = wordEnglish.palabra;
+            aux+= this->word.getLetter(this->word.values[row * 22 + column]);
+            this->word.values[row * 22 + column] = 28;
+            if (compareWords(aux.c_str(), wordEnglish.word, wordEnglish.length) == 1 && wordEnglish.length && wordEnglish.length<stringLength(wordEnglish.word)) {
+                this->wordEnglish.palabra = aux;
+                this->wordEnglish.loadWordFromString(wordEnglish.palabra);
+                wordEnglish.length++;
             }
-            window.draw(letterSprite);
+            else if (wordEnglish.length == stringLength(wordEnglish.word)) {
+                this->wordEnglish.palabra = aux;
+                this->wordEnglish.loadWordFromString(wordEnglish.palabra);
+                std::cout << "Ganaste";
+            }
+            else {
+                this->hearts.loseHeart();
+            }
+            std::cout << wordEnglish.length;
+            
         }
-    }
-}
-int WordUI::getRandomIndex() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 25);
-
-    return dis(gen);
-}
-
-std::string WordUI::getLetter(int index) {
-    const std::string letterSpanish[27] = {
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "3"
-    };
-    if (index < 0 || index >= 27) {
-        std::cerr << "Índice fuera de rango en getLetter: " << index << std::endl;
-        return "";
-    }
-    return letterSpanish[index];
-}
-
-std::vector<std::string> WordUI::createLetterTextures() {
-    std::vector<std::string> letters;
-    int n = 0;
-    int mod = 0;
-    for (int i = 1; i < 243; i++) {
-        n = getRandomIndex();
-        // set diccionario texture
-        if (this->index()[i - 1] == 3) {
-            values.push_back(26);
-            letters.push_back("assets/img/diccionario.png");
-        }
-        // set random letter texture
-        else if ((i % 5 == 0) && (mod < 25) && (controlValues[i] == 0)) {
-            values.push_back(mod);
-            letters.push_back("assets/img/fuente/" + getLetter(mod) + ".png");
-            mod++;
-            std::cout << "-" << i;
-        }
-        else {
-            values.push_back(n);
-            letters.push_back("assets/img/fuente/" + getLetter(n) + ".png");
-        }
-
-    }
-    return letters;
-}
-
-void WordUI::removeLetter(size_t index) {
-    if (index < textures.size()) {
-        textures[index] = sf::Texture();  // Reemplaza la textura en el índice especificado con una textura vacía
+       
+        
     }
 }
 
-void WordUI::restartLetters() {
-    // Restore vectors data
-    this->controlValues = this->index();
-    this->values.clear();
-    this->values.shrink_to_fit();
-    this->textures.clear();
-    this->textures.shrink_to_fit();
-
-    std::vector<std::string> texturesPath = this->createLetterTextures();
-    // Cargar cada textura desde los archivos proporcionados en texturePaths
-    for (const std::string path : texturesPath) {
-        sf::Texture texture;
-        if (!texture.loadFromFile(path)) {
-            std::cerr << "Error al cargar la textura: " << path << std::endl;
-        }
-        else {
-            textures.push_back(texture); // Agregar la textura cargada al vector
-        }
-    }
+void GameMap::draw(RenderWindow& window) {
+    // Draw background
+    window.draw(backgroundSprite);
 }
 
-
-std::vector<int> WordUI::index() {
-    // 1 = wall, 0 = empty, 3 = diccionario
-    return { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,3,
-            0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,
-            0,1,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,
-            0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0,
-            0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,0,
-            0,1,0,1,1,1,1,0,1,1,1,1,1,0,1,0,0,0,1,0,1,0,
-            0,1,1,1,3,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,
-            0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
-            0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,
-            3,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 };
+float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
+    sf::Vector2f posLman = static_cast<sf::Vector2f>(pos1);
+    sf::Vector2f enemy = static_cast<sf::Vector2f>(pos2);
+    
+    return std::sqrt(std::pow(posLman.x - enemy.x, 2) + std::pow(posLman.y - enemy.y, 2));
 }
