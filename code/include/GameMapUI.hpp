@@ -2,6 +2,8 @@
 #define GAMEMAPUI
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 
 #include "PlayerUI.hpp"
 #include "EnemyUI.hpp"
@@ -27,17 +29,12 @@ public:
     void handleEvent(RenderWindow& window, Event& event, std::int8_t& key);
     // Collecting objects on the map
     void collectEvent();
-    // round end control
-    const bool checkEndCondition();
-    // Flag that specifies if the player won
-    const bool getWinFlag();
     // update the window
     void draw(RenderWindow& window);
 
-private:
-    // Game flow control
-    bool roundWon;
+    float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
 
+private:
     // background
     Texture backgroundTexture;
     Sprite backgroundSprite;
@@ -55,6 +52,12 @@ private:
     WordUI word;
     WordSUI wordSpanish;
     EnglishWordUI wordEnglish;
+
+    sf::Clock clock;
+    sf::Music backgroundMusic;
+    float delayBetweenLives = 3.0f; 
+    bool canLoseLife = true; 
+    float collisionDistance = 10.0f;
 };
 
 #endif // !GAMEMAPUI
