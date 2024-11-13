@@ -27,6 +27,8 @@ void GameMap::run(RenderWindow& window) {
     // Round word
     std::int32_t wordIndex = this->word.values[0];
     this->wordSpanish.changeWord(wordIndex + 100);
+    this->wordEnglish.word = getWordByIndex(wordIndex);
+    
 
     while (window.isOpen()) {
         Event event;
@@ -77,15 +79,27 @@ void GameMap::collectEvent() {
         std::int32_t column = this->lman.getScale().x - 1;
         // position = (row * total columns) + column
         this->word.removeLetter(row*22 + column);
-        std::cout << this->word.getLetter(this->word.values[row * 22 + column]);
         
-        if (word.values[this->word.values[row * 22 + column]] != 28) {
-            wordEnglish.palabra += this->word.getLetter(this->word.values[row * 22 + column]);
-            wordEnglish.loadWordFromString(wordEnglish.palabra);
-            word.values[this->word.values[row * 22 + column]] = 28;
+        if (this->word.values[row * 22 + column] != 28) {
+            std::string aux = wordEnglish.palabra;
+            aux+= this->word.getLetter(this->word.values[row * 22 + column]);
+            this->word.values[row * 22 + column] = 28;
+            if (compareWords(aux.c_str(), wordEnglish.word, wordEnglish.length) == 1 && wordEnglish.length && wordEnglish.length<stringLength(wordEnglish.word)) {
+                this->wordEnglish.palabra = aux;
+                this->wordEnglish.loadWordFromString(wordEnglish.palabra);
+                wordEnglish.length++;
+            }
+            else if (wordEnglish.length == stringLength(wordEnglish.word)) {
+                std::cout << "Ganaste";
+            }
+            else {
+                this->hearts.loseHeart();
+            }
+            std::cout << wordEnglish.length;
+            
         }
+       
         
-
     }
 }
 
