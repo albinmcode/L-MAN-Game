@@ -20,61 +20,59 @@ GameMap::GameMap()
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
+
+
+    if (!backgroundMusic.openFromFile("assets/music/background.ogg")) {
+        std::cerr << "Error al cargar la música de fondo." << std::endl;
+    }
+    else {
+        backgroundMusic.setLoop(true); // Reproducir en bucle
+        backgroundMusic.play();
+    }
 }
 
 void GameMap::run(RenderWindow& window) {
     std::int8_t key = 0;
-    bool endRound = false;
+    // Round word
+    std::int32_t wordIndex = this->word.values[0];
+    this->wordSpanish.changeWord(wordIndex + 100);
+    this->wordEnglish.word = getWordByIndex(wordIndex);
     
+
     while (window.isOpen()) {
-        // Round word
-        std::int32_t wordIndex = this->word.values[this->word.getRandomIndex()];
-        this->wordSpanish.changeWord(wordIndex + 100);
-        this->wordEnglish.word = getWordByIndex(wordIndex);
-
-        key = 0;
-        endRound = false;
-        this->roundWon = false;
-
-        while (endRound == false) {
-            Event event;
-            while (window.pollEvent(event)) {
-                this->handleEvent(window, event, key);
-            }
-
-            // player movement
-            this->lman.action(window, key);
-            this->kanji.actionEnemy(window); // Perform the movement of the enemies
-            this->question.actionEnemy(window); //Perform the movement of the enemies
-            // Process collect event
-            this->collectEvent();
-
-            // Sprites draw
-            window.clear();
-            this->draw(window);
-            this->hearts.draw(window);
-            this->wordSpanish.draw(window);
-            this->wordEnglish.draw(window);
-            this->word.draw(window);
-            this->lman.draw(window);
-            this->kanji.draw(window);
-            this->question.draw(window);
-            this->points.draw(window);
-            window.display();
-            
-            if (this->checkEndCondition() == true) break;
+        Event event;
+        while (window.pollEvent(event)) {
+            this->handleEvent(window, event, key);
         }
-        // new game wait
-        sf::sleep(sf::seconds(2));
-        
-        // Restart objects for a new round //
-        if (this->roundWon == false) {
-            this->points.restart();
-            std::cout << "Perdiste" << '\n';
+        window.clear();
+        // Sprites draw
+        this->draw(window);
+        this->wordSpanish.draw(window);
+        this->wordEnglish.draw(window);
+        this->word.draw(window);
+        this->lman.draw(window);
+        this->kanji.draw(window);
+        this->question.draw(window);
+        this->hearts.draw(window);
+        this->points.draw(window);
+        // player movement
+        this->lman.action(window, key);
+        this->kanji.actionEnemy(window); // Perform the movement of the enemies
+        this->question.actionEnemy(window); //Perform the movement of the enemies
+        // Process collect event
+        this->collectEvent();
+        window.display();
+
+ 
+        if (canLoseLife &&((calculateDistance(this->lman.getPosition(), this->kanji.getPosition()) <= collisionDistance) ||
+            (calculateDistance(this->lman.getPosition(), this->question.getPosition()) <= collisionDistance))) {
+                this->hearts.loseHeart();
+                canLoseLife = false;
+                clock.restart();
         }
-        this->wordEnglish.restartBuffers();
-        this->word.restartLetters(); // Letters on the map
-        this->hearts.restartHearts(3); // Lost hearts value
+        if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
+            canLoseLife = true;  // Permitir perder vida de nuevo
+        }
     }
 }
 
@@ -100,52 +98,41 @@ void GameMap::collectEvent() {
         std::int32_t row = this->lman.getScale().y - 1;
         std::int32_t column = this->lman.getScale().x - 1;
         // position = (row * total columns) + column
-        this->word.removeLetter(row * 22 + column);
-
+        this->word.removeLetter(row*22 + column);
+        
         if (this->word.values[row * 22 + column] != 28) {
             std::string aux = wordEnglish.palabra;
-            aux += this->word.getLetter(this->word.values[row * 22 + column]);
+            aux+= this->word.getLetter(this->word.values[row * 22 + column]);
             this->word.values[row * 22 + column] = 28;
-            if (compareWords(aux.c_str(), wordEnglish.word, wordEnglish.length) == 1 && wordEnglish.length && wordEnglish.length <= stringLength(wordEnglish.word)) {
+            if (compareWords(aux.c_str(), wordEnglish.word, wordEnglish.length) == 1 && wordEnglish.length && wordEnglish.length<stringLength(wordEnglish.word)) {
                 this->wordEnglish.palabra = aux;
                 this->wordEnglish.loadWordFromString(wordEnglish.palabra);
                 wordEnglish.length++;
-                this->points.winPoint();
             }
-            /*else if (wordEnglish.length == stringLength(wordEnglish.word)) {
+            else if (wordEnglish.length == stringLength(wordEnglish.word)) {
                 this->wordEnglish.palabra = aux;
                 this->wordEnglish.loadWordFromString(wordEnglish.palabra);
-                this->roundWon = true;
-            }*/
+                std::cout << "Ganaste";
+            }
             else {
                 this->hearts.loseHeart();
             }
-            std::cout << wordEnglish.length << ' ' << wordEnglish.word << '<-' << wordEnglish.palabra << '\n';
-
+            std::cout << wordEnglish.length;
+            
         }
-
-
+       
+        
     }
-}
-
-const bool GameMap::checkEndCondition() {
-    if (compareWords(this->wordEnglish.palabra.c_str(), wordEnglish.word, wordEnglish.length) == 1) {
-        this->roundWon = true;
-        std::cout << "Ganaste\n";
-        return true;
-    }
-    if (this->hearts.playerDead()) {
-        this->roundWon = false;
-        return true;
-    }
-    return false;
-}
-
-const bool GameMap::getWinFlag() {
-    return this->roundWon;
 }
 
 void GameMap::draw(RenderWindow& window) {
     // Draw background
     window.draw(backgroundSprite);
+}
+
+float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
+    sf::Vector2f posLman = static_cast<sf::Vector2f>(pos1);
+    sf::Vector2f enemy = static_cast<sf::Vector2f>(pos2);
+    
+    return std::sqrt(std::pow(posLman.x - enemy.x, 2) + std::pow(posLman.y - enemy.y, 2));
 }
