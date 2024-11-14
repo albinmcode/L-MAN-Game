@@ -26,7 +26,7 @@ public:
     GameMap();
     // Game events
     void run(RenderWindow& window);
-    void handleEvent(RenderWindow& window, Event& event, std::int8_t& key);
+    void handleEvent(RenderWindow& window, Event& event);
     // Collecting objects on the map
     void collectEvent();
     // Collecting objects on the map
@@ -38,11 +38,17 @@ public:
     // update the window
     void draw(RenderWindow& window);
 
-    float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
+    const float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
 
 private:
     // Game flow control
+    std::int8_t key = 0;
     bool roundWon;
+    sf::Clock clock;
+    sf::Music backgroundMusic;
+    float delayBetweenLives = 3.0f;
+    bool canLoseLife = true;
+    float collisionDistance = 10.0f;
 
     // background
     Texture backgroundTexture;
@@ -61,12 +67,6 @@ private:
     WordUI word;
     WordSUI wordSpanish;
     EnglishWordUI wordEnglish;
-
-    sf::Clock clock;
-    sf::Music backgroundMusic;
-    float delayBetweenLives = 3.0f; 
-    bool canLoseLife = true; 
-    float collisionDistance = 10.0f;
 };
 
 #endif // !GAMEMAPUI

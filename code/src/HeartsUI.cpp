@@ -63,3 +63,9 @@ void HeartsUI::restartHearts(int startValue) {
         this->heart1.setTexture(filledTexture);
     }
 }
+
+void HeartsUI::winHeart() {
+    if (this->heartsCount < 3) {
+        ++this->heartsCount;
+    }
+}

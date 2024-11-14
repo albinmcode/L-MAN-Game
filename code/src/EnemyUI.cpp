@@ -8,8 +8,9 @@ Constructor initializes the enemy object at a given spawn point, sets the scaled
 and initial pixel position based on grid coordinates, sets the initial movement direction,
 and loads textures for the enemy. Sets the right texture as default for the sprite.
 */
-EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory)
-    : EntityUI(spawnPoint) {
+EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory, EntityUI& target)
+: EntityUI(spawnPoint) 
+, target(target) {
     this->scaledPosition = Vector2<int32_t>(corx, cory);
     this->position = Vector2<int32_t>((corx-1) * 32, (cory - 1) * 32);
     this->movementFactor[0] = 0;

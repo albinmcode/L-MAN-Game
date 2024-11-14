@@ -43,7 +43,7 @@ std::vector<sf::Texture> RoundWordUI::loadWordTexture() {
     sf::Texture letter;
     std::vector<sf::Texture> tempLetters;
 
-    for (int i = 0; i < this->wordString.length(); i++) {
+    for (unsigned int i = 0; i < this->wordString.length(); i++) {
         // obtain texture of a character
         letter = loadChrTexture(i);
         // save in the textures vector

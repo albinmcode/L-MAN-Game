@@ -5,8 +5,8 @@ GameMap::GameMap()
 : mapSize(13*24)
 , map()
 , lman(Vector2f(64, 128))
-, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6)
-, question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7 )
+, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6, this->lman)
+, question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , word(Vector2f(74, 136), word.index())
@@ -33,7 +33,6 @@ GameMap::GameMap()
 }
 
 void GameMap::run(RenderWindow& window) {
-    std::int8_t key = 0;
     bool endRound = false;
     
     while (window.isOpen()) {
@@ -42,24 +41,25 @@ void GameMap::run(RenderWindow& window) {
         this->wordSpanish.changeWord(wordIndex + 100);
         this->wordEnglish.word = getWordByIndex(wordIndex);
 
-        key = 0;
+        this->key = 0;
         endRound = false;
         this->roundWon = false;
 
         while (endRound == false) {
             Event event;
             while (window.pollEvent(event)) {
-                this->handleEvent(window, event, key);
+                this->handleEvent(window, event);
             }
 
             // player movement
-            this->lman.action(window, key);
+            this->lman.action(window, this->key);
             this->kanji.actionEnemy(window); // Perform the movement of the enemies
             this->question.actionEnemy(window); //Perform the movement of the enemies
             // Process collect event
             this->collectEvent();
             // Entity colision event
             this->entityColisionEvent();
+            
 
             // Sprites draw
             window.clear();
@@ -74,17 +74,9 @@ void GameMap::run(RenderWindow& window) {
             this->points.draw(window);
             window.display();
 
-            if (canLoseLife &&((calculateDistance(this->lman.getPosition(), this->kanji.getPosition()) <= collisionDistance) ||
-                (calculateDistance(this->lman.getPosition(), this->question.getPosition()) <= collisionDistance))) {
-                    this->hearts.loseHeart();
-                    canLoseLife = false;
-                    clock.restart();
-            }
-            if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
-                canLoseLife = true;  // Permitir perder vida de nuevo
-            }    
             if (this->checkEndCondition() == true) break;
         }
+
         // new game wait
         sf::sleep(sf::seconds(2));
         
@@ -93,24 +85,30 @@ void GameMap::run(RenderWindow& window) {
             this->points.restart();
             std::cout << "Perdiste\n";
         }
+        else {
+            this->hearts.winHeart();
+        }
         this->wordEnglish.restartBuffers();
         resetElementsMap();
-        this->word.restartLetters(); // Letters on the map
-        this->hearts.restartHearts(3); // Lost hearts value
+        this->word.restartLetters();
+        this->lman.restartPosition(0, 0);
+        this->key = 0;
+        this->kanji.restartPosition(10, 5);
+        this->question.restartPosition(10, 6);
     }
 }
 
-void GameMap::handleEvent(RenderWindow& window, Event& event, std::int8_t& key) {
+void GameMap::handleEvent(RenderWindow& window, Event& event) {
     if (event.type == Event::Closed) {
         window.close();
     }
     if (event.type == Event::KeyPressed) {
         // Convert from SFML key.code to ASCII
         if (event.key.code >= sf::Keyboard::A && event.key.code <= sf::Keyboard::Z) {
-            key = static_cast<std::int8_t>(event.key.code - sf::Keyboard::A + 'A');
+            this->key = static_cast<std::int8_t>(event.key.code - sf::Keyboard::A + 'A');
         }
         else if (event.key.code == sf::Keyboard::Space) {
-            key = 32;
+            this->key = 32;
         }
     }
 }
@@ -138,31 +136,47 @@ void GameMap::collectEvent() {
             else {
                 this->hearts.loseHeart();
             }
-            //std::cout << wordEnglish.length << ' ' << wordEnglish.word << '<-' << wordEnglish.palabra << '\n';
         }
     }
 }
 
 void GameMap::entityColisionEvent() {
-    return;
+    // Check for delay time and colision conditions
+    if (canLoseLife && ((calculateDistance(this->lman.getPosition(), this->kanji.getPosition()) <= collisionDistance) ||
+        (calculateDistance(this->lman.getPosition(), this->question.getPosition()) <= collisionDistance))) {
+        this->hearts.loseHeart();
+        sf::sleep(sf::milliseconds(300));
+        // restart entities position and movement
+        if (!this->hearts.playerDead()) {
+            this->lman.restartPosition(0, 0);
+            this->key = 0;
+            this->kanji.restartPosition(10, 5);
+            this->question.restartPosition(10, 6);
+        }
+        
+        canLoseLife = false;
+        clock.restart();
+    }
+    if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
+        canLoseLife = true;  // Permitir perder vida de nuevo
+    }
 }
 
 const bool GameMap::checkEndCondition() {
+    // Check if the english word and the colected word are the same
     if (compareWords(this->wordEnglish.palabra.c_str(), wordEnglish.word, wordEnglish.length) == 1) {
         this->points.winPoint();
         this->roundWon = true;
         std::cout << "Ganaste\n";
         return true;
     }
+    // Check die event
     if (this->hearts.playerDead()) {
         this->roundWon = false;
+        this->hearts.restartHearts(3);
         return true;
     }
     return false;
-}
-
-const bool GameMap::getWinFlag() {
-    return this->roundWon;
 }
 
 void GameMap::draw(RenderWindow& window) {
@@ -170,7 +184,7 @@ void GameMap::draw(RenderWindow& window) {
     window.draw(backgroundSprite);
 }
 
-float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
+const float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
     sf::Vector2f posLman = static_cast<sf::Vector2f>(pos1);
     sf::Vector2f enemy = static_cast<sf::Vector2f>(pos2);
     

@@ -50,3 +50,10 @@ void EntityUI::updatePosition() {
         this->scaledPosition.y = (this->position.y / 32) +1;
     }
 }
+
+void EntityUI::restartPosition(std::int32_t xOffset, std::int32_t yOffset) {
+    this->scaledPosition = sf::Vector2<std::int32_t>(xOffset+1, yOffset+1);
+    this->position = sf::Vector2<std::int32_t>(xOffset*32, yOffset*32 );
+    this->sprite.setPosition(xOffset * 32 + 64, yOffset * 32 + 128);
+    this->sprite.setTexture(this->rightTexture);
+}

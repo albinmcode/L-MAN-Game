@@ -32,6 +32,8 @@ public:
 	const Vector2<std::int32_t>& getPosition();
 	// Method to increment the position vector according to the movement factor
 	void updatePosition();
+	// Restart position according to the given offset
+	void restartPosition(std::int32_t xOffset, std::int32_t yOffset);
 protected:
 	Texture rightTexture;
 	Texture leftTexture;

@@ -48,12 +48,6 @@ checkColision PROC
     mov ECX, [ESP+8] ; x coordinate of the entity position (Column)
     mov EDX, [ESP+12] ; y coordinate of the entity position (Row)
     
-    ; Simplify coordinates scale, 32 -> 1
-    ;sub ECX, 65 ; substract the origine displayment in x
-    ;sar ECX, 5 ; division by 32: 2^5, assume result in CL
-    ;sub EDX, 127 ; substract the origin displayment in y
-    ;sar EDX, 5 ; division by 32: 2^5, assume result in DL
-    
     ; Obtain the index in the map according to the coordinates (actualRow*totalColumns + actualColumn)
     mov AL, 24 ; totalColumns
     imul DL ; row * 24 = AX

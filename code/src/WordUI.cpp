@@ -30,7 +30,9 @@ void WordUI::draw(sf::RenderWindow& window) {
                 letterSprite.setScale(2, 2);
                 letterSprite.move(-8, -8);
             }
-            window.draw(letterSprite);
+            if (letterSprite.getTexture() != nullptr) {
+                window.draw(letterSprite);
+            }
         }
     }
 }
@@ -59,38 +61,44 @@ std::vector<std::string> WordUI::createLetterTextures() {
     int mod = 0;
     std::string chr = "";
     int inv = 25;
-    for (int i = 0; i < 242; i++) {
-        n = getRandomIndex();
-        // set diccionario texture
-        if (getElement(i) == 3) {
-            values.push_back(26);
-            letters.push_back("assets/img/diccionario.png");
-        }
-        // set random letter texture
-        else if ((i % 5 == 0) && (mod < 25) && (getElement(i) == 0)) {
-            saveElement(static_cast<std::int8_t>((this->getLetter(mod)[0])), i);
-            chr = getElement(i);
-            values.push_back(mod);
-            letters.push_back("assets/img/fuente/" + chr + ".png");
-            mod++;
-            // std::cout <<"-"<< i;
-        }
-        else if ((i % 5 == 3) && (inv >0 ) && (controlValues[i] == 0)) {
-            saveElement(static_cast<std::int8_t>((this->getLetter(inv)[0])), i);
-            chr = getElement(i);
-            values.push_back(inv);
-            letters.push_back("assets/img/fuente/" + chr + ".png");
-            inv--;
-            // std::cout << "-" << i;
-        }
-        else {
-            saveElement(static_cast<std::int8_t>((this->getLetter(n)[0])), i);
-            chr = getElement(i);
-            values.push_back(n);
-            letters.push_back("assets/img/fuente/" + chr + ".png");
-        }
+    try {
+        for (int i = 0; i < 242; i++) {
+            n = getRandomIndex();
+            // set diccionario texture
+            if (getElement(i) == 3) {
+                values.push_back(26);
+                letters.push_back("assets/img/diccionario.png");
+            }
+            // set random letter texture
+            else if ((i % 5 == 0) && (mod < 25) && (getElement(i) == 0)) {
+                saveElement(static_cast<std::int8_t>((this->getLetter(mod)[0])), i);
+                chr = getElement(i);
+                values.push_back(mod);
+                letters.push_back("assets/img/fuente/" + chr + ".png");
+                mod++;
+                // std::cout <<"-"<< i;
+            }
+            else if ((i % 5 == 3) && (inv > 0) && (getElement(i) == 0)) {
+                saveElement(static_cast<std::int8_t>((this->getLetter(inv)[0])), i);
+                chr = getElement(i);
+                values.push_back(inv);
+                letters.push_back("assets/img/fuente/" + chr + ".png");
+                inv--;
+                // std::cout << "-" << i;
+            }
+            else {
+                saveElement(static_cast<std::int8_t>((this->getLetter(n)[0])), i);
+                chr = getElement(i);
+                values.push_back(n);
+                letters.push_back("assets/img/fuente/" + chr + ".png");
+            }
 
+        }
     }
+    catch (std::out_of_range& err){
+        std::cerr << "Out of range error: " << err.what() << '\n';
+    }
+    
     return letters;
 }
 
