@@ -1,10 +1,11 @@
 #include "RoundWordUI.hpp"
 #include <iostream>
 
-RoundWordUI::RoundWordUI(int y)
+RoundWordUI::RoundWordUI(int yCord)
+: wordString()
+, yCord(yCord)
 {
     this->wordSprite.setScale(2.0f, 2.0f);
-    yCord = y;
 }
 
 void RoundWordUI::draw(sf::RenderWindow& window) {
@@ -32,6 +33,14 @@ sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
         }
     }
     return sf::Texture(word);
+}
+
+const int RoundWordUI::getlength() {
+    return this->wordString.size();
+}
+
+const char* RoundWordUI::getString() {
+    return this->wordString.c_str();
 }
 
 void RoundWordUI::changeWord(std::int32_t index) {

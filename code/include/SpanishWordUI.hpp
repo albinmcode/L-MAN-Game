@@ -5,5 +5,5 @@
 class WordSUI : public RoundWordUI {
 public:
 	// Default constructor
-	WordSUI(int x);
+	WordSUI(int yCord);
 };

@@ -6,17 +6,21 @@ extern "C" const char* getWordByIndex(std::int32_t index);
 class RoundWordUI {
 public:
 	// Default constructor
-	RoundWordUI(int x);
+	RoundWordUI(int yCord);
 	// Draw points
 	void draw(sf::RenderWindow& window);
 	// Load texture from a character indexed from the word
 	sf::Texture loadChrTexture(std::int32_t index);
+	// Obtain wordString size
+	const int getlength();
+	// Obtain wordString
+	const char* getString();
 	// Set a new word string
-	void changeWord(std::int32_t index);
+	virtual void changeWord(std::int32_t index);
 	// Load actual word string characters texture
 	std::vector<sf::Texture> loadWordTexture();
-
-	void loadWordFromString(const std::string& newWord);
+	// Load Word textures from a new word or from the the actual wordString
+	void loadWordFromString(const std::string& newWord = " ");
 protected:
 	std::string wordString;
 	sf::Texture wordSTexture;

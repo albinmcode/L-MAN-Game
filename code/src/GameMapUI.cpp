@@ -9,7 +9,7 @@ GameMap::GameMap()
 , question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
-, word(Vector2f(74, 136), word.index())
+, word(Vector2f(74, 136))
 , wordSpanish(0)
 , wordEnglish(40)
 , roundWon(0)
@@ -37,9 +37,9 @@ void GameMap::run(RenderWindow& window) {
     
     while (window.isOpen()) {
         // Round word
-        std::int32_t wordIndex = this->word.values[this->word.getRandomIndex()];
+        std::int32_t wordIndex = this->word.getRandomIndex(0, 99);
         this->wordSpanish.changeWord(wordIndex + 100);
-        this->wordEnglish.word = getWordByIndex(wordIndex);
+        this->wordEnglish.changeWord(wordIndex);
 
         this->key = 0;
         endRound = false;
@@ -124,16 +124,16 @@ void GameMap::collectEvent() {
 
         // not empty cell
         if (getElement(row * 22 + column) >= 'a') {
-            std::string aux = wordEnglish.palabra;
-            aux += static_cast<char>(getElement(row * 22 + column));
+            // Obtain letter
+            this->wordEnglish.collectChr(static_cast<char>(getElement(row * 22 + column)));
+            // clear cell
             saveElement(0, row * 22 + column);
-            this->word.values[row * 22 + column] = 28;
-            if (compareWords(aux.c_str(), wordEnglish.word, wordEnglish.length) == 1 && wordEnglish.length && wordEnglish.length <= stringLength(wordEnglish.word)) {
-                this->wordEnglish.palabra = aux;
-                this->wordEnglish.loadWordFromString(wordEnglish.palabra);
-                wordEnglish.length++;
+            // Check for match
+            if (compareWords(wordEnglish.getString(), wordEnglish.getObjective(), wordEnglish.getlength()) == 1) {
+                this->wordEnglish.refreshWord();
             }
             else {
+                this->wordEnglish.popCollected();
                 this->hearts.loseHeart();
             }
         }

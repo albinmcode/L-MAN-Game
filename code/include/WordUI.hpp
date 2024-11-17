@@ -16,23 +16,18 @@ extern "C" {
 
 class WordUI {
 public:
-    WordUI(sf::Vector2f spawnPoint, const std::vector<int>& controlValues);
+    WordUI(sf::Vector2f spawnPoint);
     // draw letters in every empty space of the map
     void draw(sf::RenderWindow& window);
     // Vector that contains the path for every letter texture file
     std::vector<std::string> createLetterTextures();
     // Obtain a random letter
-    int getRandomIndex();
+    int getRandomIndex(int min, int max);
     std::string getLetter(int index);
     // Remove an especified letter texture
     void removeLetter(size_t index);
     // Restar letters with a new random set
     void restartLetters();
-    // Matrix with the map, empty, wall and dictionary conditions
-    std::vector<int> controlValues;
-    std::vector<int> index();
-    std::vector<int> values;
-
 
 private:
     sf::Vector2f spawnPoint;
