@@ -43,7 +43,6 @@ public:
 private:
     // Game flow control
     std::int8_t key = 0;
-    bool roundWon;
     sf::Clock clock;
     sf::Music backgroundMusic;
     float delayBetweenLives = 3.0f;

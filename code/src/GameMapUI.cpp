@@ -12,7 +12,6 @@ GameMap::GameMap()
 , word(Vector2f(74, 136))
 , wordSpanish(0)
 , wordEnglish(40)
-, roundWon(0)
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -28,6 +27,7 @@ GameMap::GameMap()
     }
     else {
         backgroundMusic.setLoop(true); // Reproducir en bucle
+        backgroundMusic.setVolume(20.0);
         backgroundMusic.play();
     }
 }
@@ -43,7 +43,6 @@ void GameMap::run(RenderWindow& window) {
 
         this->key = 0;
         endRound = false;
-        this->roundWon = false;
 
         while (endRound == false) {
             Event event;
@@ -64,14 +63,6 @@ void GameMap::run(RenderWindow& window) {
             // Sprites draw
             window.clear();
             this->draw(window);
-            this->hearts.draw(window);
-            this->wordSpanish.draw(window);
-            this->wordEnglish.draw(window);
-            this->word.draw(window);
-            this->lman.draw(window);
-            this->kanji.draw(window);
-            this->question.draw(window);
-            this->points.draw(window);
             window.display();
 
             if (this->checkEndCondition() == true) break;
@@ -81,14 +72,7 @@ void GameMap::run(RenderWindow& window) {
         sf::sleep(sf::seconds(2));
         
         // Restart objects for a new round //
-        if (this->roundWon == false) {
-            this->points.restart();
-            std::cout << "Perdiste\n";
-        }
-        else {
-            this->hearts.winHeart();
-        }
-        this->wordEnglish.restartBuffers();
+        this->wordEnglish = EnglishWordUI(40);
         resetElementsMap();
         this->word.restartLetters();
         this->lman.restartPosition(0, 0);
@@ -164,15 +148,16 @@ void GameMap::entityColisionEvent() {
 
 const bool GameMap::checkEndCondition() {
     // Check if the english word and the colected word are the same
-    if (compareWords(this->wordEnglish.palabra.c_str(), wordEnglish.word, wordEnglish.length) == 1) {
-        this->points.winPoint();
-        this->roundWon = true;
+    if (compareWords(wordEnglish.getObjective(), wordEnglish.getString(), wordEnglish.getTotalLength()) == 1) {
         std::cout << "Ganaste\n";
+        this->points.winPoint();
+        this->hearts.winHeart();
         return true;
     }
     // Check die event
     if (this->hearts.playerDead()) {
-        this->roundWon = false;
+        std::cout << "Perdiste\n";
+        this->points.restart();
         this->hearts.restartHearts(3);
         return true;
     }
@@ -182,6 +167,14 @@ const bool GameMap::checkEndCondition() {
 void GameMap::draw(RenderWindow& window) {
     // Draw background
     window.draw(backgroundSprite);
+    this->hearts.draw(window);
+    this->wordSpanish.draw(window);
+    this->wordEnglish.draw(window);
+    this->word.draw(window);
+    this->lman.draw(window);
+    this->kanji.draw(window);
+    this->question.draw(window);
+    this->points.draw(window);
 }
 
 const float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {

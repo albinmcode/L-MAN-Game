@@ -50,7 +50,7 @@ const bool HeartsUI::playerDead() {
 }
 
 void HeartsUI::restartHearts(int startValue) {
-    if (startValue >= 0) {
+    if (startValue >= 1) {
         this->heartsCount = startValue;
     }
     if (this->heartsCount == 3) {
@@ -67,5 +67,6 @@ void HeartsUI::restartHearts(int startValue) {
 void HeartsUI::winHeart() {
     if (this->heartsCount < 3) {
         ++this->heartsCount;
+        this->restartHearts();
     }
 }
