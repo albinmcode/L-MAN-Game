@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "RoundWordUI.hpp"
 
-class WordSUI : public RoundWordUI {
+class SpanishWordUI : public RoundWordUI {
 public:
 	// Default constructor
-	WordSUI(int yCord);
+	SpanishWordUI(int yCord);
 };

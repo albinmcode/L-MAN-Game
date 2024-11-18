@@ -1,13 +1,13 @@
-#include "WordUI.hpp"
+#include "LettersUI.hpp"
 #include <iostream>
 
-WordUI::WordUI(sf::Vector2f spawnPoint)
+LettersUI::LettersUI(sf::Vector2f spawnPoint)
     : spawnPoint(spawnPoint) {
     // Load first set of letters
     this->restartLetters();
 }
 
-void WordUI::draw(sf::RenderWindow& window) {
+void LettersUI::draw(sf::RenderWindow& window) {
     float xOffset = 32.0f;
     float yOffset = 32.0f;
     int lettersPerLine = 22;
@@ -36,7 +36,7 @@ void WordUI::draw(sf::RenderWindow& window) {
         }
     }
 }
-int WordUI::getRandomIndex(int min, int max) {
+int LettersUI::getRandomIndex(int min, int max) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(min, max);
@@ -44,7 +44,7 @@ int WordUI::getRandomIndex(int min, int max) {
     return dis(gen);
 }
 
-std::string WordUI::getLetter(int index) {
+std::string LettersUI::getLetter(int index) {
     const std::string letterSpanish[27] = {
         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "3"
     };
@@ -55,7 +55,7 @@ std::string WordUI::getLetter(int index) {
     return letterSpanish[index];
 }
 
-std::vector<std::string> WordUI::createLetterTextures() {
+std::vector<std::string> LettersUI::createLetterTextures() {
     std::vector<std::string> letters;
     int n = 0;
     int mod = 0;
@@ -100,13 +100,13 @@ std::vector<std::string> WordUI::createLetterTextures() {
     return letters;
 }
 
-void WordUI::removeLetter(size_t index) {
+void LettersUI::removeLetter(size_t index) {
     if (index < textures.size()) {
         textures[index] = sf::Texture();  // Reemplaza la textura en el índice especificado con una textura vacía
     }
 }
 
-void WordUI::restartLetters() {
+void LettersUI::restartLetters() {
     // Restore vectors data
     this->textures.clear();
     this->textures.shrink_to_fit();

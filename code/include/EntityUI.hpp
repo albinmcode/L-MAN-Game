@@ -34,6 +34,7 @@ public:
 	void updatePosition();
 	// Restart position according to the given offset
 	void restartPosition(std::int32_t xOffset, std::int32_t yOffset);
+	void restartMovement();
 protected:
 	Texture rightTexture;
 	Texture leftTexture;

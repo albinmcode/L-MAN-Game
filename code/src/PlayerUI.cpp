@@ -20,28 +20,32 @@ const bool PlayerUI::collectChr() {
     return this->collectFlag;
 }
 
-void PlayerUI::action(RenderWindow& window, std::int8_t key) {
+void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
     this->collectFlag = false;
     std::int32_t input = 0;
-    // std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
+    int32_t tempMovFactor[2] = { 0 };
     // Process input only if the player has moved an entire 32x32 cell
     if (((this->getPosition().x+32) % 32 == 0)
         && ((this->getPosition().y+32) % 32 == 0)) {
         // Player Input
-        input = movInput(movementFactor, key);
+        input = movInput(tempMovFactor, key);
+        // Only change movement factor if there is no colision
+        if (checkColision(tempMovFactor,
+            this->getScale().x, this->getScale().y) == 0) {
+            input = movInput(this->movementFactor, key);
+        }
+        else key = 0;
     }
     
     // Space pressed
     if (input == 2) {
         this->collectFlag = true;
+        key = 0;
     }
-    // move player
-    else {
-        // update logical position
-        // checkColision == 0 -> valid move
-        if (checkColision(movementFactor,
-                this->getScale().x, this->getScale().y) == 0) {
-            this->move(window, movementFactor);
-        }
+    // update logical position
+    // checkColision == 0 -> valid move
+    if (checkColision(this->movementFactor,
+            this->getScale().x, this->getScale().y) == 0) {
+        this->move(window, this->movementFactor);
     }
 }

@@ -9,14 +9,13 @@
 #include "EnemyUI.hpp"
 #include "HeartsUI.hpp"
 #include "PointsUI.hpp"
-#include "WordUI.hpp"
+#include "LettersUI.hpp"
 #include "SpanishWordUI.hpp"
 #include "EnglishWordUI.hpp"
 
-extern "C" std::int32_t loadMap(std::int8_t*, std::int32_t);
-extern "C" int compareWords(const char* palabra1, const char* palabra2, unsigned int n);
+extern "C" int compareWords(const char* palabra1, const char* palabra2, unsigned int length);
 extern "C" const char* getWordByIndex(std::int32_t index);
-extern "C" int stringLength(const char* str);
+extern "C" int stringLength(const char* string);
 
 using namespace sf;
 
@@ -33,8 +32,6 @@ public:
     void entityColisionEvent();
     // round end control
     const bool checkEndCondition();
-    // Flag that specifies if the player won
-    const bool getWinFlag();
     // update the window
     void draw(RenderWindow& window);
 
@@ -52,9 +49,6 @@ private:
     // background
     Texture backgroundTexture;
     Sprite backgroundSprite;
-    // map representations
-    std::int32_t mapSize;
-    std::int8_t map[13][24];
     // Entities
     PlayerUI lman;
     EnemyUI kanji;
@@ -63,8 +57,8 @@ private:
     HeartsUI hearts;
     PointsUI points;
     //Words
-    WordUI word;
-    WordSUI wordSpanish;
+    LettersUI letters;
+    SpanishWordUI wordSpanish;
     EnglishWordUI wordEnglish;
 };
 

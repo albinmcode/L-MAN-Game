@@ -23,11 +23,7 @@ ENDM
 .code
 movInput PROC
     ;First parameter
-    mov EDX, [ESP+4] ; Obtain the real direction of the array
-    ; Set movement factor to no movement
-    mov ECX, 0
-    mov [EDX], ECX
-    mov [EDX+4], ECX
+    mov EBX, [ESP+4] ; Obtain the real direction of the array
     ; Access the second parameter that contains the ASCII value of the pressed key
     mov al, [ESP+8]
     
@@ -37,7 +33,7 @@ movInput PROC
         ;int 21h           ; Interruption to capture the keyboard
         ;mov al, 'd'
     
-        cmpAlChr 'd', right
+       cmpAlChr 'd', right
         cmpAlChr 'D', right
         cmpAlChr 'a', left
         cmpAlChr 'A', left
@@ -51,30 +47,30 @@ movInput PROC
 
     right: ; [1, 0]: move one place to the right and no vertical movement
         mov ECX, 1
-        mov [EDX], ECX
+        mov [EBX], ECX
         mov ECX, 0
-        mov [EDX+4], ECX
+        mov [EBX+4], ECX
         jmp any
     
     left: ; [-1, 0] : move one place to the left and no vertical movement
         mov ECX, -1
-        mov [EDX], ECX
+        mov [EBX], ECX
         mov ECX, 0
-        mov [EDX+4], ECX
+        mov [EBX+4], ECX
         jmp any
     
     down: ; [0, 1]: move one place down and no horizontal movement
         mov ECX, 0
-        mov [EDX], ECX
+        mov [EBX], ECX
         mov ECX, 1
-        mov [EDX+4], ECX
+        mov [EBX+4], ECX
         jmp any
     
     up: ; [0, -1]: move one place up and no horizontal movement
         mov ECX, 0
-        mov [EDX], ECX
+        mov [EBX], ECX
         mov ECX, -1
-        mov [EDX+4], ECX
+        mov [EBX+4], ECX
         jmp any
     
     space:

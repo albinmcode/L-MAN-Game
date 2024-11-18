@@ -2,14 +2,12 @@
 #include <iostream>
 
 GameMap::GameMap()
-: mapSize(13*24)
-, map()
-, lman(Vector2f(64, 128))
+: lman(Vector2f(64, 128))
 , kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6, this->lman)
 , question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
-, word(Vector2f(74, 136))
+, letters(Vector2f(74, 136))
 , wordSpanish(0)
 , wordEnglish(40)
 {
@@ -37,7 +35,7 @@ void GameMap::run(RenderWindow& window) {
     
     while (window.isOpen()) {
         // Round word
-        std::int32_t wordIndex = this->word.getRandomIndex(0, 99);
+        std::int32_t wordIndex = this->letters.getRandomIndex(0, 99);
         this->wordSpanish.changeWord(wordIndex + 100);
         this->wordEnglish.changeWord(wordIndex);
 
@@ -52,6 +50,7 @@ void GameMap::run(RenderWindow& window) {
 
             // player movement
             this->lman.action(window, this->key);
+            
             this->kanji.actionEnemy(window); // Perform the movement of the enemies
             this->question.actionEnemy(window); //Perform the movement of the enemies
             // Process collect event
@@ -74,9 +73,10 @@ void GameMap::run(RenderWindow& window) {
         // Restart objects for a new round //
         this->wordEnglish = EnglishWordUI(40);
         resetElementsMap();
-        this->word.restartLetters();
+        this->letters.restartLetters();
         this->lman.restartPosition(0, 0);
         this->key = 0;
+        this->lman.restartMovement();
         this->kanji.restartPosition(10, 5);
         this->question.restartPosition(10, 6);
     }
@@ -104,7 +104,7 @@ void GameMap::collectEvent() {
         std::int32_t row = this->lman.getScale().y - 1;
         std::int32_t column = this->lman.getScale().x - 1;
         // position = (row * total columns) + column
-        this->word.removeLetter(row * 22 + column);
+        this->letters.removeLetter(row * 22 + column);
 
         // not empty cell
         if (getElement(row * 22 + column) >= 'a') {
@@ -137,7 +137,7 @@ void GameMap::entityColisionEvent() {
             this->kanji.restartPosition(10, 5);
             this->question.restartPosition(10, 6);
         }
-        
+        this->lman.restartMovement();
         canLoseLife = false;
         clock.restart();
     }
@@ -170,7 +170,7 @@ void GameMap::draw(RenderWindow& window) {
     this->hearts.draw(window);
     this->wordSpanish.draw(window);
     this->wordEnglish.draw(window);
-    this->word.draw(window);
+    this->letters.draw(window);
     this->lman.draw(window);
     this->kanji.draw(window);
     this->question.draw(window);

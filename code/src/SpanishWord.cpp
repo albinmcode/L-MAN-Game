@@ -1,5 +1,5 @@
 #include "SpanishWordUI.hpp"
 #include <iostream>
 
-WordSUI::WordSUI(int yCord)
+SpanishWordUI::SpanishWordUI(int yCord)
 	: RoundWordUI(yCord) {}

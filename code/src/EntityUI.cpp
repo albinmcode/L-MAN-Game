@@ -18,7 +18,8 @@ void EntityUI::move(RenderWindow& window, const std::int32_t(&movementFactor)[2]
         this->sprite.setTexture(rightTexture);
     }
     // increment or decrement the coordinates according to the parameters
-    this->sprite.move(movementFactor[0], movementFactor[1]);
+    this->sprite.move(static_cast<float>(movementFactor[0])
+        , static_cast<float>(movementFactor[1]));
     // update logical position
     this->updatePosition();
     // draw sprite
@@ -54,6 +55,12 @@ void EntityUI::updatePosition() {
 void EntityUI::restartPosition(std::int32_t xOffset, std::int32_t yOffset) {
     this->scaledPosition = sf::Vector2<std::int32_t>(xOffset+1, yOffset+1);
     this->position = sf::Vector2<std::int32_t>(xOffset*32, yOffset*32 );
-    this->sprite.setPosition(xOffset * 32 + 64, yOffset * 32 + 128);
+    this->sprite.setPosition(static_cast<float>(xOffset * 32 + 64)
+        , static_cast<float>(yOffset * 32 + 128));
     this->sprite.setTexture(this->rightTexture);
+}
+
+void EntityUI::restartMovement() {
+    this->movementFactor[0] = 0;
+    this->movementFactor[1] = 0;
 }

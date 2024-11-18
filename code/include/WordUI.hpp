@@ -1,5 +1,5 @@
-#ifndef WORDUI_HPP
-#define WORDUI_HPP
+#ifndef LETTERSUI_HPP
+#define LETTERSUI_HPP
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -14,9 +14,9 @@ extern "C" {
     std::int32_t saveElementXY(std::int8_t value, std::int32_t row, std::int32_t column);
 }
 
-class WordUI {
+class LettersUI {
 public:
-    WordUI(sf::Vector2f spawnPoint);
+    LettersUI(sf::Vector2f spawnPoint);
     // draw letters in every empty space of the map
     void draw(sf::RenderWindow& window);
     // Vector that contains the path for every letter texture file
@@ -34,4 +34,4 @@ private:
     std::vector<sf::Texture> textures; // Vector para almacenar las texturas de las letras
 };
 
-#endif
+#endif // LETTERSUI_HPP
