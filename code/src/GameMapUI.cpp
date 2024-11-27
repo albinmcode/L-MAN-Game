@@ -10,6 +10,7 @@ GameMap::GameMap()
 , letters(Vector2f(74, 136))
 , wordSpanish(0)
 , wordEnglish(40)
+,sound()
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
@@ -120,6 +121,7 @@ void GameMap::collectEvent() {
                 this->wordEnglish.popCollected();
                 this->hearts.loseHeart();
             }
+            sound.play("coin.wav");
         }
     }
 }
@@ -140,6 +142,7 @@ void GameMap::entityColisionEvent() {
         this->lman.restartMovement();
         canLoseLife = false;
         clock.restart();
+        sound.play("hit.wav");
     }
     if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
         canLoseLife = true;  // Permitir perder vida de nuevo
@@ -157,6 +160,7 @@ const bool GameMap::checkEndCondition() {
     // Check die event
     if (this->hearts.playerDead()) {
         std::cout << "Perdiste\n";
+        sound.play("dead.wav");
         this->points.restart();
         this->hearts.restartHearts(3);
         return true;
