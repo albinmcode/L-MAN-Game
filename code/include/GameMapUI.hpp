@@ -42,6 +42,7 @@ private:
     std::int8_t key = 0;
     sf::Clock clock;
     sf::Music backgroundMusic;
+    sf::SoundUI sound;
     float delayBetweenLives = 3.0f;
     bool canLoseLife = true;
     float collisionDistance = 10.0f;
