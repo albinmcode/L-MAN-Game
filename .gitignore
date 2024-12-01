@@ -9,6 +9,12 @@ External/
 .OBJ
 .vscode
 
+#Visual Studio
+code/vs/PI proyecto/.vs/
+code/vs/PI proyecto/External/
+code/vs/PI proyecto/LMAN/assets/
+Realease/
+
 #libraries
 .dll
 lib/
