@@ -15,5 +15,5 @@ code/vs/PI proyecto/LMAN/assets/
 Realease/
 
 #libraries
-#.dll
-#lib/
+.dll
+lib/

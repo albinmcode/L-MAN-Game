@@ -27,7 +27,6 @@ void LettersUI::draw(sf::RenderWindow& window) {
 
             // Diccionario
             if (getElement(i) == 3) {
-                letterSprite.setScale(2, 2);
                 letterSprite.move(-8, -8);
             }
             if (letterSprite.getTexture() != nullptr) {
