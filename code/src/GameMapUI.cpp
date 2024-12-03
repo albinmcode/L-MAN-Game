@@ -3,8 +3,8 @@
 
 GameMap::GameMap()
 : lman(Vector2f(64, 128))
-, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", 11 ,6, this->lman)
-, question(Vector2f(384+2, 320), "assets/img/pregunta.png", 11 , 7, this->lman)
+, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", "assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
+, question(Vector2f(384+2, 320), "assets/img/pregunta.png","assets/img/pregunta_vulnerable.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , letters(Vector2f(74, 136))
@@ -30,7 +30,15 @@ GameMap::GameMap()
         backgroundMusic.play();
     }
 }
-
+void GameMap::vulnerability() {
+    if (kanji.isVulnerable()||question.isVulnerable()) {
+        if (vulnerabilityClock.getElapsedTime().asSeconds() >= 60) { // 5 segundos de vulnerabilidad
+            kanji.setAttackEnemy();
+            question.setAttackEnemy();
+   
+        }
+    }
+}
 void GameMap::run(RenderWindow& window) {
     bool endRound = false;
     
@@ -56,7 +64,9 @@ void GameMap::run(RenderWindow& window) {
             this->question.actionEnemy(window); //Perform the movement of the enemies
             // Process collect event
             this->collectEvent();
-            // Entity colision event
+            //vulnerable
+            this->vulnerability();
+            // Entity colision event   
             this->entityColisionEvent();
             
 
@@ -100,7 +110,7 @@ void GameMap::handleEvent(RenderWindow& window, Event& event) {
 
 void GameMap::collectEvent() {
     // space pressed
-    if (this->lman.collectChr() == true) {
+    if ((this->lman.collectChr() == true)&&!getColision()) {
         // row and column to index the letters matrix and remove one
         std::int32_t row = this->lman.getScale().y - 1;
         std::int32_t column = this->lman.getScale().x - 1;
@@ -123,26 +133,59 @@ void GameMap::collectEvent() {
             }
             sound.play("coin.wav");
         }
+        if (getElement(row * 22 + column) == 3) {
+            kanji.setVulnerableEnemy();
+            question.setVulnerableEnemy();
+            vulnerabilityClock.restart();
+        }
     }
+    else if (getColision()) {
+        if (getEntityColision(this->kanji)&&kanji.isVulnerable()) {
+            kanji.setAttackEnemy();
+            kanji.restartPosition(10, 5);
+            points.winPoint();
+        }
+        else if(getEntityColision(this->question) && question.isVulnerable()){
+            question.setAttackEnemy();
+            question.restartPosition(10,6);
+            points.winPoint();
+        }
+        
+    }
+}
+bool GameMap::getEntityColision(EnemyUI enemy) {
+    return calculateDistance(this->lman.getPosition(), enemy.getPosition()) <= collisionDistance;
+}
+
+bool GameMap::getColision() {
+    return (getEntityColision(this->kanji)) || (getEntityColision(this->question));
+}
+void GameMap::dead() {
+    this->hearts.loseHeart();
+    sf::sleep(sf::milliseconds(300));
+    // restart entities position and movement
+    if (!this->hearts.playerDead()) {
+        this->lman.restartPosition(0, 0);
+        this->key = 0;
+        this->kanji.restartPosition(10, 5);
+        this->question.restartPosition(10, 6);
+    }
+    this->lman.restartMovement();
+    canLoseLife = false;
+    clock.restart();
+    sound.play("hit.wav");
 }
 
 void GameMap::entityColisionEvent() {
     // Check for delay time and colision conditions
-    if (canLoseLife && ((calculateDistance(this->lman.getPosition(), this->kanji.getPosition()) <= collisionDistance) ||
-        (calculateDistance(this->lman.getPosition(), this->question.getPosition()) <= collisionDistance))) {
-        this->hearts.loseHeart();
-        sf::sleep(sf::milliseconds(300));
-        // restart entities position and movement
-        if (!this->hearts.playerDead()) {
-            this->lman.restartPosition(0, 0);
-            this->key = 0;
-            this->kanji.restartPosition(10, 5);
-            this->question.restartPosition(10, 6);
+    
+    if (canLoseLife && (getColision())&&!(kanji.isVulnerable()&&question.isVulnerable())){
+        if (!kanji.isVulnerable()) {
+            dead();
+        }else if(!question.isVulnerable()){
+            dead();
         }
-        this->lman.restartMovement();
-        canLoseLife = false;
-        clock.restart();
-        sound.play("hit.wav");
+        
     }
     if (!canLoseLife && clock.getElapsedTime().asSeconds() >= delayBetweenLives) {
         canLoseLife = true;  // Permitir perder vida de nuevo
@@ -155,12 +198,15 @@ const bool GameMap::checkEndCondition() {
         std::cout << "Ganaste\n";
         this->points.winPoint();
         this->hearts.winHeart();
+        sound.play("win.wav");
         return true;
     }
     // Check die event
     if (this->hearts.playerDead()) {
         std::cout << "Perdiste\n";
         sound.play("dead.wav");
+        kanji.setAttackEnemy();
+        question.setAttackEnemy();
         this->points.restart();
         this->hearts.restartHearts(3);
         return true;
