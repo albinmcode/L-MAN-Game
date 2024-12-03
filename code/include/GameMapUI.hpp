@@ -1,17 +1,19 @@
 #ifndef GAMEMAPUI
 #define GAMEMAPUI
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 
-#include "PlayerUI.hpp"
 #include "EnemyUI.hpp"
-#include "HeartsUI.hpp"
-#include "PointsUI.hpp"
-#include "LettersUI.hpp"
-#include "SpanishWordUI.hpp"
 #include "EnglishWordUI.hpp"
+#include "HeartsUI.hpp"
+#include "LettersUI.hpp"
+#include "PlayerUI.hpp"
+#include "PointsUI.hpp"
+#include "SpanishWordUI.hpp"
+#include "SoundUI.hpp"
+
 
 extern "C" int compareWords(const char* palabra1, const char* palabra2, unsigned int length);
 extern "C" const char* getWordByIndex(std::int32_t index);
@@ -34,6 +36,10 @@ public:
     const bool checkEndCondition();
     // update the window
     void draw(RenderWindow& window);
+    void vulnerability();
+    bool getColision();
+    bool getEntityColision(EnemyUI enemy);
+    void dead();
 
     const float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
 
@@ -42,7 +48,8 @@ private:
     std::int8_t key = 0;
     sf::Clock clock;
     sf::Music backgroundMusic;
-    sf::SoundUI sound;
+    sf::Clock vulnerabilityClock;
+    SoundUI sound;
     float delayBetweenLives = 3.0f;
     bool canLoseLife = true;
     float collisionDistance = 10.0f;
