@@ -8,7 +8,7 @@ Constructor initializes the enemy object at a given spawn point, sets the scaled
 and initial pixel position based on grid coordinates, sets the initial movement direction,
 and loads textures for the enemy. Sets the right texture as default for the sprite.
 */
-EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory, EntityUI& target)
+EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, const std::string& vulnerableTextureFile, std::int32_t corx, std::int32_t cory, EntityUI& target)
 : EntityUI(spawnPoint) 
 , target(target) {
     this->scaledPosition = Vector2<int32_t>(corx, cory);
@@ -21,8 +21,28 @@ EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32
     if (!leftTexture.loadFromFile(textureFile)) {
         std::cerr << "Error loading player texture." << std::endl;
     }
+    if (!vulnerableTexture.loadFromFile(vulnerableTextureFile)) {
+        std::cerr << "Error loading player texture." << std::endl;
+    }
+    this->vulnerable = false;
+
     this->sprite.setTexture(rightTexture);
 }
+
+bool EnemyUI::isVulnerable() {
+    return vulnerable;
+}
+
+void EnemyUI::setAttackEnemy() {
+    this->sprite.setTexture(rightTexture);
+    vulnerable = false;
+}
+
+void EnemyUI::setVulnerableEnemy() {
+    this->sprite.setTexture(vulnerableTexture);
+    vulnerable = true;
+}
+
 
 /*
 Generates and returns a random integer between the specified min and max values.
@@ -66,12 +86,12 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
     std::int32_t input = 0;
     int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
     if (collisionStatus == 1) {
-        // Si hay una colisi髇, cambia de direcci髇
+        // Si hay una colisi贸n, cambia de direcci贸n
         this->changeDirection();
-        input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
+        input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
     }
     else {
-        // Si no hay colisi髇 o es una salida (2), permite el movimiento sin cambiar de direcci髇
+        // Si no hay colisi贸n o es una salida (2), permite el movimiento sin cambiar de direcci贸n
         this->move(window, movementFactor);
     }
 }
