@@ -47,5 +47,11 @@ void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
     if (checkColision(this->movementFactor,
             this->getScale().x, this->getScale().y) == 0) {
         this->move(window, this->movementFactor);
+        if (movementFactor[0] == -1) {
+            this->sprite.setTexture(leftTexture);
+        }
+        else if (movementFactor[0] == 1) {
+            this->sprite.setTexture(rightTexture);
+        }
     }
 }
