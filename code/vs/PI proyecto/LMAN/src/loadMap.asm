@@ -101,5 +101,100 @@ checkColision PROC
     return: ret
 checkColision ENDP
 
+
+; checkObstacleHorizontal(int32_t* playerCoords, int32_t* enemyCoords)
+checkObstacleHorizontal PROC
+    ; Parámetros:
+    ; ESP+4 -> int32_t* playerCoords
+    ; ESP+8 -> int32_t* enemyCoords
+
+    ; Cargar los vectores
+    mov EBX, [ESP+4]  ; Dirección del vector playerCoords
+    mov ECX, [ESP+8]  ; Dirección del vector enemyCoords
+
+    ; Cargar coordenadas del jugador
+    mov EDX, [EBX]    ; x1 (jugador)
+    mov ESI, [EBX+4]  ; y1 (jugador)
+
+    ; Cargar coordenadas del enemigo
+    mov EDI, [ECX]    ; x2 (enemigo)
+    ; mov EDI, [ECX+4]  ; y2 (enemigo) -> no se necesita para horizontal
+
+    ; Calcular dirección de iteración
+    cmp EDX, EDI
+    jle iterHorizontal ; Si x1 <= x2, iterar hacia la derecha
+    xchg EDX, EDI      ; Intercambiar x1 y x2 si x1 > x2
+
+    ; Bucle de iteración horizontal
+iterHorizontal:
+checkloopObstacle:
+    mov AL, 24         ; Total columnas del mapa
+    imul DL            ; row * 24 (DL contiene y1)
+    add DX, AX        ; Calcular posición: columna + fila * columnas
+    mov AL, map[EDX]  ; Leer valor del mapa en la posición calculada
+    cmp AL, 0         ; ¿Es un obstáculo?
+    jne Obstacle       ; Saltar si se encuentra un obstáculo
+    inc EDX            ; Avanzar a la siguiente columna
+    cmp EDX, EDI       ; ¿Llegamos a x2?
+    jl checkloopObstacle ; Repetir si no hemos llegado
+    jmp NoObstacle     ; No se encontraron obstáculos
+
+NoObstacle:
+    mov EAX, 0         ; Resultado: No hay obstáculos
+    ret
+
+Obstacle:
+    mov EAX, 1         ; Resultado: Hay un obstáculo
+    ret
+
+checkObstacleHorizontal ENDP
+
+; checkObstacleVertical(int32_t* playerCoords, int32_t* enemyCoords)
+checkObstacleVertical PROC
+    ; Parámetros:
+    ; ESP+4 -> int32_t* playerCoords
+    ; ESP+8 -> int32_t* enemyCoords
+
+    ; Cargar los vectores
+    mov EBX, [ESP+4]  ; Dirección del vector playerCoords
+    mov ECX, [ESP+8]  ; Dirección del vector enemyCoords
+
+    ; Cargar coordenadas del jugador
+    mov EDX, [EBX]    ; x1 (jugador)
+    mov ESI, [EBX+4]  ; y1 (jugador)
+
+    ; Cargar coordenadas del enemigo
+    mov EDI, [ECX+4]  ; y2 (enemigo)
+
+    ; Calcular dirección de iteración
+    cmp ESI, EDI
+    jle iterVertical  ; Si y1 <= y2, iterar hacia abajo
+    xchg ESI, EDI     ; Intercambiar y1 y y2 si y1 > y2
+
+    ; Bucle de iteración vertical
+iterVertical:
+checkloopObstacle:
+    mov AL, 24        ; Total columnas del mapa
+    imul DL           ; row * 24 (DL contiene x1)
+    add SI, AX        ; Calcular posición: columna + fila * columnas
+    mov AL, map[SI]  ; Leer valor del mapa en la posición calculada
+    cmp AL, 0        ; ¿Es un obstáculo?
+    jne Obstacle      ; Saltar si se encuentra un obstáculo
+    inc SI            ; Avanzar a la siguiente fila
+    cmp SI, DI        ; ¿Llegamos a y2?
+    jl checkloopObstacle ; Repetir si no hemos llegado
+    jmp NoObstacle     ; No se encontraron obstáculos
+
+NoObstacle:
+    mov EAX, 0        ; Resultado: No hay obstáculos
+    ret
+
+Obstacle:
+    mov EAX, 1        ; Resultado: Hay un obstáculo
+    ret
+
+checkObstacleVertical ENDP
+
+
 end
 

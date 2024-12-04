@@ -39,8 +39,8 @@ int32_t EnemyUI::getRandom(int32_t min, int32_t max) {
 Randomly changes the enemy's movement direction by assigning one of four possible
 directional keys ('A', 'W', 'D', or 'S') based on a randomly generated integer.
 */
-void EnemyUI::changeDirection() {
-    std::int32_t numrandom = this->getRandom(1, 4);
+void EnemyUI::changeDirection(std::int32_t numrandom) {
+    //std::int32_t numrandom = this->getRandom(1, 4);
     if (numrandom == 1) {
         key = 'A'; // Move left
     } else if (numrandom == 2) {
@@ -60,15 +60,88 @@ If no collision is detected, it moves the enemy sprite within the game window ac
 void EnemyUI::actionEnemy(RenderWindow& window) {
     std::int32_t xcords = this->getScale().x;
     std::int32_t ycords = this->getScale().y;
-    //std::cout << xcords << '\n';
+    //std::cout << xcords << ',' << ycords <<'\n';
     //std::cout << ycords << '\n';
     //std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
     std::int32_t input = 0;
+    std::int32_t test = 3;
+    playerCoord[0] = target.getScale().x;
+    playerCoord[1] = target.getScale().y;
+    enemyCoord[0] = xcords;
+    enemyCoord[1] = ycords;
+    /*
+    1 = jugador abajo
+    2 = jugador arriba
+    3 = jugador  a la derecha
+    4 = jugador a la izquierda
+    */
+
+    if (((this->getPosition().x + 32) % 32 == 0)
+        && ((this->getPosition().y + 32) % 32 == 0)) {
+        if (playerCoord[0] == enemyCoord[0]) {  //Misma fila
+            if (playerCoord[1] < enemyCoord[1]) {  //Jugador a la izquierda del enemigo
+             
+                    this->changeDirection(2); //
+                    //std::cout << '2' << '\n';
+                    input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+            }
+            else {
+                if (playerCoord[1] > enemyCoord[1]) { //Misma fila, jugador a la derecha
+                   
+                        this->changeDirection(4);
+                        //std::cout << '4' << '\n';
+                        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección  
+                }
+            }
+        }
+        else {
+            if (playerCoord[1] == enemyCoord[1]) {
+                if (playerCoord[0] < enemyCoord[0]) { //Misma columna, jugador arriba
+                   
+                    
+                        this->changeDirection(1);
+                        //std::cout << '1' << '\n';
+                        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+                    
+                }
+                else {
+                    if (playerCoord[0] > enemyCoord[0]) { //Misma columna, jugador abajo
+                       
+                        
+                            this->changeDirection(3);
+                           // std::cout << '3' << '\n';
+                            input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+                        
+                    }
+                }
+            }
+        }
+        
+        int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
+        // std::cout << test << '\n';
+        if (collisionStatus == 1) {
+            // Si hay una colisión, cambia de dirección
+            std::int32_t randm = this->getRandom(1, 4);
+            this->changeDirection(randm);
+            input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+
+        }
+        if (true) {
+            movementFactor[0] *= -1;
+            movementFactor[1] *= -1;
+        }
+    }
+
+    
+    
     int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
+   // std::cout << test << '\n';
     if (collisionStatus == 1) {
         // Si hay una colisión, cambia de dirección
-        this->changeDirection();
+        std::int32_t randm = this->getRandom(1, 4);
+        this->changeDirection(randm);
         input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+
     }
     else {
         // Si no hay colisión o es una salida (2), permite el movimiento sin cambiar de dirección
