@@ -8,7 +8,7 @@ Constructor initializes the enemy object at a given spawn point, sets the scaled
 and initial pixel position based on grid coordinates, sets the initial movement direction,
 and loads textures for the enemy. Sets the right texture as default for the sprite.
 */
-EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory, EntityUI& target)
+EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile,const std::string& vulnerableTextureFile, std::int32_t corx, std::int32_t cory, EntityUI& target)
 : EntityUI(spawnPoint) 
 , target(target) {
     this->scaledPosition = Vector2<int32_t>(corx, cory);
@@ -21,8 +21,28 @@ EnemyUI::EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32
     if (!leftTexture.loadFromFile(textureFile)) {
         std::cerr << "Error loading player texture." << std::endl;
     }
+    if (!vulnerableTexture.loadFromFile(vulnerableTextureFile)) {
+        std::cerr << "Error loading player texture." << std::endl;
+    }
+    this->vulnerable = false;
+
     this->sprite.setTexture(rightTexture);
 }
+
+bool EnemyUI::isVulnerable() {
+    return vulnerable;
+}
+
+void EnemyUI::setAttackEnemy() {
+    this->sprite.setTexture(rightTexture);
+    vulnerable = false;
+}
+
+void EnemyUI::setVulnerableEnemy() {
+    this->sprite.setTexture(vulnerableTexture);
+    vulnerable = true;
+}
+
 
 /*
 Generates and returns a random integer between the specified min and max values.
@@ -43,10 +63,12 @@ void EnemyUI::changeDirection(std::int32_t numrandom) {
     //std::int32_t numrandom = this->getRandom(1, 4);
     if (numrandom == 1) {
         key = 'A'; // Move left
-    } else if (numrandom == 2) {
-        key = 'W'; // Move up
-    } else if (numrandom == 3) {
+    }
+    else if (numrandom == 2) {
         key = 'D'; // Move right
+    }
+    else if (numrandom == 3) {
+        key = 'W'; // Move up
     } else if (numrandom == 4) {
         key = 'S'; // Move down
     }
@@ -80,72 +102,73 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
         && ((this->getPosition().y + 32) % 32 == 0)) {
         if (playerCoord[0] == enemyCoord[0]) {  //Misma fila
             if (playerCoord[1] < enemyCoord[1]) {  //Jugador a la izquierda del enemigo
-             
-                    this->changeDirection(2); //
+                    this->changeDirection(3); //
                     //std::cout << '2' << '\n';
-                    input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
+                    input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
             }
             else {
                 if (playerCoord[1] > enemyCoord[1]) { //Misma fila, jugador a la derecha
-                   
                         this->changeDirection(4);
                         //std::cout << '4' << '\n';
-                        input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇  
+                        input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n  
                 }
+            }
+            if (vulnerable) { //Bandera para item, para huir
+                movementFactor[0] *= -1;
+                movementFactor[1] *= -1;
             }
         }
         else {
             if (playerCoord[1] == enemyCoord[1]) {
                 if (playerCoord[0] < enemyCoord[0]) { //Misma columna, jugador arriba
-                   
-                    
-                        this->changeDirection(1);
-                        //std::cout << '1' << '\n';
-                        input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
+                    this->changeDirection(1);
+                    //std::cout << '1' << '\n';
+                    input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
                     
                 }
                 else {
                     if (playerCoord[0] > enemyCoord[0]) { //Misma columna, jugador abajo
-                       
-                        
-                            this->changeDirection(3);
-                           // std::cout << '3' << '\n';
-                            input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
+                        this->changeDirection(2);
+                        // std::cout << '3' << '\n';
+                        input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
                         
                     }
                 }
+                if (vulnerable) { //Bandera para item, para huir
+                    movementFactor[0] *= -1;
+                    movementFactor[1] *= -1;
+                }
             }
-        }
-        
-        int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
-        // std::cout << test << '\n';
-        if (collisionStatus == 1) {
-            // Si hay una colisi髇, cambia de direcci髇
-            std::int32_t randm = this->getRandom(1, 4);
-            this->changeDirection(randm);
-            input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
-
-        }
-        if (true) {
-            movementFactor[0] *= -1;
-            movementFactor[1] *= -1;
         }
     }
 
-    
-    
     int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
+    // std::cout << test << '\n';
+    if (collisionStatus == 1) {
+        std::int32_t randm = 0;
+        if (this->movementFactor[0] != 0) {
+            randm = this->getRandom(3, 4);
+        }
+        else if (this->movementFactor[1] != 0) {
+            randm = this->getRandom(1, 2);
+        }
+        // Si hay una colisi贸n, cambia de direcci贸n
+        this->changeDirection(randm);
+        input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
+
+    }
+
+    collisionStatus = checkColision(movementFactor, xcords, ycords);
    // std::cout << test << '\n';
     if (collisionStatus == 1) {
-        // Si hay una colisi髇, cambia de direcci髇
+        // Si hay una colisi贸n, cambia de direcci贸n
         std::int32_t randm = this->getRandom(1, 4);
         this->changeDirection(randm);
-        input = movInput(movementFactor, key);  // Actualiza movimiento despu閟 del cambio de direcci髇
+        input = movInput(movementFactor, key);  // Actualiza movimiento despu茅s del cambio de direcci贸n
 
     }
     else {
-        // Si no hay colisi髇 o es una salida (2), permite el movimiento sin cambiar de direcci髇
+        // Si no hay colisi贸n o es una salida (2), permite el movimiento sin cambiar de direcci贸n
         this->move(window, movementFactor);
     }
 }
-

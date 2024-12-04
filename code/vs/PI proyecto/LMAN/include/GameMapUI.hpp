@@ -36,6 +36,10 @@ public:
     const bool checkEndCondition();
     // update the window
     void draw(RenderWindow& window);
+    void vulnerability();
+    bool getColision();
+    bool getEntityColision(EnemyUI enemy);
+    void dead();
 
     const float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
 
@@ -44,6 +48,7 @@ private:
     std::int8_t key = 0;
     sf::Clock clock;
     sf::Music backgroundMusic;
+    sf::Clock vulnerabilityClock;
     SoundUI sound;
     float delayBetweenLives = 3.0f;
     bool canLoseLife = true;

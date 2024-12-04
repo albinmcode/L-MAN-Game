@@ -38,6 +38,7 @@ public:
 protected:
 	Texture rightTexture;
 	Texture leftTexture;
+	Texture vulnerableTexture;
 	Sprite sprite;
 	Vector2<std::int32_t> position;
 	Vector2<std::int32_t> scaledPosition;

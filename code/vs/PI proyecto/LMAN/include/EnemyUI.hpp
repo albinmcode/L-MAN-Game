@@ -12,8 +12,11 @@ using namespace sf;
 class EnemyUI : public EntityUI {
 public:
 	// Default constructor
-	EnemyUI(Vector2f spawnPoint, const std::string& textureFile, std::int32_t corx, std::int32_t cory, EntityUI& target); //Initializes the resources and positions needed for the enemy
+	EnemyUI(Vector2f spawnPoint, const std::string& textureFile,const std::string& vulnerableTextureFile, std::int32_t corx, std::int32_t cory, EntityUI& target); //Initializes the resources and positions needed for the enemy
 	void actionEnemy(RenderWindow& window); // Perform the movement, with different directions
+	void setAttackEnemy();
+	void setVulnerableEnemy();
+	bool isVulnerable();
 	
 private:
 	static int32_t getRandom(std::int32_t min, std::int32_t max); //Generates a random number with the computer clock
@@ -22,4 +25,5 @@ private:
 	void changeDirection(std::int32_t numrandom); //Change the random number to its respective letter in ascii and then use movinput
 	std::int32_t playerCoord[2] = { 0 };
 	std::int32_t enemyCoord[2] = { 0 };
+	bool vulnerable;
 };

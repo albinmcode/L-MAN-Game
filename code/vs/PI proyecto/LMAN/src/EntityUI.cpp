@@ -10,13 +10,6 @@ EntityUI::EntityUI(Vector2f spawnPoint)
 }
 
 void EntityUI::move(RenderWindow& window, const std::int32_t(&movementFactor)[2]) {
-    // sprite orientation
-    if (movementFactor[0] == -1) {
-        this->sprite.setTexture(leftTexture);
-    }
-    else if (movementFactor[0] == 1) {
-        this->sprite.setTexture(rightTexture);
-    }
     // increment or decrement the coordinates according to the parameters
     this->sprite.move(static_cast<float>(movementFactor[0])
         , static_cast<float>(movementFactor[1]));
