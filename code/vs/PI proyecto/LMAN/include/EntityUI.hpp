@@ -24,7 +24,7 @@ public:
 	/// Two 1 byte numbers that indicate the increment factor for width and height.
 	/// Negatives indicate decrement
 	/// </param>
-	void move(RenderWindow& window, const std::int32_t(&movementFactor)[2]);
+	void move(RenderWindow& window);
 	void draw(RenderWindow& window);
 	// No modifiable reference to the scaled entity position 
 	const Vector2<std::int32_t>& getScale();
@@ -43,4 +43,5 @@ protected:
 	Vector2<std::int32_t> position;
 	Vector2<std::int32_t> scaledPosition;
 	std::int32_t movementFactor[2];
+	std::int32_t speed = 1;
 };

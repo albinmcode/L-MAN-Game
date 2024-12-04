@@ -46,7 +46,7 @@ void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
     // checkColision == 0 -> valid move
     if (checkColision(this->movementFactor,
             this->getScale().x, this->getScale().y) == 0) {
-        this->move(window, this->movementFactor);
+        this->move(window);
         // Sprite orientation
         if (movementFactor[0] == -1) {
             this->sprite.setTexture(leftTexture);
@@ -55,4 +55,12 @@ void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
             this->sprite.setTexture(rightTexture);
         }
     }
+}
+
+void PlayerUI::setBoost() {
+    this->speed = 1;
+}
+
+void PlayerUI::setNormal() {
+    this->speed = 1;
 }

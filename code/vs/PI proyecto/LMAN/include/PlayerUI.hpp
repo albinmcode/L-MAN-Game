@@ -14,6 +14,8 @@ class PlayerUI : public EntityUI {
 	void action(RenderWindow& window, std::int8_t& key);
 	// flag value for collection elements on the map
 	const bool collectChr();
+	void setBoost();
+	void setNormal();
 
  private:
 	 // flag that indicates if the player pressed the specified button to collect a letter

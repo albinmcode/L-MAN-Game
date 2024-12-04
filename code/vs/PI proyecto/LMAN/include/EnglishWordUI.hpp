@@ -15,6 +15,8 @@ public:
 	void collectChr(char collected);
 	// Pop the last element
 	void popCollected();
+	// Obtain the next letter from the objective word
+	void winChr();
 	// Reload textures
 	void refreshWord();
 

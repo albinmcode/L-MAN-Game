@@ -25,6 +25,14 @@ void EnglishWordUI::popCollected() {
 	if (!this->wordString.empty()) this->wordString.pop_back();
 }
 
+void EnglishWordUI::winChr() {
+	size_t index = this->wordString.size();
+	if (index < this->objectiveWord.size()) {
+		this->collectChr(this->objectiveWord.at(index));
+		this->refreshWord();
+	}
+}
+
 void EnglishWordUI::refreshWord() {
 	this->letters = loadWordTexture();
 }

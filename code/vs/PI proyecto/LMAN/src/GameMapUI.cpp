@@ -32,10 +32,10 @@ GameMap::GameMap()
 }
 void GameMap::vulnerability() {
     if (kanji.isVulnerable()||question.isVulnerable()) {
-        if (vulnerabilityClock.getElapsedTime().asSeconds() >= 25) { // 5 segundos de vulnerabilidad
+        if (vulnerabilityClock.getElapsedTime().asSeconds() >= 10) { // 10 segundos de vulnerabilidad
             kanji.setAttackEnemy();
             question.setAttackEnemy();
-   
+            lman.setNormal();
         }
     }
 }
@@ -137,18 +137,19 @@ void GameMap::collectEvent() {
             kanji.setVulnerableEnemy();
             question.setVulnerableEnemy();
             vulnerabilityClock.restart();
+            lman.setBoost();
         }
     }
     else if (getColision()) {
-        if (getEntityColision(this->kanji)&&kanji.isVulnerable()) {
+        if (getEntityColision(this->kanji) && kanji.isVulnerable()) {
             kanji.setAttackEnemy();
             kanji.restartPosition(10, 5);
-            points.winPoint();
+            wordEnglish.winChr();
         }
         else if(getEntityColision(this->question) && question.isVulnerable()){
             question.setAttackEnemy();
             question.restartPosition(10,6);
-            points.winPoint();
+            wordEnglish.winChr();
         }
         
     }
@@ -160,6 +161,7 @@ bool GameMap::getEntityColision(EnemyUI enemy) {
 bool GameMap::getColision() {
     return (getEntityColision(this->kanji)) || (getEntityColision(this->question));
 }
+
 void GameMap::dead() {
     this->hearts.loseHeart();
     sf::sleep(sf::milliseconds(300));

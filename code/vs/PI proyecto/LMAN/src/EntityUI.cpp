@@ -9,10 +9,10 @@ EntityUI::EntityUI(Vector2f spawnPoint)
     this->sprite.setPosition(spawnPoint);
 }
 
-void EntityUI::move(RenderWindow& window, const std::int32_t(&movementFactor)[2]) {
+void EntityUI::move(RenderWindow& window) {
     // increment or decrement the coordinates according to the parameters
-    this->sprite.move(static_cast<float>(movementFactor[0])
-        , static_cast<float>(movementFactor[1]));
+    this->sprite.move(static_cast<float>(movementFactor[0] * speed)
+        , static_cast<float>(movementFactor[1] * speed));
     // update logical position
     this->updatePosition();
     // draw sprite
@@ -34,8 +34,8 @@ const sf::Vector2<std::int32_t>& EntityUI::getPosition() {
 
 void EntityUI::updatePosition() {
     // increment according to the movement factor
-    this->position.x += this->movementFactor[0];
-    this->position.y += this->movementFactor[1];
+    this->position.x += this->movementFactor[0] * this->speed;
+    this->position.y += this->movementFactor[1] * this->speed;
     // every 32 pixels update the logical scaled position
     if (this->position.x % 32 == 0) {
         this->scaledPosition.x = (this->position.x / 32) +1;

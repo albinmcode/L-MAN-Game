@@ -157,7 +157,7 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
         input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
 
     }
-
+        
     collisionStatus = checkColision(movementFactor, xcords, ycords);
    // std::cout << test << '\n';
     if (collisionStatus == 1) {
@@ -169,6 +169,6 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
     }
     else {
         // Si no hay colisión o es una salida (2), permite el movimiento sin cambiar de dirección
-        this->move(window, movementFactor);
+        this->move(window);
     }
 }
