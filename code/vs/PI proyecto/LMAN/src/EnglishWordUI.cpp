@@ -9,16 +9,37 @@ void EnglishWordUI::changeWord(std::int32_t index) {
 	this->objectiveWord = getWordByIndex(index);
 }
 
-const int EnglishWordUI::getTotalLength() {
+const size_t EnglishWordUI::getTotalLength() {
 	return this->objectiveWord.size();
 }
 
-const char* EnglishWordUI::getObjective() {
-	return this->objectiveWord.c_str();
+const std::string& EnglishWordUI::getObjective() {
+	return this->objectiveWord;
 }
 
 void EnglishWordUI::collectChr(char collected) {
 	this->wordString += collected;
+}
+
+bool EnglishWordUI::validCollected(size_t size) {
+	try {
+		for (size_t index = 0; index < size; ++index) {
+			if (this->objectiveWord.at(index) != this->wordString.at(index)) {
+				return false;
+			}
+		}
+	}
+	catch (std::out_of_range err){
+		std::cerr << "validCollected: Index out of bounds";
+	}
+	return true;
+}
+
+bool EnglishWordUI::completedWord() {
+	if (this->objectiveWord.size() == this->wordString.size()) {
+		return this->validCollected(this->objectiveWord.size());
+	}
+	return false;
 }
 
 void EnglishWordUI::popCollected() {

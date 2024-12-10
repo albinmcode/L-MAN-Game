@@ -13,7 +13,7 @@ public:
 	void winPoint();
 	// Restart to zero the pointsCounter
 	void restart();
-protected:
+private:
 	sf::Texture digitTexture;
 	sf::Sprite hundred;
 	sf::Sprite ten;

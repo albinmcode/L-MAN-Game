@@ -35,12 +35,12 @@ sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
     return sf::Texture(word);
 }
 
-const int RoundWordUI::getlength() {
+const size_t RoundWordUI::getlength() {
     return this->wordString.size();
 }
 
-const char* RoundWordUI::getString() {
-    return this->wordString.c_str();
+const std::string& RoundWordUI::getString() {
+    return this->wordString;
 }
 
 void RoundWordUI::changeWord(std::int32_t index) {

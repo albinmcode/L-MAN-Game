@@ -14,10 +14,7 @@
 #include "SpanishWordUI.hpp"
 #include "SoundUI.hpp"
 
-
-extern "C" int compareWords(const char* palabra1, const char* palabra2, unsigned int length);
 extern "C" const char* getWordByIndex(std::int32_t index);
-extern "C" int stringLength(const char* string);
 
 using namespace sf;
 

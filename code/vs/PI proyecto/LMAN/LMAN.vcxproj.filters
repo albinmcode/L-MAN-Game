@@ -118,11 +118,5 @@
     <MASM Include="src\charMap.asm">
       <Filter>Source Files</Filter>
     </MASM>
-    <MASM Include="src\lengthWord.asm">
-      <Filter>Source Files</Filter>
-    </MASM>
-    <MASM Include="src\Veri.asm">
-      <Filter>Source Files</Filter>
-    </MASM>
   </ItemGroup>
 </Project>

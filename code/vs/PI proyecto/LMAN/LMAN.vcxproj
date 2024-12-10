@@ -172,11 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <MASM Include="src\charMap.asm" />
-    <MASM Include="src\lengthWord.asm" />
     <MASM Include="src\loadMap.asm" />
     <MASM Include="src\movInput.asm" />
     <MASM Include="src\Read.asm" />
-    <MASM Include="src\Veri.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

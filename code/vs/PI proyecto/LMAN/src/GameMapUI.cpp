@@ -32,7 +32,7 @@ GameMap::GameMap()
 }
 void GameMap::vulnerability() {
     if (kanji.isVulnerable()||question.isVulnerable()) {
-        if (vulnerabilityClock.getElapsedTime().asSeconds() >= 10) { // 10 segundos de vulnerabilidad
+        if (vulnerabilityClock.getElapsedTime().asSeconds() >= 25) { // 10 segundos de vulnerabilidad
             kanji.setAttackEnemy();
             question.setAttackEnemy();
             lman.setNormal();
@@ -124,7 +124,7 @@ void GameMap::collectEvent() {
             // clear cell
             saveElement(0, row * 22 + column);
             // Check for match
-            if (compareWords(wordEnglish.getString(), wordEnglish.getObjective(), wordEnglish.getlength()) == 1) {
+            if (this->wordEnglish.validCollected(this->wordEnglish.getlength())){
                 this->wordEnglish.refreshWord();
             }
             else {
@@ -196,8 +196,8 @@ void GameMap::entityColisionEvent() {
 
 const bool GameMap::checkEndCondition() {
     // Check if the english word and the colected word are the same
-    if (compareWords(wordEnglish.getObjective(), wordEnglish.getString(), wordEnglish.getTotalLength()) == 1) {
-        std::cout << "Ganaste\n";
+    if (this->wordEnglish.completedWord()) {
+        // std::cout << "Ganaste\n";
         this->points.winPoint();
         this->hearts.winHeart();
         sound.play("win.wav");
@@ -205,7 +205,7 @@ const bool GameMap::checkEndCondition() {
     }
     // Check die event
     if (this->hearts.playerDead()) {
-        std::cout << "Perdiste\n";
+        // std::cout << "Perdiste\n";
         sound.play("dead.wav");
         kanji.setAttackEnemy();
         question.setAttackEnemy();

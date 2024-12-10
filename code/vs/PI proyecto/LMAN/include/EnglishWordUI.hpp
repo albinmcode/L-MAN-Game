@@ -9,10 +9,13 @@ public:
 	// Set a new word string
 	void changeWord(std::int32_t index) override;
 	// Getters
-	const int getTotalLength();
-	const char* getObjective();
+	const size_t getTotalLength();
+	const std::string& getObjective();
 	// Append a collected char
 	void collectChr(char collected);
+	// Control valid letter collection
+	bool validCollected(size_t size);
+	bool completedWord();
 	// Pop the last element
 	void popCollected();
 	// Obtain the next letter from the objective word

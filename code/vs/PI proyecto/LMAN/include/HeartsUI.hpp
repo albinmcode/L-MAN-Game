@@ -14,7 +14,7 @@ public:
 	// Restart hearts count to 3
 	void restartHearts(int startValue = 0);
 
-protected:
+private:
 	sf::Texture emptyTexture;
 	sf::Texture filledTexture;
 	sf::Sprite heart1;
