@@ -83,7 +83,6 @@ void GameMap::run(RenderWindow& window) {
         
         // Restart objects for a new round //
         this->wordEnglish = EnglishWordUI(40);
-        resetElementsMap();
         this->letters.restartLetters();
         this->lman.restartPosition(0, 0);
         this->key = 0;
@@ -110,19 +109,16 @@ void GameMap::handleEvent(RenderWindow& window, Event& event) {
 
 void GameMap::collectEvent() {
     // space pressed
-    if ((this->lman.collectChr() == true)&&!getColision()) {
-        // row and column to index the letters matrix and remove one
-        std::int32_t row = this->lman.getScale().y - 1;
-        std::int32_t column = this->lman.getScale().x - 1;
+    if ((this->lman.collectChr() == true) && !getColision()) {
         // position = (row * total columns) + column
-        this->letters.removeLetter(row * 22 + column);
-
+        size_t row = this->lman.getScale().y - 1;
+        size_t column = this->lman.getScale().x - 1;
         // not empty cell
-        if (getElement(row * 22 + column) >= 'a') {
+        if (this->letters.getElement(row, column) >= 'a') {
             // Obtain letter
-            this->wordEnglish.collectChr(static_cast<char>(getElement(row * 22 + column)));
-            // clear cell
-            saveElement(0, row * 22 + column);
+            this->wordEnglish.collectChr(this->letters.getElement(row, column));
+            // Clear position
+            this->letters.removeLetter(row, column);
             // Check for match
             if (this->wordEnglish.validCollected(this->wordEnglish.getlength())){
                 this->wordEnglish.refreshWord();
@@ -133,7 +129,10 @@ void GameMap::collectEvent() {
             }
             sound.play("coin.wav");
         }
-        if (getElement(row * 22 + column) == 3) {
+        if (this->letters.getElement(row, column) == 3) {
+            // Clear position
+            this->letters.removeLetter(row, column);
+            // Set enemies vulnerable
             kanji.setVulnerableEnemy();
             question.setVulnerableEnemy();
             vulnerabilityClock.restart();

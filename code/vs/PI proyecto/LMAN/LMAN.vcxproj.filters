@@ -115,8 +115,5 @@
     <MASM Include="src\Read.asm">
       <Filter>Source Files</Filter>
     </MASM>
-    <MASM Include="src\charMap.asm">
-      <Filter>Source Files</Filter>
-    </MASM>
   </ItemGroup>
 </Project>
