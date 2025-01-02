@@ -1,7 +1,7 @@
 #include "ButtonUI.hpp"
 #include <iostream>
 
-Button::Button(const Vector2f& position, const string& textureFile, const Vector2f& size) {
+Button::Button(const sf::Vector2f& position, const std::string& textureFile, const sf::Vector2f& size) {
     if (!buttonTexture.loadFromFile(textureFile)) {
         std::cerr << "Error al cargar la textura del botón." << std::endl;
     }
@@ -16,11 +16,11 @@ void Button::draw(sf::RenderWindow& window) {
 }
 
 bool Button::isMouseOver(const sf::RenderWindow& window) const {
-    Vector2i mousePos = Mouse::getPosition(window);
-    FloatRect buttonBounds = buttonShape.getGlobalBounds();
-    return buttonBounds.contains(static_cast<Vector2f>(mousePos));
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::FloatRect buttonBounds = buttonShape.getGlobalBounds();
+    return buttonBounds.contains(static_cast<sf::Vector2f>(mousePos));
 }
 
-void Button::setSize(const Vector2f& size) {
+void Button::setSize(const sf::Vector2f& size) {
     buttonShape.setSize(size);
 }

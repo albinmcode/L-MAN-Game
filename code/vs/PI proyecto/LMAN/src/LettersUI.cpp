@@ -141,7 +141,7 @@ void LettersUI::restartLetters() {
     this->textures.shrink_to_fit();
     std::vector<std::string> texturesPath = this->createLetterTextures();
     // Cargar cada textura desde los archivos proporcionados en texturePaths
-    for (const std::string path : texturesPath) {
+    for (const std::string& path : texturesPath) {
         sf::Texture texture = sf::Texture();
         if (path != " "){
             if (!texture.loadFromFile(path)) {

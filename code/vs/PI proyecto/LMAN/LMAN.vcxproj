@@ -145,6 +145,7 @@
     <ClInclude Include="include\GameMapUI.hpp" />
     <ClInclude Include="include\HeartsUI.hpp" />
     <ClInclude Include="include\InfoUI.hpp" />
+    <ClInclude Include="include\Link.hpp" />
     <ClInclude Include="include\MenuUI.hpp" />
     <ClInclude Include="include\PlayerUI.hpp" />
     <ClInclude Include="include\PointsUI.hpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\GameMapUI.cpp" />
     <ClCompile Include="src\HeartsUI.cpp" />
     <ClCompile Include="src\InfoUI.cpp" />
+    <ClCompile Include="src\Link.cpp" />
     <ClCompile Include="src\MainUI.cpp" />
     <ClCompile Include="src\MenuUI.cpp" />
     <ClCompile Include="src\PlayerUI.cpp" />
