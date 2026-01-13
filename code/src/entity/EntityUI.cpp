@@ -57,3 +57,20 @@ void EntityUI::restartMovement() {
     this->movementFactor[0] = 0;
     this->movementFactor[1] = 0;
 }
+
+void movInput(int32_t* movementFactor, int8_t key) {
+  int8_t lowerKey =  (int8_t)std::tolower(key);
+  if (lowerKey == 'w') {  // up
+    movementFactor[0] = 0;
+    movementFactor[1] = -1;
+  } else if (lowerKey == 'a') {  // left
+    movementFactor[0] = -1;
+    movementFactor[1] = 0;
+  } else if (lowerKey == 's') {  // down
+    movementFactor[0] = 0;
+    movementFactor[1] = 1;
+  } else if (lowerKey == 'd') {  // right
+    movementFactor[0] = 1;
+    movementFactor[1] = 0;
+  }
+}

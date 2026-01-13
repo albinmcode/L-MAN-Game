@@ -1,4 +1,5 @@
 #include "PlayerUI.hpp"
+
 #include <iostream>
 
 PlayerUI::PlayerUI(Vector2f spawnPoint)
@@ -22,23 +23,22 @@ const bool PlayerUI::collectChr() {
 
 void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
     this->collectFlag = false;
-    std::int32_t input = 0;
     int32_t tempMovFactor[2] = { 0 };
     // Process input only if the player has moved an entire 32x32 cell
     if (((this->getPosition().x+32) % 32 == 0)
         && ((this->getPosition().y+32) % 32 == 0)) {
         // Player Input
-        input = movInput(tempMovFactor, key);
+        movInput(tempMovFactor, key);
         // Only change movement factor if there is no colision
         if (checkColision(tempMovFactor,
             this->getScale().x, this->getScale().y) == 0) {
-            input = movInput(this->movementFactor, key);
+            movInput(this->movementFactor, key);
         }
         else key = 0;
     }
     
     // Space pressed
-    if (input == 2) {
+    if (key == ' ') {
         this->collectFlag = true;
         key = 0;
     }

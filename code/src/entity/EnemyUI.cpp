@@ -85,7 +85,6 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
     //std::cout << xcords << ',' << ycords <<'\n';
     //std::cout << ycords << '\n';
     //std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
-    std::int32_t input = 0;
     std::int32_t test = 3;
     playerCoord[0] = target.getScale().x;
     playerCoord[1] = target.getScale().y;
@@ -104,13 +103,13 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
             if (playerCoord[1] < enemyCoord[1]) {  //Jugador a la izquierda del enemigo
                     this->changeDirection(3); //
                     //std::cout << '2' << '\n';
-                    input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+                    movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
             }
             else {
                 if (playerCoord[1] > enemyCoord[1]) { //Misma fila, jugador a la derecha
                         this->changeDirection(4);
                         //std::cout << '4' << '\n';
-                        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección  
+                        movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección  
                 }
             }
             if (vulnerable) { //Bandera para item, para huir
@@ -123,14 +122,14 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
                 if (playerCoord[0] < enemyCoord[0]) { //Misma columna, jugador arriba
                     this->changeDirection(1);
                     //std::cout << '1' << '\n';
-                    input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+                    movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
                     
                 }
                 else {
                     if (playerCoord[0] > enemyCoord[0]) { //Misma columna, jugador abajo
                         this->changeDirection(2);
                         // std::cout << '3' << '\n';
-                        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+                        movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
                         
                     }
                 }
@@ -154,7 +153,7 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
         }
         // Si hay una colisión, cambia de dirección
         this->changeDirection(randm);
-        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+        movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
 
     }
         
@@ -164,7 +163,7 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
         // Si hay una colisión, cambia de dirección
         std::int32_t randm = this->getRandom(1, 4);
         this->changeDirection(randm);
-        input = movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
+        movInput(movementFactor, key);  // Actualiza movimiento después del cambio de dirección
 
     }
     else {

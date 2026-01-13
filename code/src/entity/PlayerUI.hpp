@@ -3,8 +3,6 @@
 
 #include "EntityUI.hpp"
 
-extern "C" std::int32_t movInput(std::int32_t* movementFactor, std::int8_t key);
-
 using namespace sf;
 
 class PlayerUI : public EntityUI {
