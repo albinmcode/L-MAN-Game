@@ -2,12 +2,6 @@
 #include <cstdint>
 #include <SFML/Graphics.hpp>
 
-/**
-/ Validates the movement factor according to the player coordinates and the map
-*/
-extern "C"	std::int32_t checkColision(std::int32_t * movementFactor,
-	std::int32_t xCords, std::int32_t yCords);
-
 using namespace sf;
 
 class EntityUI {

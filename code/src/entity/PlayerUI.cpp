@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Maze.hpp"
+
 PlayerUI::PlayerUI(Vector2f spawnPoint)
 : EntityUI(spawnPoint) 
 , collectFlag(false) 
@@ -30,7 +32,7 @@ void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
         // Player Input
         movInput(tempMovFactor, key);
         // Only change movement factor if there is no colision
-        if (checkColision(tempMovFactor,
+        if (checkCollision(tempMovFactor,
             this->getScale().x, this->getScale().y) == 0) {
             movInput(this->movementFactor, key);
         }
@@ -44,7 +46,7 @@ void PlayerUI::action(RenderWindow& window, std::int8_t& key) {
     }
     // update logical position
     // checkColision == 0 -> valid move
-    if (checkColision(this->movementFactor,
+    if (checkCollision(this->movementFactor,
             this->getScale().x, this->getScale().y) == 0) {
         this->move(window);
         // Sprite orientation

@@ -1,7 +1,10 @@
 #include "EnemyUI.hpp"
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+
+#include "Maze.hpp"
 
 /*
 Constructor initializes the enemy object at a given spawn point, sets the scaled position
@@ -141,8 +144,7 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
         }
     }
 
-    int32_t collisionStatus = checkColision(movementFactor, xcords, ycords);
-    // std::cout << test << '\n';
+    char collisionStatus = checkCollision(movementFactor, xcords, ycords);
     if (collisionStatus == 1) {
         std::int32_t randm = 0;
         if (this->movementFactor[0] != 0) {
@@ -157,8 +159,7 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
 
     }
         
-    collisionStatus = checkColision(movementFactor, xcords, ycords);
-   // std::cout << test << '\n';
+    collisionStatus = checkCollision(movementFactor, xcords, ycords);
     if (collisionStatus == 1) {
         // Si hay una colisión, cambia de dirección
         std::int32_t randm = this->getRandom(1, 4);
