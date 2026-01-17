@@ -1,9 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <windows.h>
-
-/* #include <SFML/Graphics/Text.hpp> */
 
 // SFML library extension
 namespace sf {

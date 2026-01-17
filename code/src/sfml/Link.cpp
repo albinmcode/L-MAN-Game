@@ -15,7 +15,6 @@ const bool sf::Link::isMouseOver(const sf::RenderWindow& window) {
 }
 
 void sf::Link::openURL() {
-    // Windows shell
-    std::wstring urlWSTR =  std::wstring(this->url.begin(), this->url.end());
-    ShellExecute(0, 0, urlWSTR.c_str(), 0, 0, SW_SHOW);
+  // Linux system call
+  ::system(("xdg-open " + this->url).c_str());
 }
