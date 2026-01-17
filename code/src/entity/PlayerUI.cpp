@@ -9,10 +9,10 @@ PlayerUI::PlayerUI(Vector2f spawnPoint)
 , collectFlag(false) 
 {
     // Load textures
-    if (!rightTexture.loadFromFile("assets/img/lman_right.png")) {
+    if (!rightTexture.loadFromFile("../assets/img/lman_right.png")) {
         std::cerr << "Error al cargar la textura del personaje." << std::endl;
     }
-    if (!leftTexture.loadFromFile("assets/img/lman_left.png")) {
+    if (!leftTexture.loadFromFile("../assets/img/lman_left.png")) {
         std::cerr << "Error al cargar la textura del personaje." << std::endl;
     }
     // Right texture as default

@@ -91,25 +91,25 @@ std::vector<std::string> LettersUI::createLetterTextures() {
             } 
             // set "diccionario" texture
             else if (getElement(i) == 3) {
-                texturesPath.push_back("assets/img/diccionario.png");
+                texturesPath.push_back("../assets/img/diccionario.png");
             }
             // set random letter texture
             else if ((i % 5 == 0) && (mod < 25) && (getElement(i) == 0)) {
                 saveElement(this->getLetter(mod), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
                 ++mod;
             }
             else if ((i % 5 == 3) && (inv > 0) && (getElement(i) == 0)) {
                 saveElement(this->getLetter(inv), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
                 --inv;
             }
             else {
                 saveElement(this->getLetter(n), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
             }
 
         }

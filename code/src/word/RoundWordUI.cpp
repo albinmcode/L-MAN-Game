@@ -30,7 +30,7 @@ sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
     sf::Texture word;
     std::string str = std::string(1, letter);
     if (str != " ") {
-        if (!word.loadFromFile("assets/img/fuente/" + str + ".png")) {
+        if (!word.loadFromFile("../assets/img/fuente/" + str + ".png")) {
             std::cerr << "Error al cargar la textura de palabra." << std::endl;
         }
     }

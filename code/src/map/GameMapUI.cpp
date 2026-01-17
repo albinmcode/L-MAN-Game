@@ -5,8 +5,8 @@
 
 GameMap::GameMap()
 : lman(Vector2f(64, 128))
-, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", "assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
-, question(Vector2f(384+2, 320), "assets/img/pregunta.png","assets/img/pregunta_vulnerable.png", 11 , 7, this->lman)
+, kanji(Vector2f(384+3, 288), "../assets/img/kanji.png", "../assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
+, question(Vector2f(384+2, 320), "../assets/img/pregunta.png","../assets/img/pregunta_vulnerable.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , letters(Vector2f(74, 136))
@@ -15,7 +15,7 @@ GameMap::GameMap()
 , sound()
 {
     // Load background
-    if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
+    if (!backgroundTexture.loadFromFile("../assets/img/background.png")) {
         throw std::runtime_error("No fue posible cargar la textura del fondo.");
     }
     backgroundSprite.setTexture(backgroundTexture);
@@ -23,7 +23,7 @@ GameMap::GameMap()
     backgroundSprite.setPosition(Vector2f(35, 0));
 
 
-    if (!backgroundMusic.openFromFile("assets/music/background.ogg")) {
+    if (!backgroundMusic.openFromFile("../assets/music/background.ogg")) {
         std::cerr << "No fue posible cargar la música de fondo." << std::endl;
     } else {
         backgroundMusic.setLoop(true); // Reproducir en bucle
@@ -33,7 +33,7 @@ GameMap::GameMap()
 
     // load dictionary file
     if (!Dictionary::getInstance().loadFromCSV(
-            "./assets/diccionarios/tildes/200commonwords.txt")) {
+            "../assets/diccionarios/tildes/200commonwords.txt")) {
         throw std::runtime_error("Error al cargar diccionario.");
     }
 }
@@ -59,7 +59,7 @@ void GameMap::run(RenderWindow& window) {
         this->key = 0;
         endRound = false;
 
-        while (endRound == false) {
+        while (endRound == false && window.isOpen()) {
             Event event;
             while (window.pollEvent(event)) {
                 this->handleEvent(window, event);

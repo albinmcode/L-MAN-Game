@@ -2,15 +2,15 @@
 #include <iostream>
 
 InfoPage::InfoPage() 
-: backButton(sf::Vector2f(20, 10), "assets/img/menu_salir.png", sf::Vector2f(96, 48))
-, manualButton(sf::Vector2f(128, 32), "assets/img/info_manual_click.png", sf::Vector2f(288, 96))
-, creditsButton(sf::Vector2f(352, 32), "assets/img/info_creditos_click.png", sf::Vector2f(384, 96))
+: backButton(sf::Vector2f(20, 10), "../assets/img/menu_salir.png", sf::Vector2f(96, 48))
+, manualButton(sf::Vector2f(128, 32), "../assets/img/info_manual_click.png", sf::Vector2f(288, 96))
+, creditsButton(sf::Vector2f(352, 32), "../assets/img/info_creditos_click.png", sf::Vector2f(384, 96))
 {
 
-    if (!manualTexture.loadFromFile("assets/img/info_manual.png")) {
+    if (!manualTexture.loadFromFile("../assets/img/info_manual.png")) {
         std::cerr << "Error al cargar la textura del fondo de información." << std::endl;
     }
-    if (!creditsTexture.loadFromFile("assets/img/info_creditos.png")) {
+    if (!creditsTexture.loadFromFile("../assets/img/info_creditos.png")) {
         std::cerr << "Error al cargar la textura del fondo de información." << std::endl;
     }
     
@@ -26,7 +26,7 @@ void InfoPage::linksFormat() {
     links.push_back(sf::Link("@Driken5482", "https://pixabay.com/es/users/driken5482-45721595/", sf::Vector2f(672, 416)));
     
     // Load font
-    if (!retropix.loadFromFile("assets/font/retropix.ttf")) {
+    if (!retropix.loadFromFile("../assets/font/retropix.ttf")) {
         std::cerr << "Error al cargar fuente en Información." << std::endl;
     }
     // Text format

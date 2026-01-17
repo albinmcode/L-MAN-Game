@@ -2,12 +2,12 @@
 #include <iostream>
 
 Menu::Menu() :
-    playButton(sf::Vector2f(256, 160), "assets/img/menu_inicio.png", sf::Vector2f(384, 128)),
-    infoButton(sf::Vector2f(256, 240), "assets/img/menu_info.png", sf::Vector2f(384, 128)),
-    exitButton(sf::Vector2f(256, 320), "assets/img/menu_salir.png", sf::Vector2f(384, 128)),
+    playButton(sf::Vector2f(256, 160), "../assets/img/menu_inicio.png", sf::Vector2f(384, 128)),
+    infoButton(sf::Vector2f(256, 240), "../assets/img/menu_info.png", sf::Vector2f(384, 128)),
+    exitButton(sf::Vector2f(256, 320), "../assets/img/menu_salir.png", sf::Vector2f(384, 128)),
     inInfoPage(false)
 {
-    if (!backgroundTexture.loadFromFile("assets/img/menu_titulo.png")) {
+    if (!backgroundTexture.loadFromFile("../assets/img/menu_titulo.png")) {
         std::cerr << "Error al cargar la textura del fondo del menú." << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);

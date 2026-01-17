@@ -14,8 +14,8 @@ int main() {
     RenderWindow window(VideoMode(910, 512), "L-MAN", Style::Titlebar | Style::Close);
     // Icon
     sf::Image icon;
-    if (!icon.loadFromFile("assets/img/lman_right.png")) {
-        std::cerr << "Error al cargar icono: " << std::endl;
+    if (!icon.loadFromFile("../assets/img/lman_right.png")) {
+        std::cerr << "Error al cargar icono " << std::endl;
         return -1;
     }
     window.setIcon(32, 32, icon.getPixelsPtr());
