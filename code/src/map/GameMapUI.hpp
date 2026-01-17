@@ -14,8 +14,6 @@
 #include "SpanishWordUI.hpp"
 #include "SoundUI.hpp"
 
-extern "C" const char* getWordByIndex(std::int32_t index);
-
 using namespace sf;
 
 class GameMap {
@@ -30,7 +28,7 @@ public:
     // Collecting objects on the map
     void entityColisionEvent();
     // round end control
-    const bool checkEndCondition();
+    bool checkEndCondition();
     // update the window
     void draw(RenderWindow& window);
     void vulnerability();
@@ -38,33 +36,32 @@ public:
     bool getEntityColision(EnemyUI enemy);
     void dead();
 
-    const float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2);
+    float calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) const;
 
 private:
+    // Entities
+    PlayerUI lman;
+    EnemyUI kanji;
+    EnemyUI question;
+    // elements
+    HeartsUI hearts;
+    PointsUI points;
     // Game flow control
     std::int8_t key = 0;
     sf::Clock clock;
     sf::Music backgroundMusic;
     sf::Clock vulnerabilityClock;
-    SoundUI sound;
     float delayBetweenLives = 3.0f;
     bool canLoseLife = true;
     float collisionDistance = 10.0f;
-
-    // background
-    Texture backgroundTexture;
-    Sprite backgroundSprite;
-    // Entities
-    PlayerUI lman;
-    EnemyUI kanji;
-    EnemyUI question;
-    // hearts and points
-    HeartsUI hearts;
-    PointsUI points;
-    //Words
+    // Words
     LettersUI letters;
     SpanishWordUI wordSpanish;
     EnglishWordUI wordEnglish;
+    // background
+    Texture backgroundTexture;
+    Sprite backgroundSprite;
+    SoundUI sound;
 };
 
 #endif // !GAMEMAPUI

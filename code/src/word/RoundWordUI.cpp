@@ -1,6 +1,8 @@
 #include "RoundWordUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 RoundWordUI::RoundWordUI(int yCord)
 : wordString()
 , yCord(yCord)
@@ -11,7 +13,7 @@ RoundWordUI::RoundWordUI(int yCord)
 void RoundWordUI::draw(sf::RenderWindow& window) {
     float spaceBetwen = 0;
     // draw all textures from the vector
-    for (const sf::Texture texture : this->letters) {
+    for (const sf::Texture& texture : this->letters) {
         // sprite texture
         this->wordSprite.setTexture(texture);
         // position + space betwen letters
@@ -28,14 +30,14 @@ sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
     sf::Texture word;
     std::string str = std::string(1, letter);
     if (str != " ") {
-        if (!word.loadFromFile("assets/img/fuente/" + str + ".png")) {
+        if (!word.loadFromFile("../assets/img/fuente/" + str + ".png")) {
             std::cerr << "Error al cargar la textura de palabra." << std::endl;
         }
     }
     return sf::Texture(word);
 }
 
-const size_t RoundWordUI::getlength() {
+size_t RoundWordUI::getlength() const {
     return this->wordString.size();
 }
 
@@ -44,7 +46,7 @@ const std::string& RoundWordUI::getString() {
 }
 
 void RoundWordUI::changeWord(std::int32_t index) {
-    this->wordString = getWordByIndex(index);
+    this->wordString = Dictionary::getInstance().at(index).word;
     this->letters = this->loadWordTexture();
 }
 

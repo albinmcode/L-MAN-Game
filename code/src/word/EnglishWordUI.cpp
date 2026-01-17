@@ -1,15 +1,17 @@
 #include "EnglishWordUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 EnglishWordUI::EnglishWordUI(int yCord)
 : RoundWordUI(yCord) 
 , objectiveWord(" ") {}
 
 void EnglishWordUI::changeWord(std::int32_t index) {
-	this->objectiveWord = getWordByIndex(index);
+	this->objectiveWord = Dictionary::getInstance().at(index).translation;
 }
 
-const size_t EnglishWordUI::getTotalLength() {
+size_t EnglishWordUI::getTotalLength() const {
 	return this->objectiveWord.size();
 }
 
@@ -29,7 +31,7 @@ bool EnglishWordUI::validCollected(size_t size) {
 			}
 		}
 	}
-	catch (std::out_of_range err){
+	catch (std::out_of_range&){
 		std::cerr << "validCollected: Index out of bounds";
 	}
 	return true;

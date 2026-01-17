@@ -1,7 +1,7 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 
-extern "C" const char* getWordByIndex(std::int32_t index);
+#include <cstdint>
+#include <SFML/Graphics.hpp>
 
 class RoundWordUI {
 public:
@@ -12,7 +12,7 @@ public:
 	// Load texture from a character indexed from the word
 	sf::Texture loadChrTexture(std::int32_t index);
 	// Obtain wordString size
-	const size_t getlength();
+	size_t getlength() const;
 	// Obtain wordString
 	const std::string& getString();
 	// Set a new word string

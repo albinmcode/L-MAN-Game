@@ -9,10 +9,10 @@ HeartsUI::HeartsUI(sf::Vector2f spawnPoint)
     this->heart2.setPosition(spawnPoint.x + 34, spawnPoint.y);
     this->heart1.setPosition(spawnPoint.x + 66, spawnPoint.y);
     // Load textures
-    if (!emptyTexture.loadFromFile("assets/img/heart_empty.png")) {
+    if (!emptyTexture.loadFromFile("../assets/img/heart_empty.png")) {
         std::cerr << "Error al cargar la textura del corazon." << std::endl;
     }
-    if (!filledTexture.loadFromFile("assets/img/heart.png")) {
+    if (!filledTexture.loadFromFile("../assets/img/heart.png")) {
         std::cerr << "Error al cargar la textura del corazon." << std::endl;
     }
     // Initialize as filled hearts
@@ -42,7 +42,7 @@ void HeartsUI::loseHeart() {
     }
 }
 
-const bool HeartsUI::playerDead() {
+bool HeartsUI::playerDead() const {
     if (this->heartsCount < 1) {
         return true;
     }

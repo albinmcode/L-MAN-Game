@@ -43,7 +43,7 @@ int LettersUI::getRandomIndex(int min, int max) {
     return dis(gen);
 }
 
-const char LettersUI::getLetter(size_t index) {
+char LettersUI::getLetter(size_t index) const {
     const char letterSpanish[26] = {
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
@@ -54,12 +54,12 @@ const char LettersUI::getLetter(size_t index) {
     return letterSpanish[index];
 }
 
-const char& LettersUI::getElement(const size_t row, const size_t column) {
+char LettersUI::getElement(const size_t row, const size_t column) const {
     size_t index = row * ELEMENTS_ROWS + column;
     return this->getElement(index);
 }
 
-const char& LettersUI::getElement(const size_t index) {
+char LettersUI::getElement(const size_t index) const {
     if (index < ELEMENTSMATRIX_SIZE) {
         return this->elementsMap[index];
     }
@@ -91,25 +91,25 @@ std::vector<std::string> LettersUI::createLetterTextures() {
             } 
             // set "diccionario" texture
             else if (getElement(i) == 3) {
-                texturesPath.push_back("assets/img/diccionario.png");
+                texturesPath.push_back("../assets/img/diccionario.png");
             }
             // set random letter texture
             else if ((i % 5 == 0) && (mod < 25) && (getElement(i) == 0)) {
                 saveElement(this->getLetter(mod), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
                 ++mod;
             }
             else if ((i % 5 == 3) && (inv > 0) && (getElement(i) == 0)) {
                 saveElement(this->getLetter(inv), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
                 --inv;
             }
             else {
                 saveElement(this->getLetter(n), i);
                 chr = getElement(i);
-                texturesPath.push_back("assets/img/fuente/" + chr + ".png");
+                texturesPath.push_back("../assets/img/fuente/" + chr + ".png");
             }
 
         }

@@ -3,9 +3,6 @@
 
 #include "EntityUI.hpp"
 #include <random>
-extern "C" std::int32_t movInput(std::int32_t*, std::int8_t);
-extern "C" std::int32_t checkObstacleHorizontal(std::int32_t* playerCoords, std::int32_t* enemyCoords);
-extern "C" std::int32_t checkObstacleVertical(std::int32_t* playerCoords, std::int32_t* enemyCoords);
 
 using namespace sf;
 

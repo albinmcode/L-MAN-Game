@@ -1,17 +1,11 @@
 #pragma once
+#include <cstdint>
 #include <SFML/Graphics.hpp>
-
-/**
-/ Validates the movement factor according to the player coordinates and the map
-*/
-extern "C"	std::int32_t checkColision(std::int32_t * movementFactor,
-	std::int32_t xCords, std::int32_t yCords);
 
 using namespace sf;
 
 class EntityUI {
 public:
-
 	// Default constructor
 	EntityUI(Vector2f spawnPoint);
 	/// <summary>
@@ -34,7 +28,9 @@ public:
 	void updatePosition();
 	// Restart position according to the given offset
 	void restartPosition(std::int32_t xOffset, std::int32_t yOffset);
+	// Set to no movement
 	void restartMovement();
+
 protected:
 	Texture rightTexture;
 	Texture leftTexture;
@@ -45,3 +41,8 @@ protected:
 	std::int32_t movementFactor[2];
 	std::int32_t speed = 1;
 };
+
+/// @brief Establish the directio to take on {W,A,S,D}
+/// @param movementFactor two dimensional vector that indicates a direction
+/// @param key input key
+void movInput(int32_t* movementFactor, int8_t key);

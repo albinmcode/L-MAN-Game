@@ -1,10 +1,12 @@
 #include "GameMapUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 GameMap::GameMap()
 : lman(Vector2f(64, 128))
-, kanji(Vector2f(384+3, 288), "assets/img/kanji.png", "assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
-, question(Vector2f(384+2, 320), "assets/img/pregunta.png","assets/img/pregunta_vulnerable.png", 11 , 7, this->lman)
+, kanji(Vector2f(384+3, 288), "../assets/img/kanji.png", "../assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
+, question(Vector2f(384+2, 320), "../assets/img/pregunta.png","../assets/img/pregunta_vulnerable.png", 11 , 7, this->lman)
 , hearts(Vector2f(672+2, 64))
 , points(Vector2f(672 + 2, 32))
 , letters(Vector2f(74, 136))
@@ -13,21 +15,26 @@ GameMap::GameMap()
 , sound()
 {
     // Load background
-    if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
-        std::cerr << "Error al cargar la textura del fondo." << std::endl;
+    if (!backgroundTexture.loadFromFile("../assets/img/background.png")) {
+        throw std::runtime_error("No fue posible cargar la textura del fondo.");
     }
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
     backgroundSprite.setPosition(Vector2f(35, 0));
 
 
-    if (!backgroundMusic.openFromFile("assets/music/background.ogg")) {
-        std::cerr << "Error al cargar la música de fondo." << std::endl;
-    }
-    else {
+    if (!backgroundMusic.openFromFile("../assets/music/background.ogg")) {
+        std::cerr << "No fue posible cargar la música de fondo." << std::endl;
+    } else {
         backgroundMusic.setLoop(true); // Reproducir en bucle
         backgroundMusic.setVolume(20.0);
         backgroundMusic.play();
+    }
+
+    // load dictionary file
+    if (!Dictionary::getInstance().loadFromCSV(
+            "../assets/diccionarios/tildes/200commonwords.txt")) {
+        throw std::runtime_error("Error al cargar diccionario.");
     }
 }
 void GameMap::vulnerability() {
@@ -44,14 +51,15 @@ void GameMap::run(RenderWindow& window) {
     
     while (window.isOpen()) {
         // Round word
-        std::int32_t wordIndex = this->letters.getRandomIndex(0, 99);
-        this->wordSpanish.changeWord(wordIndex + 100);
+        std::int32_t wordIndex = this->letters.getRandomIndex(0,
+            Dictionary::getInstance().size() - 1);
+        this->wordSpanish.changeWord(wordIndex);
         this->wordEnglish.changeWord(wordIndex);
 
         this->key = 0;
         endRound = false;
 
-        while (endRound == false) {
+        while (endRound == false && window.isOpen()) {
             Event event;
             while (window.pollEvent(event)) {
                 this->handleEvent(window, event);
@@ -193,7 +201,7 @@ void GameMap::entityColisionEvent() {
     }
 }
 
-const bool GameMap::checkEndCondition() {
+bool GameMap::checkEndCondition() {
     // Check if the english word and the colected word are the same
     if (this->wordEnglish.completedWord()) {
         // std::cout << "Ganaste\n";
@@ -228,7 +236,7 @@ void GameMap::draw(RenderWindow& window) {
     this->points.draw(window);
 }
 
-const float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
+float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) const {
     sf::Vector2f posLman = static_cast<sf::Vector2f>(pos1);
     sf::Vector2f enemy = static_cast<sf::Vector2f>(pos2);
     

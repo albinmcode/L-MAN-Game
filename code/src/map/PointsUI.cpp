@@ -9,8 +9,8 @@ PointsUI::PointsUI(sf::Vector2f spawnPoint)
     this->ten.setPosition(spawnPoint.x + 32, spawnPoint.y);
     this->unit.setPosition(spawnPoint.x + 66, spawnPoint.y);
     // Load textures
-    if (!digitTexture.loadFromFile("assets/img/fuente/0.png")) {
-        std::cerr << "Error al cargar la textura del dígito." << std::endl;
+    if (!digitTexture.loadFromFile("../assets/img/fuente/0.png")) {
+        std::cerr << "Error al cargar la textura del dï¿½gito." << std::endl;
     }
     // Initialize as filled hearts
     this->hundred.setTexture(digitTexture);
@@ -41,8 +41,8 @@ void PointsUI::loadDigit(sf::Sprite& digitSprite, const int place) {
     else if (place == 1) digitChr += (this->pointCount % 10); // Units
     digit = digitChr;
     // load digit sprite texture
-    if (!digitTexture.loadFromFile("assets/img/fuente/" + digit + ".png")) {
-        std::cerr << "Error al cargar la textura del dígito." << std::endl;
+    if (!digitTexture.loadFromFile("../assets/img/fuente/" + digit + ".png")) {
+        std::cerr << "Error al cargar la textura del dï¿½gito." << std::endl;
     }
     digitSprite.setTexture(digitTexture);
 }
