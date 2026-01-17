@@ -10,7 +10,7 @@ public:
 	void loseHeart();
 	void winHeart();
 	// Flag that indicates that the player lost all hearts
-	const bool playerDead();
+	bool playerDead() const;
 	// Restart hearts count to 3
 	void restartHearts(int startValue = 0);
 

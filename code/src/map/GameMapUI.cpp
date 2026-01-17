@@ -201,7 +201,7 @@ void GameMap::entityColisionEvent() {
     }
 }
 
-const bool GameMap::checkEndCondition() {
+bool GameMap::checkEndCondition() {
     // Check if the english word and the colected word are the same
     if (this->wordEnglish.completedWord()) {
         // std::cout << "Ganaste\n";
@@ -236,7 +236,7 @@ void GameMap::draw(RenderWindow& window) {
     this->points.draw(window);
 }
 
-const float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) {
+float GameMap::calculateDistance(sf::Vector2i pos1, sf::Vector2i pos2) const {
     sf::Vector2f posLman = static_cast<sf::Vector2f>(pos1);
     sf::Vector2f enemy = static_cast<sf::Vector2f>(pos2);
     

@@ -42,7 +42,7 @@ void HeartsUI::loseHeart() {
     }
 }
 
-const bool HeartsUI::playerDead() {
+bool HeartsUI::playerDead() const {
     if (this->heartsCount < 1) {
         return true;
     }

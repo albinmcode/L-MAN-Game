@@ -13,7 +13,7 @@ RoundWordUI::RoundWordUI(int yCord)
 void RoundWordUI::draw(sf::RenderWindow& window) {
     float spaceBetwen = 0;
     // draw all textures from the vector
-    for (const sf::Texture texture : this->letters) {
+    for (const sf::Texture& texture : this->letters) {
         // sprite texture
         this->wordSprite.setTexture(texture);
         // position + space betwen letters
@@ -37,7 +37,7 @@ sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
     return sf::Texture(word);
 }
 
-const size_t RoundWordUI::getlength() {
+size_t RoundWordUI::getlength() const {
     return this->wordString.size();
 }
 

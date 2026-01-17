@@ -9,7 +9,7 @@ public:
 	// Set a new word string
 	void changeWord(std::int32_t index) override;
 	// Getters
-	const size_t getTotalLength();
+	size_t getTotalLength() const;
 	const std::string& getObjective();
 	// Append a collected char
 	void collectChr(char collected);

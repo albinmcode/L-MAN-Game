@@ -43,7 +43,7 @@ int LettersUI::getRandomIndex(int min, int max) {
     return dis(gen);
 }
 
-const char LettersUI::getLetter(size_t index) {
+char LettersUI::getLetter(size_t index) const {
     const char letterSpanish[26] = {
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
@@ -54,12 +54,12 @@ const char LettersUI::getLetter(size_t index) {
     return letterSpanish[index];
 }
 
-const char& LettersUI::getElement(const size_t row, const size_t column) {
+char LettersUI::getElement(const size_t row, const size_t column) const {
     size_t index = row * ELEMENTS_ROWS + column;
     return this->getElement(index);
 }
 
-const char& LettersUI::getElement(const size_t index) {
+char LettersUI::getElement(const size_t index) const {
     if (index < ELEMENTSMATRIX_SIZE) {
         return this->elementsMap[index];
     }

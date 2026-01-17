@@ -19,10 +19,10 @@ public:
     // Obtain a random value between the minimum and maximum
     int getRandomIndex(int min, int max);
     // Obtain a letter from the alphabet
-    const char getLetter(size_t index);
+    char getLetter(size_t index) const;
     // Obtain an element from the elementsMap
-    const char& getElement(const size_t row, const size_t column);
-    const char& getElement(const size_t index);
+    char getElement(const size_t row, const size_t column) const;
+    char getElement(const size_t index) const;
     // Save an element into the elementsMap
     void saveElement(const char element, const size_t row, const size_t column);
     void saveElement(const char element, const size_t index);

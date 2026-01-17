@@ -19,7 +19,7 @@ PlayerUI::PlayerUI(Vector2f spawnPoint)
     this->sprite.setTexture(rightTexture);
 }
 
-const bool PlayerUI::collectChr() {
+bool PlayerUI::collectChr() const {
     return this->collectFlag;
 }
 

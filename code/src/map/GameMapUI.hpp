@@ -28,7 +28,7 @@ public:
     // Collecting objects on the map
     void entityColisionEvent();
     // round end control
-    const bool checkEndCondition();
+    bool checkEndCondition();
     // update the window
     void draw(RenderWindow& window);
     void vulnerability();
