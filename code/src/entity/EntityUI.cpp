@@ -2,9 +2,9 @@
 #include <iostream>
 
 EntityUI::EntityUI(Vector2f spawnPoint) 
-: movementFactor()
-, position(0,0)
-, scaledPosition(1, 1)
+: position(0,0),
+scaledPosition(1, 1),
+movementFactor{0}
 {
     this->sprite.setPosition(spawnPoint);
 }

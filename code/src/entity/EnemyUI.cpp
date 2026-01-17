@@ -88,7 +88,6 @@ void EnemyUI::actionEnemy(RenderWindow& window) {
     //std::cout << xcords << ',' << ycords <<'\n';
     //std::cout << ycords << '\n';
     //std::cout << this->getPosition().x << ',' << this->getPosition().y << '\n';
-    std::int32_t test = 3;
     playerCoord[0] = target.getScale().x;
     playerCoord[1] = target.getScale().y;
     enemyCoord[0] = xcords;
