@@ -1,6 +1,8 @@
 #include "RoundWordUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 RoundWordUI::RoundWordUI(int yCord)
 : wordString()
 , yCord(yCord)
@@ -44,7 +46,7 @@ const std::string& RoundWordUI::getString() {
 }
 
 void RoundWordUI::changeWord(std::int32_t index) {
-    this->wordString = getWordByIndex(index);
+    this->wordString = Dictionary::getInstance().at(index).word;
     this->letters = this->loadWordTexture();
 }
 

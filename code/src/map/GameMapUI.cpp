@@ -1,6 +1,8 @@
 #include "GameMapUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 GameMap::GameMap()
 : lman(Vector2f(64, 128))
 , kanji(Vector2f(384+3, 288), "assets/img/kanji.png", "assets/img/kanji_vulnerable.png", 11 ,6, this->lman)
@@ -28,6 +30,12 @@ GameMap::GameMap()
         backgroundMusic.setVolume(20.0);
         backgroundMusic.play();
     }
+
+    // load dictionary file
+    if (!Dictionary::getInstance().loadFromCSV(
+            "./assets/diccionarios/tildes/200commonwords.txt")) {
+        throw std::runtime_error("Error al cargar diccionario.");
+    }
 }
 void GameMap::vulnerability() {
     if (kanji.isVulnerable()||question.isVulnerable()) {
@@ -43,8 +51,9 @@ void GameMap::run(RenderWindow& window) {
     
     while (window.isOpen()) {
         // Round word
-        std::int32_t wordIndex = this->letters.getRandomIndex(0, 99);
-        this->wordSpanish.changeWord(wordIndex + 100);
+        std::int32_t wordIndex = this->letters.getRandomIndex(0,
+            Dictionary::getInstance().size() - 1);
+        this->wordSpanish.changeWord(wordIndex);
         this->wordEnglish.changeWord(wordIndex);
 
         this->key = 0;

@@ -1,7 +1,7 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 
-extern "C" const char* getWordByIndex(std::int32_t index);
+#include <cstdint>
+#include <SFML/Graphics.hpp>
 
 class RoundWordUI {
 public:

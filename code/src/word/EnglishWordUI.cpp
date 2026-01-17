@@ -1,12 +1,14 @@
 #include "EnglishWordUI.hpp"
 #include <iostream>
 
+#include "Dictionary.hpp"
+
 EnglishWordUI::EnglishWordUI(int yCord)
 : RoundWordUI(yCord) 
 , objectiveWord(" ") {}
 
 void EnglishWordUI::changeWord(std::int32_t index) {
-	this->objectiveWord = getWordByIndex(index);
+	this->objectiveWord = Dictionary::getInstance().at(index).translation;
 }
 
 const size_t EnglishWordUI::getTotalLength() {

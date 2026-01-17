@@ -14,8 +14,6 @@
 #include "SpanishWordUI.hpp"
 #include "SoundUI.hpp"
 
-extern "C" const char* getWordByIndex(std::int32_t index);
-
 using namespace sf;
 
 class GameMap {
