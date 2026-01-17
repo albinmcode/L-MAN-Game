@@ -14,7 +14,7 @@ GameMap::GameMap()
 {
     // Load background
     if (!backgroundTexture.loadFromFile("assets/img/background.png")) {
-        std::cerr << "Error al cargar la textura del fondo." << std::endl;
+        throw std::runtime_error("No fue posible cargar la textura del fondo.");
     }
     backgroundSprite.setTexture(backgroundTexture);
     // Center background
@@ -22,9 +22,8 @@ GameMap::GameMap()
 
 
     if (!backgroundMusic.openFromFile("assets/music/background.ogg")) {
-        std::cerr << "Error al cargar la música de fondo." << std::endl;
-    }
-    else {
+        std::cerr << "No fue posible cargar la música de fondo." << std::endl;
+    } else {
         backgroundMusic.setLoop(true); // Reproducir en bucle
         backgroundMusic.setVolume(20.0);
         backgroundMusic.play();

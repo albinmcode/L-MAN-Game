@@ -1,5 +1,7 @@
 #include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
+
 #include "MenuUI.hpp"
 #include "GameMapUI.hpp"
 
@@ -41,7 +43,12 @@ int main() {
             window.create(sf::VideoMode(910, 512), "L-MAN");
             window.setFramerateLimit(60);
             window.setIcon(32, 32, icon.getPixelsPtr());
-            gameMap->run(window);
+            try {
+                gameMap->run(window);
+            } catch (const std::exception& ex) {
+                std::cerr << "ERROR: " << ex.what() << std::endl;
+                window.close();
+            }
         }
         else {
             menu.draw(window);
