@@ -1,7 +1,11 @@
 #pragma once
 
+#include <codecvt>
 #include <cstdint>
 #include <SFML/Graphics.hpp>
+
+// converter to manage utf8 characters
+static std::wstring_convert<std::codecvt_utf8<wchar_t>> wStrConverter;
 
 class RoundWordUI {
 public:
@@ -10,7 +14,8 @@ public:
 	// Draw points
 	void draw(sf::RenderWindow& window);
 	// Load texture from a character indexed from the word
-	sf::Texture loadChrTexture(std::int32_t index);
+	void loadLetterTexture(std::int32_t index, sf::Texture& letterTexture,
+		const std::wstring& wordStr);
 	// Obtain wordString size
 	size_t getlength() const;
 	// Obtain wordString
@@ -18,7 +23,7 @@ public:
 	// Set a new word string
 	virtual void changeWord(std::int32_t index);
 	// Load actual word string characters texture
-	std::vector<sf::Texture> loadWordTexture();
+	void loadWordTexture();
 	// Load Word textures from a new word or from the the actual wordString
 	void loadWordFromString(const std::string& newWord = " ");
 
