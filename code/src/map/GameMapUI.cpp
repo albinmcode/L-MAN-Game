@@ -128,13 +128,13 @@ void GameMap::collectEvent() {
             this->letters.removeLetter(row, column);
             // Check for match
             if (this->wordEnglish.validCollected(this->wordEnglish.getlength())){
+                this->sound.play("coin.wav");
                 this->wordEnglish.refreshWord();
-            }
-            else {
+            } else {
+                this->sound.play("hit.wav");
                 this->wordEnglish.popCollected();
                 this->hearts.loseHeart();
             }
-            sound.play("coin.wav");
         } else if (this->letters.getElement(row, column) == 3) {
             // Clear position
             this->letters.removeLetter(row, column);
