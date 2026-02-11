@@ -57,5 +57,5 @@ void EnglishWordUI::winChr() {
 }
 
 void EnglishWordUI::refreshWord() {
-	this->letters = loadWordTexture();
+	loadWordTexture();
 }

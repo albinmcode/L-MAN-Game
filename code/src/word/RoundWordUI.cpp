@@ -1,4 +1,5 @@
 #include "RoundWordUI.hpp"
+
 #include <iostream>
 
 #include "Dictionary.hpp"
@@ -25,16 +26,17 @@ void RoundWordUI::draw(sf::RenderWindow& window) {
     }
 }
 
-sf::Texture RoundWordUI::loadChrTexture(const std::int32_t index) {
-    char letter = this->wordString[index];
-    sf::Texture word;
-    std::string str = std::string(1, letter);
-    if (str != " ") {
-        if (!word.loadFromFile("../assets/img/fuente/" + str + ".png")) {
-            std::cerr << "Error al cargar la textura de palabra." << std::endl;
-        }
-    }
-    return sf::Texture(word);
+void RoundWordUI::loadLetterTexture(const std::int32_t index,
+    sf::Texture& letterTexture, const std::wstring& wordStr) {
+    //   std::wstring wLetter;
+    //   wLetter = wordStr.at(index);
+  std::string letter = wStrConverter.to_bytes(wordStr.at(index));
+  if (letter == " ") {
+    return;  // space
+  }
+  if (!letterTexture.loadFromFile("../assets/img/fuente/" + letter + ".png")) {
+    std::cerr << "Error al cargar la textura de palabra." << std::endl;
+  }
 }
 
 size_t RoundWordUI::getlength() const {
@@ -47,25 +49,25 @@ const std::string& RoundWordUI::getString() {
 
 void RoundWordUI::changeWord(std::int32_t index) {
     this->wordString = Dictionary::getInstance().at(index).word;
-    this->letters = this->loadWordTexture();
+    this->loadWordTexture();
 }
 
-std::vector<sf::Texture> RoundWordUI::loadWordTexture() {
-    sf::Texture letter;
-    std::vector<sf::Texture> tempLetters;
-
-    for (unsigned int i = 0; i < this->wordString.length(); i++) {
+void RoundWordUI::loadWordTexture() {
+    this->letters.clear();
+    // to handle characters like ñ or á
+    std::wstring wide_word = wStrConverter.from_bytes(this->wordString);
+    for (unsigned int i = 0; i < wide_word.length(); ++i) {
+        sf::Texture letterTexture;
         // obtain texture of a character
-        letter = loadChrTexture(i);
+        loadLetterTexture(i, letterTexture, wide_word);
         // save in the textures vector
-        tempLetters.push_back(letter);
+        this->letters.push_back(letterTexture);
     }
-    return tempLetters;
 }
 
 void RoundWordUI::loadWordFromString(const std::string& newWord) {
     // Set the new word
     this->wordString = newWord;
     // Load textures for each character in the word
-    this->letters = this->loadWordTexture();
+    this->loadWordTexture();
 }

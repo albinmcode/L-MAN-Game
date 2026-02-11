@@ -5,7 +5,7 @@
 class EnglishWordUI : public RoundWordUI {
 public:
 	// Default constructor
-	EnglishWordUI(int yCord);
+	explicit EnglishWordUI(int yCord);
 	// Set a new word string
 	void changeWord(std::int32_t index) override;
 	// Getters
