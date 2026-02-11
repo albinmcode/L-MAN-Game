@@ -24,6 +24,8 @@ public:
 	const Vector2<std::int32_t>& getScale();
 	// No modifiable reference to the entity position 
 	const Vector2<std::int32_t>& getPosition();
+	// Pickup item position, according to the center of the entity
+	Vector2<std::int32_t> getPickupPos() const;
 	// Method to increment the position vector according to the movement factor
 	void updatePosition();
 	// Restart position according to the given offset

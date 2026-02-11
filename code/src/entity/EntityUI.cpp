@@ -1,4 +1,5 @@
 #include "EntityUI.hpp"
+
 #include <iostream>
 
 EntityUI::EntityUI(Vector2f spawnPoint) 
@@ -11,13 +12,12 @@ movementFactor{0}
 
 void EntityUI::move(RenderWindow& window) {
     // increment or decrement the coordinates according to the parameters
-    this->sprite.move(static_cast<float>(movementFactor[0] * speed)
-        , static_cast<float>(movementFactor[1] * speed));
+    this->sprite.move(static_cast<float>(this->movementFactor[0] * this->speed)
+        , static_cast<float>(movementFactor[1] * this->speed));
     // update logical position
     this->updatePosition();
     // draw sprite
     this->draw(window);
-    // window.display();
 }
 
 void EntityUI::draw(RenderWindow& window) {
@@ -30,6 +30,14 @@ const sf::Vector2<std::int32_t>& EntityUI::getScale() {
 
 const sf::Vector2<std::int32_t>& EntityUI::getPosition() {
     return this->position;
+}
+
+Vector2<std::int32_t> EntityUI::getPickupPos() const {
+  // pickup pos as center of the entity rounded to nearest cell
+  return sf::Vector2<std::int32_t>(
+    static_cast<int>((this->position.x + 16) / 32) + 1,
+    static_cast<int>((this->position.y + 16) / 32) + 1
+  );
 }
 
 void EntityUI::updatePosition() {

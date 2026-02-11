@@ -116,11 +116,10 @@ void GameMap::handleEvent(RenderWindow& window, Event& event) {
 }
 
 void GameMap::collectEvent() {
-    // space pressed
+    // collect key pressed
     if ((this->lman.collectChr() == true) && !getColision()) {
-        // position = (row * total columns) + column
-        size_t row = this->lman.getScale().y - 1;
-        size_t column = this->lman.getScale().x - 1;
+        size_t row = this->lman.getPickupPos().y - 1;
+        size_t column = this->lman.getPickupPos().x - 1;
         // not empty cell
         if (this->letters.getElement(row, column) >= 'a') {
             // Obtain letter
@@ -136,8 +135,7 @@ void GameMap::collectEvent() {
                 this->hearts.loseHeart();
             }
             sound.play("coin.wav");
-        }
-        if (this->letters.getElement(row, column) == 3) {
+        } else if (this->letters.getElement(row, column) == 3) {
             // Clear position
             this->letters.removeLetter(row, column);
             // Set enemies vulnerable
