@@ -1,0 +1,35 @@
+= L-MAN
+:experimental:
+:nofooter:
+:source-highlighter: highlightjs
+:sectnums:
+:stem: latexmath
+:toc:
+:xrefstyle: short
+
+[[user_manual]]
+== Manual
+
+[[build]]
+=== Build
+
+NOTE: *DISCLAIMER*: Este programa fue diseñado para ejecutarse en sistemas Linux, pero se motiva a los lectores a crear nuevos "ports" para distintas plataformas y compartirlo mediante *fork*.
+
+==== Biblioteca SFML
+
+Antes de compilar, asegúrese de tener instalada la biblioteca para interfaz gráfica SFML:
+
+`sudo apt install libsfml-dev` para Ubuntu o Debian.
+
+`sudo dnf install SFML SFML-devel` para Fedora.
+
+==== Compilación
+
+Puede compilar el programa con el siguiente comando:
+
+`make`  en el directorio *code/*.
+
+[[uso]]
+=== Uso
+
+Para ejecutar el programa, utilice el comando `make run`.

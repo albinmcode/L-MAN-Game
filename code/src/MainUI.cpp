@@ -1,5 +1,9 @@
 #include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
 #include "MenuUI.hpp"
 #include "GameMapUI.hpp"
 
@@ -12,8 +16,8 @@ int main() {
     RenderWindow window(VideoMode(910, 512), "L-MAN", Style::Titlebar | Style::Close);
     // Icon
     sf::Image icon;
-    if (!icon.loadFromFile("assets/img/lman_right.png")) {
-        std::cerr << "Error al cargar icono: " << std::endl;
+    if (!icon.loadFromFile("../assets/img/lman_right.png")) {
+        std::cerr << "Error al cargar icono " << std::endl;
         return -1;
     }
     window.setIcon(32, 32, icon.getPixelsPtr());
@@ -41,7 +45,12 @@ int main() {
             window.create(sf::VideoMode(910, 512), "L-MAN");
             window.setFramerateLimit(60);
             window.setIcon(32, 32, icon.getPixelsPtr());
-            gameMap->run(window);
+            try {
+                gameMap->run(window);
+            } catch (const std::exception& ex) {
+                std::cerr << "ERROR: " << ex.what() << std::endl;
+                window.close();
+            }
         }
         else {
             menu.draw(window);
