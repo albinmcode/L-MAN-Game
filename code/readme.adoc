@@ -19,9 +19,14 @@ NOTE: *DISCLAIMER*: Este programa fue diseñado para ejecutarse en sistemas Linu
 
 Antes de compilar, asegúrese de tener instalada la biblioteca para interfaz gráfica SFML:
 
-`sudo apt install libsfml-dev` para Ubuntu o Debian.
+```batch
+sudo apt install libsfml-dev  # para Ubuntu o Debian.
+```
 
-`sudo dnf install SFML SFML-devel` para Fedora.
+
+```batch
+sudo dnf install SFML SFML-devel  # para Fedora.
+```
 
 ==== Compilación
 
