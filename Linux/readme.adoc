@@ -17,7 +17,7 @@ NOTE: *DISCLAIMER*: Este programa fue diseñado para ejecutarse en sistemas Linu
 
 ==== Biblioteca SFML
 
-Antes de compilar, asegúrese de tener instalada la biblioteca para interfaz gráfica SFML:
+Antes de compilar, asegúrese de tener instalada la biblioteca para interfaz gráfica SFML, se utilizó la versión 2.6.2, soporte para versiones posteriores aún no disponible:
 
 ```batch
 sudo apt install libsfml-dev  # para Ubuntu o Debian.
